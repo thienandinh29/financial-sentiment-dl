@@ -32,5 +32,5 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `app/` | Demo Gradio | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu | TV1 |
 | `results/` | Bảng kết quả, log, hình (không checkpoint) | Cả nhóm |
-| `docs/` | Proposal, kế hoạch chi tiết (PDF) | Cả nhóm |
+| `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md` việc chi tiết + checkpoint tuần 1 | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |

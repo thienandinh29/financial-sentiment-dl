@@ -5,6 +5,8 @@ TV1 = dữ liệu & thống kê · TV2 = RNN/CNN · TV3 = Transformer & demo.
 
 ## Tuần 1 (22–28/10) ◆ RQ và ma trận chốt trước mọi lần huấn luyện
 
+Chi tiết từng việc và checkpoint CP0–CP2: [docs/WEEK1.md](docs/WEEK1.md).
+
 - [ ] TV1: tải Twitter FNS, PhraseBank, GloVe; kiểm tra giấy phép; EDA
 - [ ] TV1: chốt hướng dẫn gán nhãn (`labeling/GUIDE.md`)
 - [ ] TV2: xuất tiêu đề 2026 từ pipeline; đóng gói script khử trùng lặp
