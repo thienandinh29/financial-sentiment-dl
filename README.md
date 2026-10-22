@@ -8,6 +8,9 @@ luận bằng khoảng tin cậy của chênh lệch.
 - Proposal (5 trang): [docs/Proposal.pdf](docs/Proposal.pdf)
 - Kế hoạch chi tiết: [docs/KeHoachChiTiet.pdf](docs/KeHoachChiTiet.pdf)
 - Hạn nộp: 20/12/2026
+- Làm việc hằng ngày: [SPEC.md](SPEC.md) (thiết kế), [PLAN.md](PLAN.md) (việc từng tuần),
+  [MAP.md](MAP.md) (tìm gì ở đâu), [context/decisions.md](context/decisions.md) (quyết định đã chốt),
+  [AGENTS.md](AGENTS.md) (quy tắc cho trợ lý AI)
 
 ## Câu hỏi nghiên cứu
 
