@@ -1,0 +1,25 @@
+# Direct dependencies. Exact versions are pinned in requirements.lock after week 1.
+torch>=2.2
+transformers>=4.44
+datasets>=2.20
+scikit-learn>=1.4
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+pyyaml>=6.0
+matplotlib>=3.8
+
+# Duplicate clustering (RQ1)
+datasketch>=1.6
+sentence-transformers>=3.0
+networkx>=3.2
+
+# LLM teacher (Colab/Kaggle GPU only; bitsandbytes needs CUDA)
+accelerate>=0.33
+bitsandbytes>=0.43; platform_system == "Linux"
+
+# Deployment and demo
+onnxruntime>=1.18
+fastapi>=0.110
+uvicorn>=0.29
+gradio>=4.40

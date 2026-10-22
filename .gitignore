@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+*.env
+
+# Data: raw text is never committed (2026 headlines belong to their publishers).
+data/raw/
+data/cache/
+*.parquet
+*.jsonl
+!data/splits/*.jsonl
+
+# Model artifacts: share via a download link instead
+checkpoints/
+*.pt
+*.bin
+*.safetensors
+*.onnx
+glove*/
+glove*.txt
+
+# Experiment tracking / logs too large for git
+wandb/
+runs/
+mlruns/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

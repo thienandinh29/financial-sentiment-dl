@@ -1,0 +1,33 @@
+# E2 — BiLSTM-Attention, full model (RQ2 reference). Template for the other E*.yaml files:
+# copy it and change exactly one setting per experiment (see docs/KeHoachChiTiet.pdf, section 8).
+experiment: E2
+rq: RQ2
+
+data:
+  dataset: zeroshot/twitter-financial-news-sentiment
+  split_file: data/splits/cluster_split.jsonl   # frozen in week 2, checked by SHA-256
+  split_sha256: null                            # filled when the split is frozen
+  max_len: 64
+
+model:
+  name: bilstm_attention
+  embedding: glove.6B.100d          # E4: random
+  embedding_trainable: true
+  hidden_size: 128
+  num_layers: 2
+  bidirectional: true
+  pooling: attention                # E3: max
+  dropout: 0.3
+
+train:
+  loss: weighted_ce                 # E13: focal (gamma 2)
+  optimizer: adam
+  lr: 1.0e-3
+  batch_size: 64
+  max_epochs: 20
+  early_stopping:
+    metric: val_macro_f1
+    patience: 3
+  mixed_precision: true
+
+seeds: [1, 2, 3]
