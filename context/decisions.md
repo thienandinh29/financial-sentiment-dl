@@ -20,3 +20,4 @@ Mỗi dòng: ngày · quyết định · lý do. Không đổi lại quyết đ�
 | 2026-10-22 | Tuần 7: xuất ONNX (FP32, INT8) và đo latency CPU; FastAPI + Docker nếu kịp | Điểm thưởng hiệu năng, kỹ năng triển khai |
 | 2026-10-22 | Thành viên 2 phụ trách RNN/CNN và vòng huấn luyện chung | Phần trọng tâm học phần |
 | 2026-10-22 | Repo private đến khi chấm xong | Tránh nhóm khác sao chép |
+| 2026-10-23 | Shingle cho Jaccard: unigram + bigram từ (chữ thường, bỏ dấu câu); MinHash 128 hoán vị, LSH ngưỡng 0.5 chỉ để lấy ứng viên, Jaccard chính xác quyết định; không dùng polarity anchor của Paper 1 | Tiêu đề ngắn cần bigram; anchor của Paper 1 thiết kế cho khử trùng sự kiện trực tiếp, không phải đo rò rỉ văn bản |
