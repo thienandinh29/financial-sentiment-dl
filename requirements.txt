@@ -14,6 +14,9 @@ datasketch>=1.6
 sentence-transformers>=3.0
 networkx>=3.2
 
+# Reading the Paper 1 lakehouse (scripts/export_headlines.py)
+duckdb>=1.1
+
 # LLM teacher (Colab/Kaggle GPU only; bitsandbytes needs CUDA)
 accelerate>=0.33
 bitsandbytes>=0.43; platform_system == "Linux"
