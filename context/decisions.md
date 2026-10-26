@@ -20,3 +20,4 @@ Mỗi dòng: ngày · quyết định · lý do. Không đổi lại quyết đ�
 | 2026-10-22 | Tuần 7: xuất ONNX (FP32, INT8) và đo latency CPU; FastAPI + Docker nếu kịp | Điểm thưởng hiệu năng, kỹ năng triển khai |
 | 2026-10-22 | Thành viên 2 phụ trách RNN/CNN và vòng huấn luyện chung | Phần trọng tâm học phần |
 | 2026-10-22 | Repo private đến khi chấm xong | Tránh nhóm khác sao chép |
+| 2026-10-26 | Tokenizer: chữ thường (GloVe 6B không phân biệt hoa thường); `<url>`, `<num>`; `<ticker>` cho mọi mã có `$` và ~90 mã lớn viết hoa đứng riêng (`models/tokenizer.py`, `LARGE_CAPS`); bỏ MA, BA và mọi mã dính `&`/`.` (PG&E, GGAL.BA) | Kiểm tra trên FNS: MA = đường trung bình, BA = hậu tố sàn, PG khớp nhầm PG&E 16 lần; tiêu đề dài nhất 49 token nên `max_len: 64` đủ |
