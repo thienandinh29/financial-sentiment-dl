@@ -20,3 +20,4 @@ Mỗi dòng: ngày · quyết định · lý do. Không đổi lại quyết đ�
 | 2026-10-22 | Tuần 7: xuất ONNX (FP32, INT8) và đo latency CPU; FastAPI + Docker nếu kịp | Điểm thưởng hiệu năng, kỹ năng triển khai |
 | 2026-10-22 | Thành viên 2 phụ trách RNN/CNN và vòng huấn luyện chung | Phần trọng tâm học phần |
 | 2026-10-22 | Repo private đến khi chấm xong | Tránh nhóm khác sao chép |
+| 2026-10-26 | Tiêu đề 2026 đọc từ `research_observations` của Paper 1. RSS (bản mới nhất mỗi bài, 759) là nguồn ứng viên cho test 2026; GDELT (tiêu đề dựng từ URL slug, Paper 1 đánh dấu không đủ điều kiện NLP) chỉ vào kho không nhãn để train, sau bộ lọc rác (≥ 5 từ, không mã ID trong URL, ≥ 60% từ chữ cái): giữ 1.409/2.350; giữ cột `source` | Test cần tiêu đề thật của báo; GDELT nhiều nhiễu và viết thường nhưng cần cho số lượng nhãn mềm. Lưu ý: kho không nhãn nhỏ hơn ~3k dự kiến; phải loại bản gần trùng với 300 tiêu đề test khỏi kho train trước khi chưng cất |
