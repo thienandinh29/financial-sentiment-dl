@@ -34,8 +34,9 @@ URL_RE = re.compile(r"https?://\S+|www\.\S+", re.IGNORECASE)
 DOLLAR_TICKER_RE = re.compile(r"\$[A-Za-z]{1,6}(?:\.[A-Za-z]{1,2})?\b")
 # A bare symbol must stand alone: not glued to '&' or '.' (PG&E, GGAL.BA) or other letters.
 BARE_CAPS_RE = re.compile(r"(?<![\w&.$])[A-Z]{2,5}(?![\w&]|\.\w)")
-TOKEN_RE = re.compile(r"<url>|<ticker>|[^\W\d_]+(?:'[^\W\d_]+)?|\d+(?:[.,]\d+)*|[^\w\s]|_")
+TOKEN_RE = re.compile(r"<url>|<ticker>|[^\W\d_]+(?:'[^\W\d_]+)*|\d+(?:[.,]\d+)*|[^\w\s]|_")
 NUMBER_RE = re.compile(r"\d+(?:[.,]\d+)*")
+CLITIC_RE = re.compile(r"(.+?)(n't|'s|'re|'ll|'ve|'d|'m)")
 
 
 def normalize(text):
@@ -52,8 +53,16 @@ def normalize(text):
 def tokenize(text):
     """Split one headline into lowercase tokens.
 
-    Input: raw text. Output: list of tokens; words keep inner apostrophes ("don't"), each
-    punctuation mark is its own token, numbers become <num>.
+    Input: raw text. Output: list of tokens; clitics split as in GloVe's Stanford tokenizer
+    ("apple's" -> apple 's, "don't" -> do n't), other inner apostrophes kept ("o'neill"),
+    each punctuation mark is its own token, numbers become <num>.
     """
-    tokens = TOKEN_RE.findall(normalize(text).lower())
-    return [NUM if NUMBER_RE.fullmatch(t) else t for t in tokens]
+    tokens = []
+    for t in TOKEN_RE.findall(normalize(text).lower()):
+        if NUMBER_RE.fullmatch(t):
+            tokens.append(NUM)
+        elif m := CLITIC_RE.fullmatch(t):
+            tokens.extend(m.groups())
+        else:
+            tokens.append(t)
+    return tokens

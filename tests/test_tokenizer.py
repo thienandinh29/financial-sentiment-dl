@@ -34,7 +34,12 @@ class OtherTokensTest(unittest.TestCase):
 
     def test_apostrophes_accents_and_html_entities(self):
         self.assertEqual(tokenize("Nestlé’s Q3 &amp; don't"),
-                         ["nestlé's", "q", NUM, "&", "don't"])
+                         ["nestlé", "'s", "q", NUM, "&", "do", "n't"])
+
+    def test_clitics_split_like_glove_other_apostrophes_kept(self):
+        self.assertEqual(tokenize("Investors' fears: we'll see O'Neill's plan, can't stop"),
+                         ["investors", "'", "fears", ":", "we", "'ll", "see", "o'neill", "'s",
+                          "plan", ",", "ca", "n't", "stop"])
 
     def test_empty_text(self):
         self.assertEqual(tokenize("   "), [])
