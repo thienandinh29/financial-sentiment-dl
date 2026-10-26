@@ -25,7 +25,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
-| `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ cho RNN/CNN | TV2, TV3 |
+| `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN | TV2, TV3 |
 | `train/` | Vòng huấn luyện chung | TV2 |
 | `evaluate/` | Metric, bootstrap, McNemar, robustness | TV1 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
