@@ -3,6 +3,7 @@
 Mốc ◆ của tuần: **RQ và ma trận thí nghiệm chốt trước mọi lần huấn luyện.**
 Tuần này không huấn luyện mô hình thật, không tạo split (split là việc tuần 2).
 Việc gốc nằm ở [PLAN.md](../PLAN.md); file này chia nhỏ thành đầu ra và tiêu chí "xong".
+Hướng dẫn từng bước kèm code: [TV1](guides/TV1-tuan1.md), [TV3](guides/TV3-tuan1.md).
 
 TV1 = dữ liệu & thống kê · TV2 = RNN/CNN · TV3 = Transformer & demo.
 
