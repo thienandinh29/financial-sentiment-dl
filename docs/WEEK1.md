@@ -95,3 +95,4 @@ vào `context/decisions.md`.
 - [ ] 3.3, 3.4
 - [ ] Mức rò rỉ E10 đã chốt và ghi vào `decisions.md`
 - [ ] PLAN.md tuần 1 đã đánh dấu `[x]`
+- [ ] Cả nhóm duyệt hoặc bác đề xuất "mỗi người một nhánh mỗi tuần" (AGENTS.md, `decisions.md` 27/10)
