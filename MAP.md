@@ -30,7 +30,8 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `evaluate/` | Metric, bootstrap, McNemar, robustness | TV1 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
+| `notebooks/` | Notebook thiết lập Colab và chạy smoke test (`notebooks/colab_setup.ipynb`) | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu | TV1 |
-| `results/` | Bảng kết quả, log, hình (không checkpoint) | Cả nhóm |
+| `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`) | Cả nhóm |
 | `docs/` | Proposal, kế hoạch chi tiết (PDF) | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
