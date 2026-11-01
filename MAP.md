@@ -17,6 +17,22 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `.worktreeinclude` | File bị gitignore được sao chép vào mỗi worktree song song (`.env`) |
 | `requirements.txt` | Thư viện trực tiếp; `requirements.lock` sau tuần 1 |
 
+## Đầu ra TV1 tuần 1
+
+| File/đường dẫn | Nội dung |
+| --- | --- |
+| `data/download.py` | Tải nguồn ghim revision, chuyển JSONL có ID ổn định; chỉ giải nén GloVe 100d |
+| `data/sources.json` | Repo, revision bất biến và tên file của ba nguồn dữ liệu |
+| `scripts/run_metadata.py` | SHA-256 và provenance Git/config/seed/thư viện/CPU/thời gian |
+| `scripts/eda.py` | EDA FNS và đếm PhraseBank; dùng tokenizer TV2, có chế độ whitespace tạm |
+| `scripts/feasibility.py` | Chạy script dedup TV2 từ checkout riêng; ghim MiniLM, tính trần rò rỉ thô |
+| `tests/test_week1_data.py` | Fixture tổng hợp kiểm tra tải/chuyển đổi, EDA, trần rò rỉ; không đánh giá tập test |
+| `results/downloads/{fns,phrasebank,glove}.json` | Lịch sử tải, SHA-256 nguồn/đầu ra và môi trường |
+| `results/eda/team/` | `summary.json`, `class_distribution.png`, `length_distribution.png` |
+| `results/feasibility/` | `run.json`; `fns/` và `fns-lexical/` chứa `pairs.csv`, `clusters.csv`, `summary.json` (ID/điểm, không văn bản) |
+| `results/TV1_WEEK1.md` | Báo cáo kết quả, lệnh tái lập và bàn giao các việc cần nhóm xác nhận |
+| `data/cache/tv2-{glove,dedup}/` | Worktree dependency TV2 ở commit cố định, không commit nội dung vào nhánh TV1 |
+
 ## Thư mục
 
 | Thư mục | Nội dung | Phụ trách |

@@ -1,0 +1,25 @@
+{
+  "items": 11931,
+  "pairs_lexical": 391,
+  "pairs_semantic": 1448,
+  "pairs_total": 1492,
+  "clusters": 11031,
+  "clusters_size_gt1": 618,
+  "largest_cluster": 28,
+  "items_in_dup_clusters": 1518,
+  "share_items_in_dup_clusters": 0.1272,
+  "thresholds": {
+    "jaccard": 0.75,
+    "cosine": 0.85
+  },
+  "semantic_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "leakage_bound": {
+    "assumed_test_fraction": 0.15,
+    "approximate_test_size": 1790,
+    "max_leakable_items_loose": 900,
+    "loose_upper_fraction": 0.5027932960893855,
+    "caveat": "Loose bound only: cluster allocation, class balance and retained train size may lower feasibility. No split constructed; E10 unchanged."
+  },
+  "pair_fraction_all_possible": 2.096435616839296e-05,
+  "candidate_recall_note": "Lexical LSH proposes candidates; recall is not guaranteed"
+}
