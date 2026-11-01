@@ -108,7 +108,8 @@ Cần ra được:
 1. Phân bố lớp. Số đã đếm sẵn để đối chiếu: bearish 1.789 (15,0%), bullish 2.398 (20,1%),
    neutral 7.744 (64,9%) → **bearish là lớp thiểu số**; ghi vào báo cáo vì nó lý giải weighted CE và focal loss (E13).
 2. Độ dài theo token: dùng tokenizer của nhóm (`from models.tokenizer import tokenize`, PR #4).
-   Số đã đo: trung vị 14, p95 27, p99 31, max 49 → `max_len: 64` đủ.
+   Số đã đo (tokenizer có tách `'s`/`n't`, commit `b40cc8b`): trung vị 14, p95 28, p99 31, max 49
+   → `max_len: 64` đủ. (Bản trước ghi p95 27, đo trước khi tách clitic; TV1 đo lại ngày 01/11.)
 3. Tỷ lệ tweet có `$ticker`, có URL (gợi ý: đếm `"<ticker>" in tokenize(text)`, `"<url>" in ...`).
 4. Một biểu đồ cột phân bố lớp, một histogram độ dài → lưu PNG vào `results/eda/`.
 
