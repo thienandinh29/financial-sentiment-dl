@@ -29,6 +29,19 @@ trước khi nhận việc mới.
 | 1.5 | Chạy script khử trùng lặp (từ 2.2) trên toàn bộ Twitter FNS | Bảng tỷ lệ trùng trong `results/feasibility/` | Có tỷ lệ cặp/cụm gần trùng theo Jaccard 0.75 và cosine 0.85 | CP2 |
 | 1.6 | Nộp proposal | `docs/Proposal.pdf` bản cuối | Đã nộp, ảnh chụp xác nhận gửi nhóm | CP2 |
 
+### Bàn giao TV1 ngày 01/11/2026 (sau hạn dự kiến)
+
+- [x] 1.1: đủ 4 đầu ra, 2 lần chạy có SHA-256 giống nhau; dữ liệu nằm trong đường dẫn gitignore.
+- [x] 1.2: bảng giấy phép/trích dẫn đã xác minh trong `data/README.md`.
+- [x] 1.3: EDA + 2 hình; bearish 1.789/11.931, p95 28 token với tokenizer TV2 đã ghim commit.
+- [ ] 1.4: nội dung GUIDE đã bổ sung; chưa có đồng thuận 3 thành viên, giữ BẢN NHÁP.
+- [x] 1.5: 391 cặp lexical, 1.448 semantic, 618 cụm trùng, 12,72% mẫu trong cụm; chưa quyết định lại E10.
+- [ ] 1.6: đã rà nội dung proposal; còn thông tin nhóm/MSSV dạng placeholder, chưa nộp.
+
+Lệnh tái lập, commit dependency TV2, SHA-256, kết quả và giới hạn:
+[results/TV1_WEEK1.md](../results/TV1_WEEK1.md). Đây không phải biên bản CP hay xác nhận
+hoàn thành công việc của TV2/TV3. Không đánh dấu checklist họp bên dưới thay cả nhóm.
+
 ## TV2 — RNN/CNN
 
 | # | Việc | Đầu ra | Xong khi | CP |
