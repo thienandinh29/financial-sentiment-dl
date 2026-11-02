@@ -17,6 +17,8 @@ Chi tiết từng việc và checkpoint CP0–CP2: [docs/WEEK1.md](docs/WEEK1.md
 
 ## Tuần 2 (29/10–4/11) ◆ split chốt kèm hash; gán thử 30 tiêu đề
 
+Chi tiết, hợp đồng chung và checkpoint CP2 (bù)–CP4: [docs/WEEK2.md](docs/WEEK2.md) (đề xuất dời mốc ◆ sang 07/11).
+
 - [ ] TV1: phân cụm, kiểm tra 100 cặp, split + SHA-256; baseline E0
 - [ ] TV2: vòng huấn luyện chung (seed, config, log, early stopping)
 - [ ] TV3: prompt A/B/C, kiểm tra top-10 logits; khung đánh giá chung

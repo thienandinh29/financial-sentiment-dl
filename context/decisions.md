@@ -21,3 +21,6 @@ Mỗi dòng: ngày · quyết định · lý do. Không đổi lại quyết đ�
 | 2026-10-22 | Thành viên 2 phụ trách RNN/CNN và vòng huấn luyện chung | Phần trọng tâm học phần |
 | 2026-10-22 | Repo private đến khi chấm xong | Tránh nhóm khác sao chép |
 | 2026-10-27 | **ĐỀ XUẤT, chờ duyệt CP2:** mỗi người một nhánh mỗi tuần (`<ten>/week<N>`), một PR mỗi tuần; chỉ tách nhánh khi người khác cần một phần sớm. Thay cho "mỗi việc một nhánh" | Tuần 1 có 7 nhánh/PR cho một người, khó theo dõi và tốn lượt duyệt; đã gộp còn 4. Nhánh sống một tuần nên ít xung đột với `main` |
+| 2026-11-02 | **ĐỀ XUẤT, chờ duyệt CP3:** thứ tự nhãn duy nhất `["bearish", "neutral", "bullish"]` (0, 1, 2); split chỉ chứa ID; mọi mô hình ghi dự đoán `{"id", "probs"}` theo thứ tự đó | FNS gốc dùng 0 = bearish, 1 = bullish, 2 = neutral và LLM dùng A/B/C khác thứ tự: một thứ tự chung tránh lỗi lệch nhãn khi so sánh mô hình |
+| 2026-11-02 | **ĐỀ XUẤT, chờ duyệt CP3:** 30 tiêu đề gán thử bị loại khỏi 300 tiêu đề test 2026 | Nhóm sửa GUIDE dựa trên các tiêu đề này; giữ chúng trong test là chỉnh quy tắc theo chính tập test |
+| 2026-11-02 | **ĐỀ XUẤT, chờ duyệt CP2 (bù):** dời mốc ◆ tuần 2 sang 07/11 | Việc tuần 1 bàn giao 01/11, CP2 chưa họp |
