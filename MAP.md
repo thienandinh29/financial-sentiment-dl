@@ -25,12 +25,13 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
-| `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất | TV2, TV3 |
+| `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN | TV2, TV3 |
 | `train/` | Vòng huấn luyện chung | TV2 |
 | `evaluate/` | Metric, bootstrap, McNemar, robustness | TV1 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu | TV1 |
+| `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
 | `results/` | Bảng kết quả, log, hình (không checkpoint) | Cả nhóm |
 | `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md`, `WEEK2.md` việc chi tiết + checkpoint từng tuần; `guides/` hướng dẫn từng bước cho từng thành viên | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
