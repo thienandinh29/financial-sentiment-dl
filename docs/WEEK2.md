@@ -3,6 +3,7 @@
 Mốc ◆ của tuần (PLAN.md): **split chốt kèm SHA-256; gán thử 30 tiêu đề.**
 TV1 = dữ liệu & thống kê · TV2 = RNN/CNN · TV3 = Transformer & demo.
 Hướng dẫn từng bước kèm code đã chạy thử: [TV1](guides/TV1-tuan2.md), [TV3](guides/TV3-tuan2.md).
+Sau CP4: họp "hiểu bài" 90 phút theo [meetings/week2-review.md](meetings/week2-review.md) (demo + hỏi chéo + biên bản).
 
 > **Lịch trễ ~5 ngày.** PLAN ghi tuần 2 là 29/10–4/11, nhưng việc tuần 1 bàn giao ngày 01/11 và
 > CP2 chưa họp. Đề xuất bên dưới dời mốc ◆ tuần 2 sang **Thứ Bảy 07/11**; tuần 3 còn 08–11/11,
