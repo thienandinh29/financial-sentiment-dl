@@ -26,7 +26,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
 | `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN | TV2, TV3 |
-| `train/` | Vòng huấn luyện chung | TV2 |
+| `train/` | Vòng huấn luyện chung: `data.py` đọc split (kiểm SHA-256), `losses.py`, `loop.py`, `runlog.py`, `run.py` (`python -m train.run --config ...`) | TV2 |
 | `evaluate/` | Metric, bootstrap, McNemar, robustness | TV1 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
