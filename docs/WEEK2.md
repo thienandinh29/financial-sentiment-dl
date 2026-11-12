@@ -5,9 +5,9 @@ TV1 = dữ liệu & thống kê · TV2 = RNN/CNN · TV3 = Transformer & demo.
 Hướng dẫn từng bước kèm code đã chạy thử: [TV1](guides/TV1-tuan2.md), [TV3](guides/TV3-tuan2.md).
 Sau CP4: họp "hiểu bài" 90 phút theo [meetings/week2-review.md](meetings/week2-review.md) (demo + hỏi chéo + biên bản).
 
-> **Cập nhật 10/11:** các ngày CP cũ (02/11, 04/11, 07/11) đã qua mà chưa có PR nào được gộp, chưa có split.
-> Theo **lịch bù** trong `PLAN.md` (giữ nguyên phạm vi, làm dày hơn), mốc ◆ tuần 2 là **Thứ Sáu 13/11**:
-> CP2 (bù) và CP3 gộp thành một buổi **Thứ Tư 11/11 tối**, CP4 ◆ vào **Thứ Sáu 13/11 tối**.
+> **Cập nhật 12/11:** các ngày CP cũ (02/11, 04/11, 07/11, 11/11) đã qua mà chưa có PR nào được gộp, chưa có split.
+> Theo **lịch bù** trong `PLAN.md` (giữ nguyên phạm vi, làm dày hơn), CP2, CP3 và mốc ◆ gộp thành **một buổi làm
+> việc Thứ Sáu 13/11 tối (~2 giờ)**; phần còn lại của tuần 2 xong trước **Chủ Nhật 15/11 tối** (CP4).
 > Cả nhóm duyệt lịch này và ghi vào `context/decisions.md`.
 
 Nhánh: theo đề xuất "mỗi người một nhánh mỗi tuần" — `<ten>/week2` (TV2: `Kaorichan/week2`).
@@ -16,10 +16,24 @@ Nhánh: theo đề xuất "mỗi người một nhánh mỗi tuần" — `<ten>/
 
 | CP | Thời điểm | Phải có |
 | --- | --- | --- |
-| CP2 + CP3 (gộp) | **Thứ Tư 11/11**, tối, 45 phút | 3 quyết định tuần 1 (GUIDE, mức E10, quy tắc nhánh) + lịch bù; proposal đã nộp; PR tuần 1 đã gộp; **hợp đồng chung** (mục dưới) đã thống nhất; chọn xong 30 tiêu đề gán thử |
-| CP4 ◆ | **Thứ Sáu 13/11**, tối | Split chốt + SHA-256 trên `main`; mỗi người gán xong 30 tiêu đề; GUIDE sửa theo bất đồng; E0 trên validation; vòng huấn luyện chung có test; khung đánh giá chung; prompt A/B/C |
+| CP2 + CP3 ◆ (gộp) | **Thứ Sáu 13/11**, tối, ~2 giờ | **Mốc ◆: split chốt + SHA-256 trên `main`.** Cùng buổi: 6 quyết định (mục "Chương trình họp"); PR tuần 1 và PR của TV2 đã duyệt và gộp; **hợp đồng chung** (mục dưới) đã thống nhất; chọn xong 30 tiêu đề gán thử |
+| CP4 (phần còn lại) | **Chủ Nhật 15/11**, tối | E0 trên validation; khung đánh giá chung; prompt A/B/C; mỗi người gán xong 30 tiêu đề; kappa; GUIDE sửa theo bất đồng; vòng huấn luyện chung có test (TV2: đã có trên PR #9) |
 
-Không đạt CP4 thì không chạy E1/E2/E5 (tuần 3), vì mọi thí nghiệm đọc split đã chốt.
+Trong các bảng việc bên dưới, cột CP: **CP3** = buổi họp Thứ Sáu 13/11; **CP4** = Chủ Nhật 15/11.
+Không chốt được split thì không chạy E1/E2/E5 (tuần 3), vì mọi thí nghiệm đọc split đã chốt.
+
+## Chương trình họp Thứ Sáu 13/11
+
+Họp làm việc: chạy code thật tại chỗ, không chỉ nói.
+
+| Phút | Việc | Ai |
+| --- | --- | --- |
+| Trước giờ họp | TV1 xong 1.7 (kiểm tay 100 cặp, ~1 giờ) **trước khi chốt split**, vì ngưỡng có thể làm đổi cụm và đổi split; TV1 mở PR cho `tv1/download-data`; TV2 gửi riêng file tiêu đề 2026 cho TV1 (không commit); mọi người clone repo, tạo venv Python 3.11, chạy `python data/download.py --only fns` | Cả nhóm |
+| 0–20 | **Quyết định:** lịch bù trong `PLAN.md`; GUIDE; mức E10 (đề xuất giữ 10/25%, hạ mức cao nhất vì trần đo được ≈ 50,28%); quy tắc nhánh; hợp đồng chung (thứ tự nhãn, split chỉ chứa ID, định dạng dự đoán); proposal đã nộp chưa | Cả nhóm |
+| 20–50 | **Duyệt và gộp PR** theo thứ tự #7 → #6 → #2 → #5 → PR của TV1 → #8 → #9. Mỗi PR do người khác duyệt trên màn hình; xung đột nhỏ ở `MAP.md`, `decisions.md` thì giữ mọi dòng | Cả nhóm |
+| 50–65 | **Chốt split:** TV1 chạy `scripts/make_splits.py` (code trong `docs/guides/TV1-tuan2.md`), chạy lại lần hai kiểm hash, điền `split_sha256` vào `configs/E2.yaml`, commit | TV1 |
+| 65–75 | **Chọn 30 tiêu đề gán thử** (`pick30.py`), gửi danh sách ID cho cả nhóm; từ lúc này mỗi người tự gán, không AI | TV1 |
+| 75–85 | **Chia việc tới Chủ Nhật 15/11** (bảng CP4); chốt ngày họp "hiểu bài" 90 phút | Cả nhóm |
 
 ## Hợp đồng chung — chốt ở CP3 (ai cũng phụ thuộc)
 
@@ -51,8 +65,8 @@ Ba thứ này dùng chung giữa 3 người; đổi sau khi chốt phải ghi `c
 | # | Việc | Đầu ra | Xong khi | CP |
 | --- | --- | --- | --- | --- |
 | 1.7 | Kiểm tra tay 100 cặp gần trùng | `results/feasibility/manual_check_100.csv` (id_a, id_b, loại cặp, đúng/sai, ghi chú) | 50 cặp từ vựng + 50 cặp ngữ nghĩa, chọn ngẫu nhiên có seed; báo tỷ lệ đúng từng loại; nếu ngữ nghĩa sai nhiều thì đề xuất đổi ngưỡng (ghi `decisions.md`) | CP3 |
-| 1.8 | Split theo cụm 70/15/15 | `data/splits/cluster_split.jsonl`, `SHA256SUMS`, `scripts/make_splits.py` + test | Cả cụm nằm trọn một phía; phân bố nhãn mỗi phía lệch ≤ 2 điểm % so với toàn bộ; seed cố định; chạy lại ra cùng hash | CP4 |
-| 1.9 | Split ngẫu nhiên cho E9 | `data/splits/random_split.jsonl` | Cùng tỷ lệ và phân tầng nhãn; báo số cặp trùng bị tách qua train/test (đây chính là rò rỉ E9 đo) | CP4 |
+| 1.8 | Split theo cụm 70/15/15 | `data/splits/cluster_split.jsonl`, `SHA256SUMS`, `scripts/make_splits.py` + test | Cả cụm nằm trọn một phía; phân bố nhãn mỗi phía lệch ≤ 2 điểm % so với toàn bộ; seed cố định; chạy lại ra cùng hash | CP3 |
+| 1.9 | Split ngẫu nhiên cho E9 | `data/splits/random_split.jsonl` | Cùng tỷ lệ và phân tầng nhãn; báo số cặp trùng bị tách qua train/test (đây chính là rò rỉ E9 đo) | CP3 |
 | 1.10 | Baseline E0 (TF-IDF + LR) | `configs/E0.yaml`, `models/tfidf_lr.py`, `results/E0/seed1/preds_validation.jsonl`, Macro-F1 validation | TF-IDF fit **chỉ trên train**; class_weight tính trên train; chỉ đánh giá validation | CP4 |
 | 1.11 | Chọn 30 tiêu đề gán thử | `labeling/trial30_ids.csv` (id, url, chỉ ID) | Lấy ngẫu nhiên có seed từ kho `test_candidate` (RSS) của TV2; **30 tiêu đề này bị loại khỏi 300 tiêu đề test** | CP3 |
 
@@ -94,21 +108,24 @@ Lưu ý: `evaluate/` là vùng TV1 trong MAP.md — TV3 làm 3.7 thì báo TV1 t
 
 ## Biên bản checkpoint
 
-### CP2 (bù) — 02/11
+### Họp gộp Thứ Sáu 13/11 — CP3, mốc ◆
+Quyết định:
+- [ ] Lịch bù trong `PLAN.md` (nộp mục tiêu 19/12): duyệt / sửa
 - [ ] GUIDE: duyệt hoặc ghi điều cần sửa
 - [ ] Mức E10: giữ 10/25/50% hay hạ mức cao nhất (trần đo được ≈ 50,28%)
 - [ ] Quy tắc nhánh "mỗi người một nhánh mỗi tuần": duyệt / bác
-- [ ] Lịch tuần 2 dời mốc ◆ sang 07/11: duyệt / sửa
+- [ ] Hợp đồng chung (nhãn, split, dự đoán) đã thống nhất
 - [ ] Proposal đã nộp
 
-### CP3 — 04/11
-- [ ] PR tuần 1 đã gộp vào `main`
-- [ ] Hợp đồng chung (nhãn, split, dự đoán) đã thống nhất
-- [ ] 1.7, 1.11, 2.6
+Việc làm tại chỗ:
+- [ ] PR đã duyệt và gộp: #7 → #6 → #2 → #5 → PR của TV1 → #8 → #9
+- [ ] 1.7 xong trước khi chốt split; 1.8, 1.9: split chốt, SHA-256 trên `main`, `split_sha256` đã điền
+- [ ] 1.11: 30 tiêu đề gán thử đã chọn và gửi cả nhóm
+- [ ] 2.6 (TV2): có trên PR #9
 
-### CP4 ◆ — 07/11
-- [ ] 1.8, 1.9, 1.10
-- [ ] 2.7, 2.8, 2.9, 2.10
+### CP4 — Chủ Nhật 15/11 (phần còn lại của tuần 2)
+- [ ] 1.10 (E0)
+- [ ] 2.7, 2.8, 2.9, 2.10 (TV2: có trên PR #9)
 - [ ] 3.5, 3.6, 3.7, 3.8
 - [ ] 3 file gán thử + kappa + GUIDE đã sửa
 - [ ] PLAN.md tuần 2 đã đánh dấu `[x]`

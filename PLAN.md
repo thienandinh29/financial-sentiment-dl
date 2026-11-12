@@ -13,7 +13,7 @@ hạn cứng 20/12 (dự phòng cuối còn 2 ngày thay vì 4).
 
 | Giai đoạn | Ngày | Việc (tương ứng tuần trong PLAN) | Mốc ◆ |
 | --- | --- | --- | --- |
-| S0 | Thứ Ba 10/11 – Thứ Sáu 13/11 | Xong tuần 2: gộp PR, **chốt split + SHA-256**, E0, khung đánh giá, prompt A/B/C, gán thử 30 + kappa + sửa GUIDE. TV2 viết sẵn TextCNN và BiLSTM-Attention | Thứ Sáu 13/11 tối: split chốt trên `main` |
+| S0 | Thứ Ba 10/11 – Thứ Sáu 13/11 | Xong tuần 2: gộp PR, **chốt split + SHA-256**, E0, khung đánh giá, prompt A/B/C, gán thử 30 + kappa + sửa GUIDE (ngoài split, phần còn lại xong trước Chủ Nhật 15/11). TV2 viết sẵn TextCNN và BiLSTM-Attention | Thứ Sáu 13/11 tối: split chốt trên `main` |
 | S1 | Thứ Bảy 14/11 – Thứ Sáu 20/11 | Tuần 3 và đầu tuần 4: E1, E2 (TV2); E5, E7 và bắt đầu nhãn mềm LLM chạy qua đêm (TV3); bootstrap, McNemar, mô phỏng mức chênh, dữ liệu rò rỉ 10/25/50% (TV1); gán nhãn đợt 1 (~70/người) | Thứ Sáu 20/11: E1, E2, E5, E7 trên validation; nhãn đợt 1 xong |
 | S2 | Thứ Bảy 21/11 – Thứ Sáu 27/11 | Cuối tuần 4: E3, E4 (TV2); nhãn mềm xong, E6, E12 (TV3); gán nhãn đợt 2 (~65/người) | Thứ Sáu 27/11: ablation, E6, E12 trên validation; nhãn đợt 2 xong |
 | S3 | Thứ Bảy 28/11 – Thứ Sáu 04/12 | Tuần 5: kappa, phân xử, **chốt nhãn test 2026** (TV1); E9, E10 cho BiLSTM và E13 (TV2); E9, E10 cho DistilBERT, E8, E11 (TV3). Viết sẵn code robustness, ONNX, Gradio, FastAPI trên validation | **Thứ Sáu 04/12: mọi lựa chọn đã chốt, nhãn test đã khóa** |
