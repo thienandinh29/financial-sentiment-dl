@@ -5,9 +5,10 @@ TV1 = dữ liệu & thống kê · TV2 = RNN/CNN · TV3 = Transformer & demo.
 Hướng dẫn từng bước kèm code đã chạy thử: [TV1](guides/TV1-tuan2.md), [TV3](guides/TV3-tuan2.md).
 Sau CP4: họp "hiểu bài" 90 phút theo [meetings/week2-review.md](meetings/week2-review.md) (demo + hỏi chéo + biên bản).
 
-> **Lịch trễ ~5 ngày.** PLAN ghi tuần 2 là 29/10–4/11, nhưng việc tuần 1 bàn giao ngày 01/11 và
-> CP2 chưa họp. Đề xuất bên dưới dời mốc ◆ tuần 2 sang **Thứ Bảy 07/11**; tuần 3 còn 08–11/11,
-> nên tuần 3 phải dồn. Cả nhóm duyệt lịch này ở CP2 (bù) và ghi vào `context/decisions.md`.
+> **Cập nhật 10/11:** các ngày CP cũ (02/11, 04/11, 07/11) đã qua mà chưa có PR nào được gộp, chưa có split.
+> Theo **lịch bù** trong `PLAN.md` (giữ nguyên phạm vi, làm dày hơn), mốc ◆ tuần 2 là **Thứ Sáu 13/11**:
+> CP2 (bù) và CP3 gộp thành một buổi **Thứ Tư 11/11 tối**, CP4 ◆ vào **Thứ Sáu 13/11 tối**.
+> Cả nhóm duyệt lịch này và ghi vào `context/decisions.md`.
 
 Nhánh: theo đề xuất "mỗi người một nhánh mỗi tuần" — `<ten>/week2` (TV2: `Kaorichan/week2`).
 
@@ -15,9 +16,8 @@ Nhánh: theo đề xuất "mỗi người một nhánh mỗi tuần" — `<ten>/
 
 | CP | Thời điểm | Phải có |
 | --- | --- | --- |
-| CP2 (bù) | **Thứ Hai 02/11**, tối, 30 phút | 3 quyết định tuần 1 (GUIDE, mức E10, quy tắc nhánh) + lịch này; proposal đã nộp |
-| CP3 | **Thứ Tư 04/11**, tối | PR tuần 1 đã gộp; **định dạng split** và **hợp đồng chung** (mục dưới) đã thống nhất; chọn xong 30 tiêu đề gán thử |
-| CP4 ◆ | **Thứ Bảy 07/11**, tối | Split chốt + SHA-256 trên `main`; mỗi người gán xong 30 tiêu đề; GUIDE sửa theo bất đồng; E0 trên validation; vòng huấn luyện chung có test; khung đánh giá chung; prompt A/B/C |
+| CP2 + CP3 (gộp) | **Thứ Tư 11/11**, tối, 45 phút | 3 quyết định tuần 1 (GUIDE, mức E10, quy tắc nhánh) + lịch bù; proposal đã nộp; PR tuần 1 đã gộp; **hợp đồng chung** (mục dưới) đã thống nhất; chọn xong 30 tiêu đề gán thử |
+| CP4 ◆ | **Thứ Sáu 13/11**, tối | Split chốt + SHA-256 trên `main`; mỗi người gán xong 30 tiêu đề; GUIDE sửa theo bất đồng; E0 trên validation; vòng huấn luyện chung có test; khung đánh giá chung; prompt A/B/C |
 
 Không đạt CP4 thì không chạy E1/E2/E5 (tuần 3), vì mọi thí nghiệm đọc split đã chốt.
 
