@@ -22,10 +22,10 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | Thư mục | Nội dung | Phụ trách |
 | --- | --- | --- |
 | `context/` | Quyết định đã chốt và lý do (`decisions.md`) | Cả nhóm |
-| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu | Theo RQ |
+| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN) | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
-| `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN | TV2, TV3 |
+| `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN; `registry.py` tên mô hình → hàm dựng; `textcnn.py` (E1); `bilstm_attention.py` (E2, E3) | TV2, TV3 |
 | `train/` | Vòng huấn luyện chung: `data.py` đọc split (kiểm SHA-256), `losses.py`, `loop.py`, `runlog.py`, `run.py` (`python -m train.run --config ...`) | TV2 |
 | `evaluate/` | Metric, bootstrap, McNemar, robustness | TV1 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |

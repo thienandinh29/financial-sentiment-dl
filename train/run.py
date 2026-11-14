@@ -15,21 +15,14 @@ from pathlib import Path
 import torch
 import yaml
 
+import models.bilstm_attention  # noqa: F401  (registers "bilstm_attention")
+import models.textcnn  # noqa: F401  (registers "textcnn")
 from models.embeddings import build_vocab, glove_embeddings, random_embeddings, unk_rate
+from models.registry import MODELS, register_model  # noqa: F401  (register_model re-exported for tests)
 from train.data import DEFAULT_RAW, LABELS, load_split_data
 from train.losses import build_loss
 from train.loop import evaluate, make_loader, macro_f1, set_seed, train_model
 from train.runlog import run_metadata, write_json
-
-MODELS = {}
-
-
-def register_model(name):
-    """Decorator: register factory(model_cfg, embedding_matrix) -> nn.Module under `name`."""
-    def wrap(factory):
-        MODELS[name] = factory
-        return factory
-    return wrap
 
 
 def build_embeddings(model_cfg, vocab, seed, root):
