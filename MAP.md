@@ -14,6 +14,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `PLAN.md` | Việc từng tuần theo thành viên, có checkbox |
 | `MAP.md` | File này |
 | `.env.example` | Mẫu biến môi trường; secrets thật nằm trong `.env` (không commit) |
+| `.gitattributes` | Giữ xuống dòng cố định cho các file split và dữ liệu nguồn có SHA-256 |
 | `.worktreeinclude` | File bị gitignore được sao chép vào mỗi worktree song song (`.env`) |
 | `requirements.txt` | Thư viện trực tiếp; `requirements.lock` sau tuần 1 |
 
@@ -45,5 +46,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `scripts/trial_agreement.py` and `tests/test_trial_agreement.py`: pairwise agreement and kappa for three complete trial annotation files.
 - `results/feasibility/fns/` and `results/feasibility/run.json`: TV1 week 1 cluster and pair artifacts with provenance; `manual_check_100.csv` holds the seeded review sample.
 - `scripts/make_splits.py` and `tests/test_make_splits.py`: split generation and checks.
+- `scripts/recluster_092.py` and `tests/test_recluster_092.py`: derive clusters at the approved cosine threshold from the preserved pair artifact; outputs are in `results/feasibility/fns-cosine092/`.
+- `data/splits/cluster_split.jsonl`, `random_split.jsonl`, `SHA256SUMS`, `summary.json`: proposed splits, checksums and generation metadata, pending group review.
 - `tests/test_review_gate.py`: checks that split generation requires the completed sampled review.
 - `configs/E0.yaml`, `models/tfidf_lr.py`, `tests/test_tfidf_lr.py`: E0 baseline and checks.

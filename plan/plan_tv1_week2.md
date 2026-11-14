@@ -13,8 +13,8 @@ Nguồn phân công và tiêu chí hoàn thành: [docs/WEEK2.md](../docs/WEEK2.m
 
 **Đang chờ:**
 
-- Con người kiểm tra và điền đủ 100 cặp, báo tỷ lệ từng loại; nhóm thảo luận ngưỡng và thống nhất hợp đồng trước khi chốt split.
-- Tạo, kiểm chứng và chốt hai split; điền hash vào cấu hình, được nhóm duyệt và đưa lên `main`; sau đó chạy E0 chính thức trên validation.
+- Đã kiểm tra 100 cặp: từ vựng 41/50 (82%), chỉ ngữ nghĩa 30/50 (60%); nhóm đã duyệt cosine ≥ 0,92.
+- Đã tạo và kiểm chứng hai split theo ngưỡng 0,92; còn chờ nhóm duyệt và đưa lên `main`, sau đó mới chạy E0 chính thức trên validation.
 - Nhận kho RSS 2026 từ TV2, chọn và chia sẻ 30 ID, bảo đảm loại khỏi 300 tiêu đề test; ba thành viên gán độc lập, tính kappa và cùng sửa GUIDE.
 
 Ba mục tuần 1 dưới đây được giữ nguyên theo checklist ban đầu; trạng thái duyệt và gộp cần đối chiếu với nhóm hoặc PR.
@@ -30,19 +30,27 @@ Ba mục tuần 1 dưới đây được giữ nguyên theo checklist ban đầu
 Mẫu kiểm tra đã được chọn với seed 1 từ kết quả trên nhánh `origin/tv1/download-data`.
 Người kiểm tra mở `data/raw/fns/pairs_to_read.txt` (file cục bộ bị gitignore), điền
 `yes` hoặc `no` vào `results/feasibility/manual_check_100.csv`, sau đó chạy
-`python scripts/summarize_manual_check.py` để báo tỷ lệ từng loại. Các ô trống chưa
-phải kết quả kiểm tra; không chốt split cho đến khi kiểm tra và thảo luận hoàn tất.
+`python scripts/summarize_manual_check.py` để báo tỷ lệ từng loại. Kết quả là 41/50
+cặp từ vựng và 30/50 cặp chỉ ngữ nghĩa đúng; nhóm đã duyệt cosine ≥ 0,92.
 
-- [ ] Kiểm tra tay 100 cặp gần trùng: chọn ngẫu nhiên có seed 50 cặp từ vựng và 50 cặp ngữ nghĩa.
-- [ ] Ghi kết quả vào `results/feasibility/manual_check_100.csv` gồm ID hai tiêu đề, loại cặp, đúng/sai và ghi chú; báo tỷ lệ đúng từng loại.
-- [ ] Nếu các cặp ngữ nghĩa sai nhiều, đề xuất đổi ngưỡng và ghi quyết định vào `context/decisions.md`.
-- [ ] Cùng nhóm thống nhất hợp đồng về thứ tự nhãn, định dạng split và file dự đoán.
+Để nhóm cân nhắc đề xuất cosine ≥ 0,92: dựng lại cụm từ `pairs.csv` và toàn bộ ID
+trong `clusters.csv` tái hiện đúng cụm hiện tại ở ngưỡng 0,85. Khi giữ các cạnh từ vựng
+và lọc cạnh chỉ ngữ nghĩa ở 0,92, số cụm nhiều hơn một ID giảm từ 618 xuống 379,
+số ID trong các cụm đó giảm từ 1.518 xuống 867, và cụm lớn nhất giảm từ 28 xuống 15 ID.
+Có 314 cụm cũ (860 ID) bị tách thành nhiều cụm. Một cặp có điểm lưu làm tròn 0,92;
+điểm tính lại bằng mô hình cố định là 0,9200063 và cặp được giữ. Đây là phân tích
+trên các cặp đã lưu, không kiểm chứng mọi cặp có thể có.
+
+- [x] Kiểm tra tay 100 cặp gần trùng: chọn ngẫu nhiên có seed 50 cặp từ vựng và 50 cặp ngữ nghĩa.
+- [x] Ghi kết quả vào `results/feasibility/manual_check_100.csv` gồm ID hai tiêu đề, loại cặp, đúng/sai và ghi chú; báo tỷ lệ đúng từng loại.
+- [x] Nếu các cặp ngữ nghĩa sai nhiều, đề xuất đổi ngưỡng và ghi quyết định vào `context/decisions.md`.
+- [x] Cùng nhóm thống nhất hợp đồng về thứ tự nhãn, định dạng split và file dự đoán.
 
 ## Chốt split — CP3
 
-- [ ] Tạo split theo cụm 70/15/15 bằng `scripts/make_splits.py` và bổ sung test: mỗi cụm nằm trọn trong một tập, phân bố nhãn mỗi tập lệch tối đa 2 điểm phần trăm so với toàn bộ.
-- [ ] Tạo `data/splits/cluster_split.jsonl` và `data/splits/SHA256SUMS`; dùng seed cố định, chạy lại để kiểm tra hash giống nhau.
-- [ ] Tạo `data/splits/random_split.jsonl` cho E9 với cùng tỷ lệ, phân tầng nhãn; báo số cặp trùng bị tách giữa train và test.
+- [x] Tạo split theo cụm 70/15/15 bằng `scripts/make_splits.py` và bổ sung test: mỗi cụm nằm trọn trong một tập, phân bố nhãn mỗi tập lệch tối đa 2 điểm phần trăm so với toàn bộ.
+- [x] Tạo `data/splits/cluster_split.jsonl` và `data/splits/SHA256SUMS`; dùng seed cố định, chạy lại để kiểm tra hash giống nhau.
+- [x] Tạo `data/splits/random_split.jsonl` cho E9 với cùng tỷ lệ, phân tầng nhãn; có 178 cặp gần trùng bị tách giữa train và test (theo ngưỡng 0,92).
 - [ ] Điền `split_sha256` vào `configs/E2.yaml` và cùng nhóm đưa split đã chốt lên `main` qua PR được duyệt.
 - [ ] Chọn ngẫu nhiên có seed 30 tiêu đề từ kho `test_candidate` của TV2; lưu ID và URL vào `labeling/trial30_ids.csv`, gửi danh sách cho nhóm và loại các tiêu đề này khỏi 300 tiêu đề test.
 

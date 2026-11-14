@@ -9,20 +9,21 @@ import json
 import random
 import sys
 from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from train.data import DEFAULT_RAW, LABELS, load_raw, write_split  # noqa: E402
-from scripts.summarize_manual_check import summarize  # noqa: E402
+from train.data import DEFAULT_RAW, LABELS, load_raw, sha256_file, write_split  # noqa: E402
+from train.runlog import run_metadata  # noqa: E402
+from scripts.summarize_manual_check import read_review, summarize  # noqa: E402
 
 RATIOS = {"train": 0.70, "validation": 0.15, "test": 0.15}
 
 
 def verify_manual_review(path, pairs_path):
     """Require the completed seed-1 sample from the current pair file."""
-    with open(path, encoding="utf-8-sig", newline="") as f:
-        reviewed = list(csv.DictReader(f))
+    reviewed = read_review(path)
     result = summarize(reviewed)
     with open(pairs_path, encoding="utf-8-sig", newline="") as f:
         pairs = list(csv.DictReader(f))
@@ -87,15 +88,40 @@ def crossing_pairs(pairs_csv, assignment):
     return dict(sorted(crossing.items()))
 
 
+def verify_distribution(name, report, worst_label_drift, max_drift=2.0):
+    """Reject split shares or label distributions deviating by over two percentage points."""
+    if worst_label_drift > max_drift:
+        raise ValueError(f"{name}: label drift {worst_label_drift} exceeds {max_drift} percentage points")
+    total = sum(part["size"] for part in report.values())
+    for split, ratio in RATIOS.items():
+        drift = abs(100 * report[split]["size"] / total - 100 * ratio)
+        if drift > max_drift:
+            raise ValueError(f"{name}: {split} size drift {drift} exceeds {max_drift} percentage points")
+
+
+def verify_pair_clusters(pairs_csv, cluster_of):
+    """Reject pair artifacts whose IDs are missing or span different clusters."""
+    with open(pairs_csv, encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            a, b = row["id_a"], row["id_b"]
+            if a not in cluster_of or b not in cluster_of:
+                raise ValueError(f"Pair references an ID absent from clusters: {a}, {b}")
+            if cluster_of[a] != cluster_of[b]:
+                raise ValueError(f"Near-duplicate pair spans clusters: {a}, {b}")
+
+
 def main():
+    started = datetime.now(timezone.utc)
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--clusters", default="results/feasibility/fns/clusters.csv")
-    parser.add_argument("--pairs", default="results/feasibility/fns/pairs.csv")
+    parser.add_argument("--clusters", default="results/feasibility/fns-cosine092/clusters.csv")
+    parser.add_argument("--pairs", default="results/feasibility/fns-cosine092/pairs.csv")
+    parser.add_argument("--review-pairs", default="results/feasibility/fns/pairs.csv",
+                        help="Original pair file used to sample the manual review")
     parser.add_argument("--review", default="results/feasibility/manual_check_100.csv")
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--out", default="data/splits")
     args = parser.parse_args()
-    verify_manual_review(ROOT / args.review, ROOT / args.pairs)
+    verify_manual_review(ROOT / args.review, ROOT / args.review_pairs)
     raw = load_raw([ROOT / p for p in DEFAULT_RAW])
     labels_of = {i: label for i, (_, label) in raw.items()}
     clusters = defaultdict(list)
@@ -104,15 +130,17 @@ def main():
             clusters[row["cluster_id"]].append(row["id"])
     if sorted(i for g in clusters.values() for i in g) != sorted(labels_of):
         raise ValueError("Cluster file and raw files do not hold the same ids")
-    out, summary, sums = ROOT / args.out, {"seed": args.seed}, []
-    if any((out / name).exists() for name in ("cluster_split.jsonl", "random_split.jsonl", "SHA256SUMS")):
+    verify_pair_clusters(ROOT / args.pairs, {i: group for group, ids in clusters.items() for i in ids})
+    inputs = [*DEFAULT_RAW, args.clusters, args.pairs, args.review, args.review_pairs]
+    config = {"ratios": RATIOS, "inputs_sha256": {p: sha256_file(ROOT / p) for p in inputs}}
+    out, summary, sums = ROOT / args.out, run_metadata(config, args.seed, started, cwd=ROOT), []
+    if any((out / name).exists() for name in ("cluster_split.jsonl", "random_split.jsonl", "SHA256SUMS", "summary.json")):
         raise FileExistsError("Split output already exists; refusing to overwrite frozen splits")
     assignments = {}
     for name, groups in (("cluster_split", list(clusters.values())), ("random_split", [[i] for i in labels_of])):
         assignment = assign_groups(groups, labels_of, args.seed)
         report, worst = describe(assignment, labels_of)
-        if worst > 2:
-            raise ValueError(f"{name}: label drift {worst} exceeds 2 percentage points")
+        verify_distribution(name, report, worst)
         assignments[name] = assignment
         summary[name] = {"splits": report, "max_label_drift_points": worst,
                          "near_duplicate_pairs_across_splits": crossing_pairs(ROOT / args.pairs, assignment)}

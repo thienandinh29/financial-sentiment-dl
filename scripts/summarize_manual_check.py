@@ -5,6 +5,15 @@ from collections import Counter
 from pathlib import Path
 
 
+def read_review(path):
+    """Read review rows from a comma- or semicolon-delimited CSV file."""
+    with Path(path).open(encoding='utf-8-sig', newline='') as f:
+        header = f.readline()
+        delimiter = ';' if header.count(';') > header.count(',') else ','
+        f.seek(0)
+        return list(csv.DictReader(f, delimiter=delimiter))
+
+
 def summarize(rows, per_type=50):
     """Validate a completed review and return counts and proportions per pair type."""
     counts = {kind: Counter() for kind in ('lexical', 'semantic_only')}
@@ -31,8 +40,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('review', nargs='?', default='results/feasibility/manual_check_100.csv')
     args = parser.parse_args()
-    with Path(args.review).open(encoding='utf-8-sig', newline='') as f:
-        result = summarize(csv.DictReader(f))
+    result = summarize(read_review(args.review))
     for kind, stats in result.items():
         print(f"{kind}: {stats['yes']}/{stats['total']} ({stats['precision']:.1%})")
 

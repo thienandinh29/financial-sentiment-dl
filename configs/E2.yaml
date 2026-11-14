@@ -6,7 +6,7 @@ rq: RQ2
 data:
   dataset: zeroshot/twitter-financial-news-sentiment
   split_file: data/splits/cluster_split.jsonl   # frozen in week 2, checked by SHA-256
-  split_sha256: null                            # filled when the split is frozen
+  split_sha256: 8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa  # proposed split; review before use
   max_len: 64
 
 model:
