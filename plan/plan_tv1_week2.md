@@ -18,13 +18,13 @@ Nguồn phân công và tiêu chí hoàn thành: [docs/WEEK2.md](../docs/WEEK2.m
 - Nhận kho RSS 2026 từ TV2, chọn và chia sẻ 30 ID, bảo đảm loại khỏi 300 tiêu đề test; ba thành viên gán độc lập, tính kappa và cùng sửa GUIDE.
 
 Đối chiếu GitHub: các PR tuần 1 #7, #6, #2, #5 và #8 vẫn mở; PR tuần 2 #9 cũng
-chưa gộp. PR nháp [#10](https://github.com/thienandinh29/financial-sentiment-dl/pull/10)
+chưa gộp. PR [#10](https://github.com/thienandinh29/financial-sentiment-dl/pull/10)
 chứa công việc trên nhánh này và chờ nhóm duyệt sau khi xử lý các phụ thuộc.
 
 ## Việc mang sang từ tuần 1
 
 - [x] Nộp proposal sau khi điền tên nhóm, MSSV và URL repo; gửi ảnh xác nhận cho nhóm.
-- [ ] Mở PR `tv1/download-data` để người khác duyệt; công việc trên nhánh tuần 2 hiện được đưa vào PR nháp #10.
+- [ ] Mở PR `tv1/download-data` để người khác duyệt; công việc trên nhánh tuần 2 hiện được đưa vào PR #10.
 - [ ] Cùng nhóm duyệt và gộp các PR tuần 1 theo thứ tự trong `docs/WEEK2.md`.
 
 ## Trước khi chốt split — CP3
