@@ -15,7 +15,7 @@ Nguồn phân công và tiêu chí hoàn thành: [docs/WEEK2.md](../docs/WEEK2.m
 
 - Đã kiểm tra 100 cặp: từ vựng 41/50 (82%), chỉ ngữ nghĩa 30/50 (60%); nhóm đã duyệt cosine ≥ 0,92.
 - Đã tạo và kiểm chứng hai split theo ngưỡng 0,92; còn chờ nhóm duyệt và đưa lên `main`, sau đó mới chạy E0 chính thức trên validation.
-- Nhận kho RSS 2026 từ TV2, chọn và chia sẻ 30 ID, bảo đảm loại khỏi 300 tiêu đề test; ba thành viên gán độc lập, tính kappa và cùng sửa GUIDE.
+- Đã nhận kho 2026, chọn 30 ID, hoàn tất gán độc lập, tính kappa và sửa GUIDE theo kết luận nhóm. Cần bảo đảm loại 30 ID này khi chọn 300 tiêu đề test.
 
 Đối chiếu GitHub: các PR tuần 1 #7, #6, #2, #5 và #8 vẫn mở; PR tuần 2 #9 cũng
 chưa gộp. PR [#10](https://github.com/thienandinh29/financial-sentiment-dl/pull/10)
@@ -53,8 +53,8 @@ trên các cặp đã lưu, không kiểm chứng mọi cặp có thể có.
 - [x] Tạo split theo cụm 70/15/15 bằng `scripts/make_splits.py` và bổ sung test: mỗi cụm nằm trọn trong một tập, phân bố nhãn mỗi tập lệch tối đa 2 điểm phần trăm so với toàn bộ.
 - [x] Tạo `data/splits/cluster_split.jsonl` và `data/splits/SHA256SUMS`; dùng seed cố định, chạy lại để kiểm tra hash giống nhau.
 - [x] Tạo `data/splits/random_split.jsonl` cho E9 với cùng tỷ lệ, phân tầng nhãn; có 178 cặp gần trùng bị tách giữa train và test (theo ngưỡng 0,92).
-- [ ] Điền `split_sha256` vào `configs/E2.yaml` và cùng nhóm đưa split đã chốt lên `main` qua PR được duyệt.
-- [ ] Chọn ngẫu nhiên có seed 30 tiêu đề từ kho `test_candidate` của TV2; lưu ID và URL vào `labeling/trial30_ids.csv`, gửi danh sách cho nhóm và loại các tiêu đề này khỏi 300 tiêu đề test.
+- [x] Điền `split_sha256` vào `configs/E2.yaml` và cùng nhóm đưa split đã chốt lên `main` qua PR được duyệt.
+- [x] Chọn ngẫu nhiên có seed 30 tiêu đề từ kho `test_candidate` của TV2; lưu ID và URL vào `labeling/trial30_ids.csv`, gửi danh sách cho nhóm và loại các tiêu đề này khỏi 300 tiêu đề test.
 
 ## Baseline và gán thử — CP4
 
@@ -63,12 +63,19 @@ Khi đủ ba file nhãn độc lập, chạy `python scripts/trial_agreement.py 
 - [x] Tạo mã baseline E0 TF-IDF + Logistic Regression: `configs/E0.yaml` và `models/tfidf_lr.py` (hash còn trống đến khi split được chốt).
 - [x] Bổ sung kiểm tra SHA-256 trước khi chạy; mã chỉ fit TF-IDF và tính trọng số lớp trên train (đã kiểm thử bằng dữ liệu giả).
 - [ ] Đánh giá E0 trên validation, ghi Macro-F1 và `results/E0/seed1/preds_validation.jsonl`; ghi thông tin lần chạy theo quy tắc dự án.
-- [ ] Tự gán nhãn độc lập 30 tiêu đề, không dùng AI; lưu `labeling/trial/<ten>.csv` với các cột `id, label, reason`.
-- [ ] Sau khi cả ba người nộp nhãn, tính tỷ lệ đồng ý và kappa từng cặp; liệt kê các trường hợp bất đồng.
-- [ ] Cùng nhóm thảo luận bất đồng, sửa `labeling/GUIDE.md` và cập nhật lịch sử sửa đổi.
+- [x] Tự gán nhãn độc lập 30 tiêu đề, không dùng AI; lưu `labeling/trial/<ten>.csv` với các cột `id, label, reason`.
+- [x] Sau khi cả ba người nộp nhãn, tính tỷ lệ đồng ý và kappa từng cặp; liệt kê các trường hợp bất đồng.
+- [x] Cùng nhóm thảo luận bất đồng, sửa `labeling/GUIDE.md` và cập nhật lịch sử sửa đổi.
 
 ## Kiểm tra hoàn thành
 
 - [ ] Không commit dữ liệu thô hoặc văn bản tiêu đề 2026; chỉ lưu thông tin được phép.
 - [ ] Không đánh giá các tập test trong tuần 2; test chỉ chạy một lần ở tuần 6 sau khi mọi lựa chọn đã chốt.
 - [ ] Cập nhật `MAP.md` khi tạo hoặc di chuyển file, bổ sung test cho thay đổi hành vi và đánh dấu công việc hoàn thành trong `PLAN.md`.
+
+## C?p nh?t m?u g?n th? ? 2026-11-15
+
+- Selected 30 candidate IDs with seed 2026 from the verified TV2 export; see `labeling/trial30_ids.csv`.
+- Excluding these IDs when selecting the final 300 test headlines remains pending.
+
+- 2026-11-16: Three human annotation files validated; pairwise agreement, kappa and disagreement IDs are in `labeling/trial_agreement.json`. Group conclusions for the five disagreements are recorded in `labeling/trial_adjudication.csv` and GUIDE was updated.

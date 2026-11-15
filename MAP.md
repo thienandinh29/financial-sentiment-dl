@@ -50,3 +50,9 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `data/splits/cluster_split.jsonl`, `random_split.jsonl`, `SHA256SUMS`, `summary.json`: proposed splits, checksums and generation metadata, pending group review.
 - `tests/test_review_gate.py`: checks that split generation requires the completed sampled review.
 - `configs/E0.yaml`, `models/tfidf_lr.py`, `tests/test_tfidf_lr.py`: E0 baseline and checks.
+
+- `labeling/trial30_ids.csv`: 30 trial IDs and URLs sampled from the 2026 candidate pool; exclude these IDs when selecting the final test set.
+- `data/raw/headlines_2026/trial30_to_read.txt`, `trial30_blank.csv`: local-only reading copy and blank annotation template for the 30 trial IDs.
+- `labeling/trial/tv1.csv`, `tv2.csv`, `tv3.csv`: independent human trial annotations (30 IDs, labels and reasons per file).
+- `labeling/trial_agreement.json`: pairwise human trial agreement, Cohen kappa and disagreement IDs.
+- `labeling/trial_adjudication.csv`: group conclusions for the five disputed trial IDs; original independent labels remain unchanged.
