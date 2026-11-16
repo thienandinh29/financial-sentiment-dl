@@ -19,9 +19,9 @@ ROWS = [
     # 2026-01-01 06:00 in Bangkok is still 2025 in UTC
     ("tz", "tz", "RSS", "Timezone edge", "2026-01-01 06:00:00+07", "2026-01-01 00:00:00+00", "2026-01-01 00:01:00+00"),
     ("blank", "blank", "RSS", "   ", "2026-05-01 00:00:00+00", "2026-05-01 00:00:00+00", "2026-05-01 00:01:00+00"),
-    ("g1", "g1", "GDELT", "China gdp beats forecasts as export boom offsets weak demand", None, "2026-04-01 00:00:00+00", "2026-04-01 00:01:00+00"),
-    ("g2", "g2", "GDELT", "Yooper rolls", None, "2026-04-02 00:00:00+00", "2026-04-02 00:01:00+00"),
-    ("g3", "g3", "GDELT", "26649587.story behind cumbria consultancy aylmore associates", None, "2026-04-03 00:00:00+00", "2026-04-03 00:01:00+00"),
+    ("g1", "g1", "GDELT", "Acme widget maker lifts yearly profit outlook after strong orders", None, "2026-04-01 00:00:00+00", "2026-04-01 00:01:00+00"),
+    ("g2", "g2", "GDELT", "Bike lanes", None, "2026-04-02 00:00:00+00", "2026-04-02 00:01:00+00"),
+    ("g3", "g3", "GDELT", "48151623.story behind acme consulting group partners", None, "2026-04-03 00:00:00+00", "2026-04-03 00:01:00+00"),
     ("s1", "s1", "SEC", "Form 8-K filed by some company today", None, "2026-04-04 00:00:00+00", "2026-04-04 00:01:00+00"),
 ]
 
@@ -41,9 +41,9 @@ def make_lakehouse(path):
 
 class JunkFilterTest(unittest.TestCase):
     def test_rejects_short_ids_and_symbols_keeps_headlines(self):
-        self.assertIsNone(junk_reason("China gdp beats forecasts as export boom offsets weak demand"))
-        self.assertEqual(junk_reason("Yooper rolls"), "too_short")
-        self.assertEqual(junk_reason("134531861.cms apple shares rise today"), "url_id")
+        self.assertIsNone(junk_reason("Acme widget maker lifts yearly profit outlook after strong orders"))
+        self.assertEqual(junk_reason("Bike lanes"), "too_short")
+        self.assertEqual(junk_reason("48151623.cms acme shares rise today"), "url_id")
         self.assertEqual(junk_reason("q3 - - 2026 $ % results"), "non_alpha")
 
 
