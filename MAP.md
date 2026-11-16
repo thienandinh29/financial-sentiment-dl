@@ -80,3 +80,5 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `evaluate/metrics.py` and `tests/test_metrics.py`: shared evaluation module (`read_preds`, `score`, `validation_gold`) and hand-computed unit tests.
 - `notebooks/colab_setup.ipynb`: updated to read ID-only splits via `train.data.load_split_data` and prepare FNS raw data via `data/download.py --only fns`.
 - `configs/llm_prompts.yaml` and `notebooks/llm_prompts.ipynb`: P1/P2/P3 prompt templates and Colab T4 validation evaluation + top-10 logits diagnostic notebook.
+- `results/E11/{P1,P2,P3}/preds_validation.jsonl`: validation predictions (1,791 rows each) for `Qwen/Qwen2.5-7B-Instruct` (`nf4-4bit`).
+- `results/llm_prompts/top10_check.json` and `results/llm_prompts/contribution_report_week2.md`: validation metrics, ABC token probability mass diagnostics (selecting `P2` with `macro_f1 = 0.7934`), and TV3 Week 2 contribution report.

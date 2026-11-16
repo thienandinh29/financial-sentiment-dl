@@ -34,7 +34,7 @@ Chi tiết từng việc và checkpoint CP0–CP2: [docs/WEEK1.md](docs/WEEK1.md
 - [ ] TV1: chốt hướng dẫn gán nhãn (`labeling/GUIDE.md`) — đã bổ sung quy tắc, 9 ví dụ FNS và ca khó ngày 01/11; chờ cả 3 người duyệt CP2
 - [ ] TV2: xuất tiêu đề 2026 từ pipeline; đóng gói script khử trùng lặp
 - [ ] TV2: tokenizer, nạp GloVe
-- [ ] TV3: chạy thử DistilBERT nhỏ và Qwen 4-bit trên Colab
+- [x] TV3: chạy thử DistilBERT nhỏ và Qwen 4-bit trên Colab — `notebooks/colab_setup.ipynb`, log và ngân sách GPU trong `results/smoke/` (`bc36845`)
 - [ ] Cả nhóm: kiểm tra khả thi — tỷ lệ trùng thực tế trong Twitter FNS (quyết định mức rò rỉ E10) — TV1 đã đo: 12,72% trong cụm trùng, trần thô 50,28%; chờ nhóm quyết định
 - [ ] Cả nhóm: nộp proposal — đã rà nội dung; còn placeholder thông tin nhóm/MSSV và chưa có xác nhận nộp
 
@@ -44,7 +44,7 @@ Chi tiết, hợp đồng chung và checkpoint CP2 (bù)–CP4: [docs/WEEK2.md](
 
 - [ ] TV1: phân cụm, kiểm tra 100 cặp, split + SHA-256; baseline E0
 - [ ] TV2: vòng huấn luyện chung (seed, config, log, early stopping)
-- [ ] TV3: prompt A/B/C, kiểm tra top-10 logits; khung đánh giá chung
+- [x] TV3: prompt A/B/C, kiểm tra top-10 logits; khung đánh giá chung — `evaluate/metrics.py`, `tests/test_metrics.py`, `configs/llm_prompts.yaml`, `notebooks/llm_prompts.ipynb`, `results/E11/{P1,P2,P3}/preds_validation.jsonl`, `results/llm_prompts/top10_check.json` (chốt `P2` với validation `macro_f1 = 0.7934`)
 - [x] Cả nhóm: gán thử 30 tiêu đề, sửa hướng dẫn
 
 - [x] TV1: selected 30 trial IDs (seed 2026); see `labeling/trial30_ids.csv`.
