@@ -41,11 +41,14 @@ docs/        # proposal, kế hoạch
 ```bash
 python -m venv .venv
 .venv\Scripts\activate          # Windows; Linux/macOS: source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.lock
 ```
 
-Phiên bản thư viện sẽ được ghim vào `requirements.lock` sau tuần 1. Huấn luyện chạy
-trên GPU T4 của Colab/Kaggle; xem phần tái lập bên dưới khi đã có lệnh.
+`requirements.lock` ghim chính xác mọi phiên bản (Python 3.11) và được dùng cho mọi lần
+chạy; `requirements.txt` chỉ ghi thư viện trực tiếp. Thêm thư viện: sửa `requirements.txt`,
+cài lại vào venv sạch rồi tạo lại lock. `torch` trên PyPI là bản CPU trên Windows và bản
+CUDA trên Linux (Colab/Kaggle). Huấn luyện chạy trên GPU T4 của Colab/Kaggle; xem phần tái
+lập bên dưới khi đã có lệnh.
 
 ## Tái lập
 
