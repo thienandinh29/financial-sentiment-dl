@@ -1,0 +1,95 @@
+[
+  {
+    "prompt": "P1",
+    "n": 1791,
+    "min_abc_mass": 0.9933,
+    "mean_abc_mass": 0.9999,
+    "share_top1_is_letter": 1.0,
+    "macro_f1": 0.7311,
+    "f1": {
+      "bearish": 0.7546,
+      "neutral": 0.7789,
+      "bullish": 0.6597
+    },
+    "confusion": [
+      [
+        226,
+        38,
+        5
+      ],
+      [
+        98,
+        791,
+        273
+      ],
+      [
+        6,
+        40,
+        314
+      ]
+    ],
+    "elapsed_seconds": 151.47
+  },
+  {
+    "prompt": "P2",
+    "n": 1791,
+    "min_abc_mass": 0.7903,
+    "mean_abc_mass": 0.9995,
+    "share_top1_is_letter": 1.0,
+    "macro_f1": 0.7934,
+    "f1": {
+      "bearish": 0.7535,
+      "neutral": 0.8696,
+      "bullish": 0.7572
+    },
+    "confusion": [
+      [
+        191,
+        77,
+        1
+      ],
+      [
+        43,
+        1004,
+        115
+      ],
+      [
+        4,
+        66,
+        290
+      ]
+    ],
+    "elapsed_seconds": 238.92
+  },
+  {
+    "prompt": "P3",
+    "n": 1791,
+    "min_abc_mass": 0.9984,
+    "mean_abc_mass": 1.0,
+    "share_top1_is_letter": 1.0,
+    "macro_f1": 0.7057,
+    "f1": {
+      "bearish": 0.7169,
+      "neutral": 0.768,
+      "bullish": 0.6323
+    },
+    "confusion": [
+      [
+        219,
+        45,
+        5
+      ],
+      [
+        113,
+        791,
+        258
+      ],
+      [
+        10,
+        62,
+        288
+      ]
+    ],
+    "elapsed_seconds": 249.2
+  }
+]
