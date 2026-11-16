@@ -46,10 +46,10 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
 | `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN | TV2, TV3 |
 | `train/` | Vòng huấn luyện chung: `data.py` đọc split (kiểm SHA-256), `losses.py`, `loop.py`, `runlog.py`, `run.py` (`python -m train.run --config ...`) | TV2 |
-| `evaluate/` | Metric, bootstrap, McNemar, robustness | TV1 |
+| `evaluate/` | Metric (`metrics.py`), bootstrap, McNemar, robustness | TV1, TV3 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
-| `notebooks/` | Notebook thiết lập Colab và chạy smoke test (`notebooks/colab_setup.ipynb`) | TV3 |
+| `notebooks/` | Notebook thiết lập Colab, chạy smoke test (`notebooks/colab_setup.ipynb`) và đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`) | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
 | `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`) | Cả nhóm |
@@ -74,3 +74,9 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `labeling/trial/tv1.csv`, `tv2.csv`, `tv3.csv`: independent human trial annotations (30 IDs, labels and reasons per file).
 - `labeling/trial_agreement.json`: pairwise human trial agreement, Cohen kappa and disagreement IDs.
 - `labeling/trial_adjudication.csv`: group conclusions for the five disputed trial IDs; original independent labels remain unchanged.
+
+## Week 2 TV3 files
+
+- `evaluate/metrics.py` and `tests/test_metrics.py`: shared evaluation module (`read_preds`, `score`, `validation_gold`) and hand-computed unit tests.
+- `notebooks/colab_setup.ipynb`: updated to read ID-only splits via `train.data.load_split_data` and prepare FNS raw data via `data/download.py --only fns`.
+- `configs/llm_prompts.yaml` and `notebooks/llm_prompts.ipynb`: P1/P2/P3 prompt templates and Colab T4 validation evaluation + top-10 logits diagnostic notebook.
