@@ -1,0 +1,59 @@
+# Week 2 Tasks 3.5 & 3.6 — LLM Prompt Variants (P1, P2, P3) for Qwen2.5-7B-Instruct 4-bit
+# Evaluated strictly on the validation split of cluster_split.jsonl (never test).
+experiment: E11_prompt_selection
+rq: RQ3
+
+data:
+  dataset: zeroshot/twitter-financial-news-sentiment
+  split_file: data/splits/cluster_split.jsonl
+  split_sha256: 8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa
+  raw_files:
+    - data/raw/fns/train.jsonl
+    - data/raw/fns/validation.jsonl
+
+model:
+  name: Qwen/Qwen2.5-7B-Instruct
+  quantization: nf4-4bit
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_compute_dtype: float16
+
+evaluation:
+  split: validation
+  seed: 1
+  few_shot_per_label: 1
+  abc_mass_threshold: 0.5
+  labels:
+    - bearish
+    - neutral
+    - bullish
+  letters:
+    A: bearish
+    B: neutral
+    C: bullish
+
+prompts:
+  P1: |
+    Classify the sentiment of this financial news headline for the main company or market it is about.
+    Headline: {text}
+    A) bearish
+    B) neutral
+    C) bullish
+    Answer with one letter only.
+  P2: |
+    You label financial news headlines.
+    bearish = a clearly unfavourable development or outlook for the main subject (price falls, losses, downgrades, fines).
+    bullish = a clearly favourable development or outlook for the main subject (price rises, beats estimates, upgrades).
+    neutral = financial information with no clear direction.
+    Judge only what the headline says.
+    Headline: {text}
+    A) bearish
+    B) neutral
+    C) bullish
+    Answer with one letter only.
+  P3: |
+    Classify the sentiment of a financial news headline for its main subject.
+    {examples}Headline: {text}
+    A) bearish
+    B) neutral
+    C) bullish
+    Answer with one letter only.
