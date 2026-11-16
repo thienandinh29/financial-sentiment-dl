@@ -1,0 +1,35 @@
+{
+  "model": "distilbert/distilbert-base-uncased",
+  "n_train": 1000,
+  "n_val": 500,
+  "batch_size": 32,
+  "max_len": 64,
+  "seed": 1,
+  "epoch_seconds": 3.3,
+  "peak_gpu_mem_gb": 1.64,
+  "val_macro_f1_smoke": 0.689,
+  "commit_sha": "e4fd2cbc06ae0a78fc947cbed1a8fa3f0a46cb7b",
+  "timestamp_utc": "2026-11-01T12:04:19.437291+00:00",
+  "gpu": "Tesla T4",
+  "config": {
+    "dataset": "zeroshot/twitter-financial-news-sentiment",
+    "split_info": {
+      "source": "zeroshot/twitter-financial-news-sentiment (in-memory train/validation; Week 2 official split not yet frozen)",
+      "sha256": null,
+      "verified": false
+    },
+    "lr": 5e-05,
+    "epochs": 1,
+    "optimizer": "AdamW",
+    "mixed_precision_fp16": true
+  },
+  "package_versions": {
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "transformers": "5.21.0",
+    "datasets": "4.8.5",
+    "scikit_learn": "1.6.1",
+    "numpy": "2.1.3"
+  }
+}
