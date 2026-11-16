@@ -30,13 +30,13 @@ trước 04/12. Nếu trượt mốc ◆ quá 2 ngày thì họp ngay và áp d�
 
 Chi tiết từng việc và checkpoint CP0–CP2: [docs/WEEK1.md](docs/WEEK1.md).
 
-- [ ] TV1: tải Twitter FNS, PhraseBank, GloVe; kiểm tra giấy phép; EDA
-- [ ] TV1: chốt hướng dẫn gán nhãn (`labeling/GUIDE.md`)
+- [x] TV1: tải Twitter FNS, PhraseBank, GloVe; kiểm tra giấy phép; EDA — [kết quả 01/11](results/TV1_WEEK1.md), hash và hình trong `results/`
+- [ ] TV1: chốt hướng dẫn gán nhãn (`labeling/GUIDE.md`) — đã bổ sung quy tắc, 9 ví dụ FNS và ca khó ngày 01/11; chờ cả 3 người duyệt CP2
 - [ ] TV2: xuất tiêu đề 2026 từ pipeline; đóng gói script khử trùng lặp
 - [ ] TV2: tokenizer, nạp GloVe
 - [ ] TV3: chạy thử DistilBERT nhỏ và Qwen 4-bit trên Colab
-- [ ] Cả nhóm: kiểm tra khả thi — tỷ lệ trùng thực tế trong Twitter FNS (quyết định mức rò rỉ E10)
-- [ ] Cả nhóm: nộp proposal
+- [ ] Cả nhóm: kiểm tra khả thi — tỷ lệ trùng thực tế trong Twitter FNS (quyết định mức rò rỉ E10) — TV1 đã đo: 12,72% trong cụm trùng, trần thô 50,28%; chờ nhóm quyết định
+- [ ] Cả nhóm: nộp proposal — đã rà nội dung; còn placeholder thông tin nhóm/MSSV và chưa có xác nhận nộp
 
 ## Tuần 2 (29/10–4/11) ◆ split chốt kèm hash; gán thử 30 tiêu đề
 

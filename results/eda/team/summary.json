@@ -1,0 +1,83 @@
+{
+  "count": 11931,
+  "classes": {
+    "bearish": {
+      "count": 1789,
+      "fraction": 0.14994552007375744
+    },
+    "bullish": {
+      "count": 2398,
+      "fraction": 0.20098902019948034
+    },
+    "neutral": {
+      "count": 7744,
+      "fraction": 0.6490654597267622
+    }
+  },
+  "minority_class": "bearish",
+  "length": {
+    "unit": "tokens before padding/truncation",
+    "median": 14.0,
+    "p95": 28.0,
+    "p99": 31.0,
+    "max": 49,
+    "fraction_at_most_64": 1.0
+  },
+  "raw_markers": {
+    "definition": "Regex on original FNS; cashtags only, not bare ticker whitelist",
+    "cashtag_pattern": "\\$[A-Za-z][A-Za-z0-9]*(?:[.-][A-Za-z]+)?\\b",
+    "url_pattern": "https?://\\S+|www\\.\\S+",
+    "cashtag": {
+      "count": 1804,
+      "fraction": 0.15120274914089346
+    },
+    "url": {
+      "count": 5612,
+      "fraction": 0.47037130165116087
+    }
+  },
+  "tokenizer": "team",
+  "max_len_status": "measured with team tokenizer; no config changed",
+  "normalized_markers": {
+    "<ticker>": {
+      "count": 1868,
+      "fraction": 0.15656692649400722
+    },
+    "<url>": {
+      "count": 5612,
+      "fraction": 0.47037130165116087
+    }
+  },
+  "phrasebank_counts_only": {
+    "count": 2264,
+    "classes": {
+      "bearish": 303,
+      "bullish": 570,
+      "neutral": 1391
+    }
+  },
+  "provenance": {
+    "commit": "947b65105164e5455924bca02efe2e7591657af2",
+    "working_tree_dirty": true,
+    "config": {
+      "tokenizer": "team",
+      "max_len_reference": 64,
+      "inputs_sha256": {
+        "data/raw/fns/train.jsonl": "52158609a11e71afd3dab4cd292773bd3397a9e7890c9354fb5b16cebf7acde0",
+        "data/raw/fns/validation.jsonl": "a8cb54b82b1a01c767cdc9b63c697483360fe43ab37cc90c68cb90169af4484a",
+        "data/raw/phrasebank/allagree.jsonl": "6eaede7aa7f0c6b42b5fbbca64a6fc7e73a450261a487f31143643eaa0def7d8",
+        "data/cache/tv2-glove/models/tokenizer.py": "c9b3b3926ba6d887b3f038205c06ef650b52bc6015964e269d6d78db2bbba58e"
+      },
+      "script_sha256": "5af7814e6373ffde986f2e749fdd2eb990cc51a915f012b1dd1541471a5c2e50"
+    },
+    "seed": 1,
+    "python": "3.11.18",
+    "libraries": {
+      "numpy": "2.4.6",
+      "matplotlib": "3.11.2"
+    },
+    "gpu": "not used (CPU data preparation)",
+    "completed_at_utc": "2026-11-01T05:53:12.135362+00:00",
+    "elapsed_seconds": 4.295
+  }
+}
