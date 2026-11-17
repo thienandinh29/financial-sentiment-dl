@@ -49,6 +49,8 @@ Chi tiết, hợp đồng chung và checkpoint CP2 (bù)–CP4: [docs/WEEK2.md](
 
 ## Tuần 3 (5–11/11)
 
+Chi tiết theo lịch bù (S1, đến 20/11): [docs/WEEK3.md](docs/WEEK3.md).
+
 - [ ] TV1: bootstrap, McNemar, mô phỏng mức chênh phát hiện được
 - [ ] TV2: TextCNN (E1), BiLSTM-Attention (E2) trên validation
 - [ ] TV3: DistilBERT (E5), đóng băng (E7)
