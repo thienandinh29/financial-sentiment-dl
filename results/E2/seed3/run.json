@@ -1,0 +1,170 @@
+{
+  "commit": "af1fd645e70a7812b69546af16fe5a8e566137e3",
+  "working_tree_dirty": false,
+  "config": {
+    "experiment": "E2",
+    "rq": "RQ2",
+    "data": {
+      "dataset": "zeroshot/twitter-financial-news-sentiment",
+      "split_file": "data/splits/cluster_split.jsonl",
+      "split_sha256": "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa",
+      "max_len": 64
+    },
+    "model": {
+      "name": "bilstm_attention",
+      "embedding": "glove.6B.100d",
+      "embedding_trainable": true,
+      "hidden_size": 128,
+      "num_layers": 2,
+      "bidirectional": true,
+      "pooling": "attention",
+      "dropout": 0.3
+    },
+    "train": {
+      "loss": "weighted_ce",
+      "optimizer": "adam",
+      "lr": 0.001,
+      "batch_size": 64,
+      "max_epochs": 20,
+      "early_stopping": {
+        "metric": "val_macro_f1",
+        "patience": 3
+      },
+      "mixed_precision": true
+    },
+    "seeds": [
+      1,
+      2,
+      3
+    ]
+  },
+  "seed": 3,
+  "python": "3.11.5",
+  "libraries": {
+    "torch": "2.14.1+cpu",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.3"
+  },
+  "gpu": null,
+  "started_at_utc": "2026-11-17T06:53:26.208954+00:00",
+  "finished_at_utc": "2026-11-17T06:58:16.068547+00:00",
+  "elapsed_seconds": 289.86,
+  "label_order": [
+    "bearish",
+    "neutral",
+    "bullish"
+  ],
+  "embedding_stats": {
+    "embedding": "glove.6B.100d",
+    "vocab_size": 13289,
+    "dim": 100,
+    "found_in_glove": 11353,
+    "type_oov_rate": 0.1454,
+    "train_token_oov_rate": 0.0272,
+    "top_oov": [
+      "marketscreener",
+      "brexit",
+      "covid",
+      "",
+      "wework",
+      "cybertruck",
+      "londonstockexchange",
+      "cnbcmakeit",
+      "abbvie",
+      "bopinion",
+      "jimcramer",
+      "luckin",
+      "vaping",
+      "️",
+      "nysemkt",
+      "ringcentral",
+      "usmca",
+      "viagogo",
+      "funko",
+      "tradingnation"
+    ]
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.9116375884948084,
+      "val_loss": 0.7195101417289108,
+      "val_macro_f1": 0.6461000284975768,
+      "seconds": 24.787
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.6967086711105779,
+      "val_loss": 0.6263615420615454,
+      "val_macro_f1": 0.6828480016403787,
+      "seconds": 24.179
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.5748191207329632,
+      "val_loss": 0.6014567458849257,
+      "val_macro_f1": 0.7124716468602493,
+      "seconds": 25.064
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.4715906643898905,
+      "val_loss": 0.5897662951951583,
+      "val_macro_f1": 0.7075908813691673,
+      "seconds": 25.101
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.39206399298568073,
+      "val_loss": 0.6211490989862908,
+      "val_macro_f1": 0.7214937392833414,
+      "seconds": 24.898
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.34249901781183245,
+      "val_loss": 0.663402071250743,
+      "val_macro_f1": 0.7354785286646462,
+      "seconds": 24.888
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.2811563996811629,
+      "val_loss": 0.6107223473451845,
+      "val_macro_f1": 0.7408546057945266,
+      "seconds": 23.769
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.24003572502683374,
+      "val_loss": 0.7058960198024875,
+      "val_macro_f1": 0.7466259228830614,
+      "seconds": 23.098
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.20027421414316707,
+      "val_loss": 0.7000392732558338,
+      "val_macro_f1": 0.7454261035432449,
+      "seconds": 23.238
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.17183805117065684,
+      "val_loss": 0.7450372202146126,
+      "val_macro_f1": 0.7380308229894202,
+      "seconds": 33.78
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.14578108040640234,
+      "val_loss": 0.9238111384583212,
+      "val_macro_f1": 0.7200969075125009,
+      "seconds": 32.243
+    }
+  ],
+  "best_epoch": 8,
+  "val_macro_f1": 0.7466259228830614,
+  "val_unk_rate": 0.058
+}

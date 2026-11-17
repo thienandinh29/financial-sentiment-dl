@@ -52,7 +52,7 @@ Chi tiết, hợp đồng chung và checkpoint CP2 (bù)–CP4: [docs/WEEK2.md](
 Chi tiết theo lịch bù (S1, đến 20/11): [docs/WEEK3.md](docs/WEEK3.md).
 
 - [ ] TV1: bootstrap, McNemar, mô phỏng mức chênh phát hiện được
-- [ ] TV2: TextCNN (E1), BiLSTM-Attention (E2) trên validation
+- [x] TV2: TextCNN (E1), BiLSTM-Attention (E2) trên validation — Macro-F1 validation E1 0,755 ± 0,005, E2 0,758 ± 0,010 (3 seed; `results/rq2_validation.md`)
 - [ ] TV3: DistilBERT (E5), đóng băng (E7)
 - [ ] Cả nhóm: gán nhãn đợt 1 (~70 nhãn/người)
 

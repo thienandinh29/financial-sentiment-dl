@@ -42,9 +42,9 @@ khác, không dùng AI.
 | # | Việc | Đầu ra | Xong khi | CP |
 | --- | --- | --- | --- | --- |
 | 2.11 | GloVe 6B 100d + điền hash split | `data/raw/glove/` (không commit), `configs/E1.yaml` | SHA-256 GloVe khớp báo cáo TV1; E1/E2 cùng hash split | ✅ 17/11 |
-| 2.12 | E1 TextCNN, 3 seed | `results/E1/seed{1,2,3}/` | Mỗi seed có `run.json`, `preds_validation.jsonl`; chạy từ commit sạch | CP5 |
-| 2.13 | E2 BiLSTM-Attention, 3 seed | `results/E2/seed{1,2,3}/` | Như trên | CP5 |
-| 2.14 | Bảng RQ2 tạm (validation) | `results/rq2_validation.md` | Trung bình ± độ lệch chuẩn qua 3 seed cho E1, E2 (và E0 khi TV1 có) | CP5 |
+| 2.12 | E1 TextCNN, 3 seed | `results/E1/seed{1,2,3}/` | Mỗi seed có `run.json`, `preds_validation.jsonl`; chạy từ commit sạch | ✅ 17/11 |
+| 2.13 | E2 BiLSTM-Attention, 3 seed | `results/E2/seed{1,2,3}/` | Như trên | ✅ 17/11 |
+| 2.14 | Bảng RQ2 tạm (validation) | `results/rq2_validation.md` | Trung bình ± độ lệch chuẩn qua 3 seed cho E1, E2 (và E0 khi TV1 có) | ✅ 17/11 (E0 chờ TV1) |
 | 2.15 | Chuẩn bị E3, E4 | `configs/E3.yaml`, `configs/E4.yaml` | Mỗi file copy E2, đổi đúng một dòng (pooling `max`; embedding `random`) | S2 |
 | 2.16 | Gán nhãn đợt 1 | `labeling/round1/tv2.csv` | ~70 nhãn, tự gán, không AI | CP5 |
 
