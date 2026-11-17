@@ -1,0 +1,12 @@
+# E0: fill the hash only after the split is frozen.
+experiment: E0
+rq: reference
+data:
+  split_file: data/splits/cluster_split.jsonl
+  split_sha256: null
+model:
+  name: tfidf_lr
+  ngram_range: [1, 2]
+  min_df: 2
+  C: 1.0
+seeds: [1]

@@ -20,6 +20,7 @@ data/cache/
 *.parquet
 *.jsonl
 !data/splits/*.jsonl
+!results/**/preds_validation.jsonl
 
 # Model artifacts: share via a download link instead
 checkpoints/
