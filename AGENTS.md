@@ -26,8 +26,13 @@ Quyết định đã chốt: [context/decisions.md](context/decisions.md) — kh
 
 ## Cách làm việc
 
-- Mỗi việc một nhánh (`<ten>/<viec>`, ví dụ `an/bilstm-attention`), gộp qua pull request
-  có ít nhất một người khác xem. Không push thẳng lên `main`.
+- **[ĐỀ XUẤT — chờ cả nhóm duyệt tại CP2 28/10]** Mỗi người một nhánh mỗi tuần
+  (`<ten>/week<N>`, ví dụ `an/week2`), tạo từ `main` đầu tuần, gộp qua **một** pull request có
+  ít nhất một người khác xem, trước checkpoint ◆ của tuần. Tuần sau tạo nhánh mới từ `main`.
+  Không push thẳng lên `main`.
+- Chỉ tách nhánh riêng (`<ten>/<viec>`) khi người khác cần một phần trước checkpoint; ghi lý do
+  trong PR. Mỗi commit một việc nhỏ, để người duyệt đọc PR theo từng commit.
+- (Quy tắc cũ, bỏ nếu đề xuất được duyệt: mỗi việc một nhánh `<ten>/<viec>`.)
 - Mỗi người sở hữu một vùng thư mục (xem MAP.md); sửa vùng của người khác thì báo trước.
 - Code: Python 3.11, PyTorch; hàm ngắn, có docstring nêu đầu vào/đầu ra; seed cố định.
 - Mỗi lần chạy ghi commit, config, seed, phiên bản thư viện, GPU, thời gian vào `results/`.
