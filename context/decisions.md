@@ -20,3 +20,4 @@ Mỗi dòng: ngày · quyết định · lý do. Không đổi lại quyết đ�
 | 2026-10-22 | Tuần 7: xuất ONNX (FP32, INT8) và đo latency CPU; FastAPI + Docker nếu kịp | Điểm thưởng hiệu năng, kỹ năng triển khai |
 | 2026-10-22 | Thành viên 2 phụ trách RNN/CNN và vòng huấn luyện chung | Phần trọng tâm học phần |
 | 2026-10-22 | Repo private đến khi chấm xong | Tránh nhóm khác sao chép |
+| 2026-10-27 | **ĐỀ XUẤT, chờ duyệt CP2:** mỗi người một nhánh mỗi tuần (`<ten>/week<N>`), một PR mỗi tuần; chỉ tách nhánh khi người khác cần một phần sớm. Thay cho "mỗi việc một nhánh" | Tuần 1 có 7 nhánh/PR cho một người, khó theo dõi và tốn lượt duyệt; đã gộp còn 4. Nhánh sống một tuần nên ít xung đột với `main` |
