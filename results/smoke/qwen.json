@@ -1,0 +1,41 @@
+{
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "quant": "nf4-4bit",
+  "seconds_per_headline": 0.35,
+  "min_abc_mass": 1.0,
+  "abc_mass_threshold": 0.5,
+  "letter_ids": {
+    "A": [
+      32,
+      362
+    ],
+    "B": [
+      33,
+      425
+    ],
+    "C": [
+      34,
+      356
+    ]
+  },
+  "low_mass_top10_diagnostics": [],
+  "commit_sha": "e4fd2cbc06ae0a78fc947cbed1a8fa3f0a46cb7b",
+  "timestamp_utc": "2026-11-01T12:21:58.287096+00:00",
+  "seed": 1,
+  "gpu": "Tesla T4",
+  "config": {
+    "dataset": "zeroshot/twitter-financial-news-sentiment",
+    "split": "train",
+    "n_samples": 20,
+    "bnb_4bit_quant_type": "nf4",
+    "bnb_4bit_compute_dtype": "float16"
+  },
+  "package_versions": {
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "transformers": "5.21.0",
+    "datasets": "4.8.5",
+    "numpy": "2.1.3"
+  }
+}
