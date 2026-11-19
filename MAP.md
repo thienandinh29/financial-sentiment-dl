@@ -15,7 +15,8 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `MAP.md` | File này |
 | `.env.example` | Mẫu biến môi trường; secrets thật nằm trong `.env` (không commit) |
 | `.worktreeinclude` | File bị gitignore được sao chép vào mỗi worktree song song (`.env`) |
-| `requirements.txt` | Thư viện trực tiếp; `requirements.lock` sau tuần 1 |
+| `requirements.txt` | Thư viện trực tiếp (sửa file này khi thêm thư viện) |
+| `requirements.lock` | Phiên bản ghim chính xác cho mọi lần chạy (`pip install -r requirements.lock`) |
 
 ## Thư mục
 
@@ -33,5 +34,5 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `scripts/` | EDA, tiện ích dữ liệu; `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
 | `results/` | Bảng kết quả, log, hình (không checkpoint) | Cả nhóm |
-| `docs/` | Proposal, kế hoạch chi tiết (PDF) | Cả nhóm |
+| `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md` việc chi tiết + checkpoint tuần 1; `guides/` hướng dẫn từng bước cho từng thành viên | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
