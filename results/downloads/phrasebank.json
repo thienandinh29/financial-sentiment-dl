@@ -1,0 +1,76 @@
+[
+  {
+    "commit": "947b65105164e5455924bca02efe2e7591657af2",
+    "working_tree_dirty": true,
+    "config": {
+      "source": {
+        "repo_id": "takala/financial_phrasebank",
+        "repo_type": "dataset",
+        "revision": "8d3fe0c36d5feec6b3cc5e455b0fcb4820fb9964",
+        "files": [
+          "data/FinancialPhraseBank-v1.0.zip"
+        ]
+      },
+      "source_manifest_sha256": "0038754765100cea2164014e3fb2fc21a5ae55ba8fb782ac2d1edcc0f62238c7"
+    },
+    "seed": 1,
+    "python": "3.11.18",
+    "libraries": {
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "not used (CPU data preparation)",
+    "completed_at_utc": "2026-11-01T05:51:55.648357+00:00",
+    "elapsed_seconds": 2.394,
+    "downloads": [
+      {
+        "filename": "data/FinancialPhraseBank-v1.0.zip",
+        "sha256": "0e1a06c4900fdae46091d031068601e3773ba067c7cecb5b0da1dcba5ce989a6",
+        "bytes": 681890
+      }
+    ],
+    "outputs": [
+      {
+        "path": "data/raw/phrasebank/allagree.jsonl",
+        "sha256": "6eaede7aa7f0c6b42b5fbbca64a6fc7e73a450261a487f31143643eaa0def7d8",
+        "bytes": 391667
+      }
+    ]
+  },
+  {
+    "commit": "947b65105164e5455924bca02efe2e7591657af2",
+    "working_tree_dirty": true,
+    "config": {
+      "source": {
+        "repo_id": "takala/financial_phrasebank",
+        "repo_type": "dataset",
+        "revision": "8d3fe0c36d5feec6b3cc5e455b0fcb4820fb9964",
+        "files": [
+          "data/FinancialPhraseBank-v1.0.zip"
+        ]
+      },
+      "source_manifest_sha256": "0038754765100cea2164014e3fb2fc21a5ae55ba8fb782ac2d1edcc0f62238c7"
+    },
+    "seed": 1,
+    "python": "3.11.18",
+    "libraries": {
+      "huggingface_hub": "2.4.0"
+    },
+    "gpu": "not used (CPU data preparation)",
+    "completed_at_utc": "2026-11-01T05:53:24.656749+00:00",
+    "elapsed_seconds": 0.067,
+    "downloads": [
+      {
+        "filename": "data/FinancialPhraseBank-v1.0.zip",
+        "sha256": "0e1a06c4900fdae46091d031068601e3773ba067c7cecb5b0da1dcba5ce989a6",
+        "bytes": 681890
+      }
+    ],
+    "outputs": [
+      {
+        "path": "data/raw/phrasebank/allagree.jsonl",
+        "sha256": "6eaede7aa7f0c6b42b5fbbca64a6fc7e73a450261a487f31143643eaa0def7d8",
+        "bytes": 391667
+      }
+    ]
+  }
+]

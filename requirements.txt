@@ -1,7 +1,8 @@
-# Direct dependencies. Exact versions are pinned in requirements.lock after week 1.
+# Direct dependencies. Exact versions are pinned in requirements.lock: install from the lock.
 torch>=2.2
 transformers>=4.44
 datasets>=2.20
+huggingface_hub>=0.24
 scikit-learn>=1.4
 numpy>=1.26
 pandas>=2.1
@@ -13,6 +14,9 @@ matplotlib>=3.8
 datasketch>=1.6
 sentence-transformers>=3.0
 networkx>=3.2
+
+# Reading the Paper 1 lakehouse (scripts/export_headlines.py)
+duckdb>=1.1
 
 # LLM teacher (Colab/Kaggle GPU only; bitsandbytes needs CUDA)
 accelerate>=0.33
