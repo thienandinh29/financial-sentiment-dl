@@ -1,0 +1,172 @@
+{
+  "commit": "af1fd645e70a7812b69546af16fe5a8e566137e3",
+  "working_tree_dirty": false,
+  "config": {
+    "experiment": "E1",
+    "rq": "RQ2",
+    "data": {
+      "dataset": "zeroshot/twitter-financial-news-sentiment",
+      "split_file": "data/splits/cluster_split.jsonl",
+      "split_sha256": "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa",
+      "max_len": 64
+    },
+    "model": {
+      "name": "textcnn",
+      "embedding": "glove.6B.100d",
+      "embedding_trainable": true,
+      "filter_sizes": [
+        3,
+        4,
+        5
+      ],
+      "num_filters": 100,
+      "dropout": 0.3
+    },
+    "train": {
+      "loss": "weighted_ce",
+      "optimizer": "adam",
+      "lr": 0.001,
+      "batch_size": 64,
+      "max_epochs": 20,
+      "early_stopping": {
+        "metric": "val_macro_f1",
+        "patience": 3
+      },
+      "mixed_precision": true
+    },
+    "seeds": [
+      1,
+      2,
+      3
+    ]
+  },
+  "seed": 3,
+  "python": "3.11.5",
+  "libraries": {
+    "torch": "2.14.1+cpu",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.3"
+  },
+  "gpu": null,
+  "started_at_utc": "2026-11-17T06:36:48.980259+00:00",
+  "finished_at_utc": "2026-11-17T06:37:41.742729+00:00",
+  "elapsed_seconds": 52.762,
+  "label_order": [
+    "bearish",
+    "neutral",
+    "bullish"
+  ],
+  "embedding_stats": {
+    "embedding": "glove.6B.100d",
+    "vocab_size": 13289,
+    "dim": 100,
+    "found_in_glove": 11353,
+    "type_oov_rate": 0.1454,
+    "train_token_oov_rate": 0.0272,
+    "top_oov": [
+      "marketscreener",
+      "brexit",
+      "covid",
+      "",
+      "wework",
+      "cybertruck",
+      "londonstockexchange",
+      "cnbcmakeit",
+      "abbvie",
+      "bopinion",
+      "jimcramer",
+      "luckin",
+      "vaping",
+      "️",
+      "nysemkt",
+      "ringcentral",
+      "usmca",
+      "viagogo",
+      "funko",
+      "tradingnation"
+    ]
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.9339117617261011,
+      "val_loss": 0.7724816091961864,
+      "val_macro_f1": 0.6117779726966474,
+      "seconds": 4.543
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.737218904001211,
+      "val_loss": 0.7090268973063517,
+      "val_macro_f1": 0.6470549069284033,
+      "seconds": 4.573
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.5858785859952217,
+      "val_loss": 0.6471175210459947,
+      "val_macro_f1": 0.682679225943487,
+      "seconds": 4.349
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.46707910587722234,
+      "val_loss": 0.607424522531159,
+      "val_macro_f1": 0.7064520397791997,
+      "seconds": 4.256
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.400507344708698,
+      "val_loss": 0.581838612181058,
+      "val_macro_f1": 0.7314902990771653,
+      "seconds": 4.315
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.3322257213156185,
+      "val_loss": 0.6140669620383192,
+      "val_macro_f1": 0.7281523349909166,
+      "seconds": 4.508
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.2668814708182363,
+      "val_loss": 0.6078473820092624,
+      "val_macro_f1": 0.7460631970885568,
+      "seconds": 4.306
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.2197852575367747,
+      "val_loss": 0.6205981207719267,
+      "val_macro_f1": 0.7504948402594406,
+      "seconds": 5.076
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.19221182771679426,
+      "val_loss": 0.6315352331487112,
+      "val_macro_f1": 0.7464910597519622,
+      "seconds": 4.577
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.16329444792438003,
+      "val_loss": 0.6826321819619318,
+      "val_macro_f1": 0.7322031890163428,
+      "seconds": 4.625
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.13131087273983974,
+      "val_loss": 0.7016815890618904,
+      "val_macro_f1": 0.7396051812509633,
+      "seconds": 4.506
+    }
+  ],
+  "best_epoch": 8,
+  "val_macro_f1": 0.7504948402594406,
+  "val_unk_rate": 0.058
+}

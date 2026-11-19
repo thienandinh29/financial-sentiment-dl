@@ -20,8 +20,12 @@ def _git(*args, cwd="."):
 
 
 def run_metadata(config, seed, started_at, cwd="."):
-    """Return provenance for one run; no secrets or environment variables are read."""
-    status = _git("status", "--porcelain", cwd=cwd)
+    """Return provenance for one run; no secrets or environment variables are read.
+
+    working_tree_dirty counts changes to tracked files only (like `git describe --dirty`), so stray
+    untracked files such as local notes do not mark a run as dirty.
+    """
+    status = _git("status", "--porcelain", "--untracked-files=no", cwd=cwd)
     versions = {}
     for name in PACKAGES:
         try:

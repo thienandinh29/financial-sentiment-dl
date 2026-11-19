@@ -90,6 +90,15 @@ class EndToEndTest(unittest.TestCase):
     def test_registry_keeps_test_model(self):
         self.assertIn("mean_pool_test", MODELS)
 
+    def test_real_models_run_end_to_end(self):
+        for name, extra in (("textcnn", {"filter_sizes": [2, 3], "num_filters": 8}),
+                            ("bilstm_attention", {"hidden_size": 8, "num_layers": 1})):
+            self.cfg["model"] = {"name": name, "embedding": "random", "embedding_dim": 16, **extra}
+            summary = self.run_once(name)[0]
+            out = self.root / name / "results/E_test/seed1"
+            self.assertTrue((out / "preds_validation.jsonl").exists(), name)
+            self.assertGreaterEqual(summary["val_macro_f1"], 0.0, name)
+
 
 if __name__ == "__main__":
     unittest.main()

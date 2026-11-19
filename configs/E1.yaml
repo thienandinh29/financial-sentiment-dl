@@ -1,0 +1,32 @@
+# E1 — TextCNN (RQ2). Copied from E2.yaml; the one change is the architecture:
+# BiLSTM-Attention -> TextCNN (Kim, 2014: filter sizes 3/4/5, 100 filters each, max-over-time pooling).
+# Data, embedding, dropout, loss, optimizer, batch size, epochs and seeds are the same as E2.
+experiment: E1
+rq: RQ2
+
+data:
+  dataset: zeroshot/twitter-financial-news-sentiment
+  split_file: data/splits/cluster_split.jsonl   # frozen in week 2, checked by SHA-256
+  split_sha256: 8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa  # same split as E2 (PR #10, agreed at CP3)
+  max_len: 64
+
+model:
+  name: textcnn
+  embedding: glove.6B.100d
+  embedding_trainable: true
+  filter_sizes: [3, 4, 5]
+  num_filters: 100
+  dropout: 0.3
+
+train:
+  loss: weighted_ce
+  optimizer: adam
+  lr: 1.0e-3
+  batch_size: 64
+  max_epochs: 20
+  early_stopping:
+    metric: val_macro_f1
+    patience: 3
+  mixed_precision: true
+
+seeds: [1, 2, 3]
