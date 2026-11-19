@@ -1,0 +1,36 @@
+{
+  "items": 30,
+  "pairs": [
+    {
+      "annotators": [
+        "tv1",
+        "tv2"
+      ],
+      "agreement": 0.9,
+      "kappa": 0.8469387755102041
+    },
+    {
+      "annotators": [
+        "tv1",
+        "tv3"
+      ],
+      "agreement": 0.9,
+      "kappa": 0.8492462311557789
+    },
+    {
+      "annotators": [
+        "tv2",
+        "tv3"
+      ],
+      "agreement": 0.8333333333333334,
+      "kappa": 0.7466216216216217
+    }
+  ],
+  "disagreement_ids": [
+    "19759ec3fe72553c286793a63531585a29c4192227a23207182b6ef03ffdf4db",
+    "21ce8db4a5a8e5b768030e9949605dd8630761c51b0c8a0f63c562e307fc9ce1",
+    "abef83c894768f14d0bc8ee6faecda41fb6519dbc16b3fab87a8a34081f88500",
+    "d58a5661a3293bfbc2f9f754c85f0472455ac59aab9bcb0a7a8421976db89098",
+    "e269a72a518fd8c99a72d8e6b6610d4bcd3700ddb3dd8b5b30417bbf1e58dbfa"
+  ]
+}
