@@ -3,6 +3,29 @@
 Đánh dấu `[x]` khi xong, kèm commit hoặc kết quả. Mốc ◆ phải đạt mới sang tuần sau.
 TV1 = dữ liệu & thống kê · TV2 = RNN/CNN · TV3 = Transformer & demo.
 
+## Lịch bù (ĐỀ XUẤT 10/11/2026, chờ cả nhóm duyệt) — giữ nguyên phạm vi, làm dày hơn
+
+Việc tuần 1 bàn giao muộn (01/11) và tuần 2 chưa xong, nên các ngày ghi ở từng tuần bên dưới không còn
+đúng. **Không cắt phạm vi**: E0–E13, robustness, ONNX, Gradio, FastAPI + Docker vẫn giữ. Bù bằng cách
+làm dày hơn: ~10–12 giờ/tuần mỗi người (chưa kể gán nhãn), chạy GPU qua đêm trên Colab/Kaggle, viết code
+trước khi có split/nhãn, viết các chương báo cáo song song với thí nghiệm. Nộp **mục tiêu Thứ Bảy 19/12**,
+hạn cứng 20/12 (dự phòng cuối còn 2 ngày thay vì 4).
+
+| Giai đoạn | Ngày | Việc (tương ứng tuần trong PLAN) | Mốc ◆ |
+| --- | --- | --- | --- |
+| S0 | Thứ Ba 10/11 – Thứ Sáu 13/11 | Xong tuần 2: gộp PR, **chốt split + SHA-256**, E0, khung đánh giá, prompt A/B/C, gán thử 30 + kappa + sửa GUIDE (ngoài split, phần còn lại xong trước Chủ Nhật 15/11). TV2 viết sẵn TextCNN và BiLSTM-Attention | Thứ Sáu 13/11 tối: split chốt trên `main` |
+| S1 | Thứ Bảy 14/11 – Thứ Sáu 20/11 | Tuần 3 và đầu tuần 4: E1, E2 (TV2); E5, E7 và bắt đầu nhãn mềm LLM chạy qua đêm (TV3); bootstrap, McNemar, mô phỏng mức chênh, dữ liệu rò rỉ 10/25/50% (TV1); gán nhãn đợt 1 (~70/người) | Thứ Sáu 20/11: E1, E2, E5, E7 trên validation; nhãn đợt 1 xong |
+| S2 | Thứ Bảy 21/11 – Thứ Sáu 27/11 | Cuối tuần 4: E3, E4 (TV2); nhãn mềm xong, E6, E12 (TV3); gán nhãn đợt 2 (~65/người) | Thứ Sáu 27/11: ablation, E6, E12 trên validation; nhãn đợt 2 xong |
+| S3 | Thứ Bảy 28/11 – Thứ Sáu 04/12 | Tuần 5: kappa, phân xử, **chốt nhãn test 2026** (TV1); E9, E10 cho BiLSTM và E13 (TV2); E9, E10 cho DistilBERT, E8, E11 (TV3). Viết sẵn code robustness, ONNX, Gradio, FastAPI trên validation | **Thứ Sáu 04/12: mọi lựa chọn đã chốt, nhãn test đã khóa** |
+| S4 | Thứ Bảy 05/12 – Thứ Hai 07/12 | Tuần 6: **chạy ba tập test đúng một lần**, bảng kết quả, CI 95%, McNemar (TV1) | Thứ Hai 07/12: kết quả test cố định |
+| S5 | Thứ Ba 08/12 – Chủ Nhật 13/12 | Tuần 6 còn lại và tuần 7: robustness (TV2, TV3); phân tích lỗi (TV1); trực quan attention, FastAPI + Dockerfile (TV2); ONNX, đo latency CPU, demo Gradio (TV3) | Chủ Nhật 13/12: mọi bảng, hình, demo đã xong |
+| S6 | Thứ Hai 14/12 – Thứ Năm 17/12 | Tuần 8: hoàn thiện báo cáo 5 chương (phần phương pháp viết sẵn từ S2), kết quả RQ1–RQ3, slide | Thứ Năm 17/12: báo cáo và slide bản đầy đủ |
+| Dự phòng | Thứ Sáu 18/12 – Thứ Bảy 19/12 | TV2 chạy lại từ README trên máy sạch; TV3 rà soát slide và demo; TV1 nộp bài trên Google Classroom | **Nộp Thứ Bảy 19/12** (hạn cứng 20/12) |
+
+Phần của con người không nén được: gán nhãn (~135/người) theo hai đợt 20/11 và 27/11, kappa và phân xử
+trước 04/12. Nếu trượt mốc ◆ quá 2 ngày thì họp ngay và áp dụng thứ tự cắt đã có trong `SPEC.md`
+(E13 → E12 → FastAPI/Docker); chưa cắt gì từ bây giờ.
+
 ## Tuần 1 (22–28/10) ◆ RQ và ma trận chốt trước mọi lần huấn luyện
 
 Chi tiết từng việc và checkpoint CP0–CP2: [docs/WEEK1.md](docs/WEEK1.md).
@@ -16,6 +39,8 @@ Chi tiết từng việc và checkpoint CP0–CP2: [docs/WEEK1.md](docs/WEEK1.md
 - [ ] Cả nhóm: nộp proposal
 
 ## Tuần 2 (29/10–4/11) ◆ split chốt kèm hash; gán thử 30 tiêu đề
+
+Chi tiết, hợp đồng chung và checkpoint CP2 (bù)–CP4: [docs/WEEK2.md](docs/WEEK2.md) (đề xuất dời mốc ◆ sang 07/11).
 
 - [ ] TV1: phân cụm, kiểm tra 100 cặp, split + SHA-256; baseline E0
 - [ ] TV2: vòng huấn luyện chung (seed, config, log, early stopping)

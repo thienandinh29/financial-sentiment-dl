@@ -27,12 +27,12 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
 | `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN | TV2, TV3 |
-| `train/` | Vòng huấn luyện chung | TV2 |
+| `train/` | Vòng huấn luyện chung: `data.py` đọc split (kiểm SHA-256), `losses.py`, `loop.py`, `runlog.py`, `run.py` (`python -m train.run --config ...`) | TV2 |
 | `evaluate/` | Metric, bootstrap, McNemar, robustness | TV1 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
-| `scripts/` | EDA, tiện ích dữ liệu; `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
+| `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt); `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
 | `results/` | Bảng kết quả, log, hình (không checkpoint) | Cả nhóm |
-| `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md` việc chi tiết + checkpoint tuần 1; `guides/` hướng dẫn từng bước cho từng thành viên | Cả nhóm |
+| `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md`, `WEEK2.md` việc chi tiết + checkpoint từng tuần; `guides/` hướng dẫn từng bước cho từng thành viên; `meetings/` chương trình + bộ câu hỏi họp "hiểu bài" | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
