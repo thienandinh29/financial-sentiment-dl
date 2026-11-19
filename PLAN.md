@@ -45,7 +45,10 @@ Chi tiết, hợp đồng chung và checkpoint CP2 (bù)–CP4: [docs/WEEK2.md](
 - [ ] TV1: phân cụm, kiểm tra 100 cặp, split + SHA-256; baseline E0
 - [ ] TV2: vòng huấn luyện chung (seed, config, log, early stopping)
 - [ ] TV3: prompt A/B/C, kiểm tra top-10 logits; khung đánh giá chung
-- [ ] Cả nhóm: gán thử 30 tiêu đề, sửa hướng dẫn
+- [x] Cả nhóm: gán thử 30 tiêu đề, sửa hướng dẫn
+
+- [x] TV1: selected 30 trial IDs (seed 2026); see `labeling/trial30_ids.csv`.
+- [ ] TV1: share the IDs and exclude them when selecting the final 2026 test set.
 
 ## Tuần 3 (5–11/11)
 
