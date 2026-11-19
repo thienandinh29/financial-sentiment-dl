@@ -1,0 +1,46 @@
+{
+  "commit": "043828457cd0197b10449054aa66549e1ba003fc",
+  "working_tree_dirty": true,
+  "config": {
+    "jaccard": 0.75,
+    "cosine": 0.92,
+    "source_run": "results\\feasibility\\run.json",
+    "source_sha256": {
+      "results\\feasibility\\run.json": "c5a813c766fc4b2450aca0e2bb6030e279b8cde96a0848fa56ec279686cdebe8",
+      "results\\feasibility\\fns\\pairs.csv": "9b723a4daa6e3edacc98810697297ebc5f24f85447baaddfbb64fd479876667a",
+      "results\\feasibility\\fns\\clusters.csv": "fda33a07ff8ccb89c4350d84518a86294e2d74b2b8f6c6d01e35fa81b0f810ea"
+    },
+    "boundary_scores": [
+      {
+        "id_a": "fns-train-05910",
+        "id_b": "fns-validation-01487",
+        "cosine": 0.920006275177002
+      }
+    ],
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "note": "Filtered saved 0.85 edges; boundary scores recomputed on CPU with pinned model. Original candidate recall limitations remain."
+  },
+  "seed": 1,
+  "python": "3.11.9",
+  "libraries": {
+    "torch": "2.15.0+cpu",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.3",
+    "sentence-transformers": "6.2.0",
+    "transformers": "5.22.1",
+    "huggingface-hub": "2.4.0"
+  },
+  "gpu": null,
+  "started_at_utc": "2026-11-14T13:48:38.267723+00:00",
+  "finished_at_utc": "2026-11-14T13:48:47.729291+00:00",
+  "elapsed_seconds": 9.462,
+  "items": 11931,
+  "pairs": 785,
+  "clusters": 11443,
+  "output_sha256": {
+    "pairs.csv": "ef5f5f42e0a188cc257d9f0d91518874285eaafb852f287832a14dee0366d96a",
+    "clusters.csv": "2e2fe84a52262582bae0cc85fb12a2e9929d01e398280ce759817db8f2f7f84d"
+  }
+}
