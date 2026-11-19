@@ -1,0 +1,103 @@
+{
+  "commit": "043828457cd0197b10449054aa66549e1ba003fc",
+  "working_tree_dirty": true,
+  "config": {
+    "ratios": {
+      "train": 0.7,
+      "validation": 0.15,
+      "test": 0.15
+    },
+    "inputs_sha256": {
+      "data/raw/fns/train.jsonl": "52158609a11e71afd3dab4cd292773bd3397a9e7890c9354fb5b16cebf7acde0",
+      "data/raw/fns/validation.jsonl": "a8cb54b82b1a01c767cdc9b63c697483360fe43ab37cc90c68cb90169af4484a",
+      "results/feasibility/fns-cosine092/clusters.csv": "2e2fe84a52262582bae0cc85fb12a2e9929d01e398280ce759817db8f2f7f84d",
+      "results/feasibility/fns-cosine092/pairs.csv": "ef5f5f42e0a188cc257d9f0d91518874285eaafb852f287832a14dee0366d96a",
+      "results/feasibility/manual_check_100.csv": "6565e5857ded6ef5ef627622198ce31436308fcb1187a7656bfb9eaaafc17826",
+      "results/feasibility/fns/pairs.csv": "9b723a4daa6e3edacc98810697297ebc5f24f85447baaddfbb64fd479876667a"
+    }
+  },
+  "seed": 1,
+  "python": "3.11.9",
+  "libraries": {
+    "torch": "2.15.0+cpu",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.3"
+  },
+  "gpu": null,
+  "started_at_utc": "2026-11-14T13:49:03.243791+00:00",
+  "finished_at_utc": "2026-11-14T13:49:03.362965+00:00",
+  "elapsed_seconds": 0.119,
+  "cluster_split": {
+    "splits": {
+      "train": {
+        "size": 8349,
+        "share": 69.98,
+        "labels": {
+          "bearish": 14.98,
+          "neutral": 64.92,
+          "bullish": 20.1
+        }
+      },
+      "validation": {
+        "size": 1791,
+        "share": 15.01,
+        "labels": {
+          "bearish": 15.02,
+          "neutral": 64.88,
+          "bullish": 20.1
+        }
+      },
+      "test": {
+        "size": 1791,
+        "share": 15.01,
+        "labels": {
+          "bearish": 15.02,
+          "neutral": 64.88,
+          "bullish": 20.1
+        }
+      }
+    },
+    "max_label_drift_points": 0.026590640459588144,
+    "near_duplicate_pairs_across_splits": {},
+    "sha256": "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa"
+  },
+  "random_split": {
+    "splits": {
+      "train": {
+        "size": 8349,
+        "share": 69.98,
+        "labels": {
+          "bearish": 14.98,
+          "neutral": 64.92,
+          "bullish": 20.1
+        }
+      },
+      "validation": {
+        "size": 1791,
+        "share": 15.01,
+        "labels": {
+          "bearish": 15.02,
+          "neutral": 64.88,
+          "bullish": 20.1
+        }
+      },
+      "test": {
+        "size": 1791,
+        "share": 15.01,
+        "labels": {
+          "bearish": 15.02,
+          "neutral": 64.88,
+          "bullish": 20.1
+        }
+      }
+    },
+    "max_label_drift_points": 0.026590640459588144,
+    "near_duplicate_pairs_across_splits": {
+      "test-train": 178,
+      "test-validation": 27,
+      "train-validation": 138
+    },
+    "sha256": "1d598f73d6ff6e8cd5244f8b785a6cd9a354f50ea72f907d63e2227afee5a07b"
+  }
+}
