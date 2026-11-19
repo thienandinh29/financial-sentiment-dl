@@ -49,8 +49,8 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `evaluate/` | Metric (`metrics.py`), bootstrap, McNemar, robustness | TV1, TV3 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
-| `notebooks/` | Notebook thiết lập Colab, chạy smoke test (`notebooks/colab_setup.ipynb`) và đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`) | TV3 |
-| `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt) | TV1 |
+| `notebooks/` | Notebook thiết lập Colab, chạy smoke test (`notebooks/colab_setup.ipynb`) và đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`); Notebook thiết lập Colab và chạy smoke test (`notebooks/colab_setup.ipynb`) | TV3 |
+| `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt); `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
 | `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`) | Cả nhóm |
 | `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md`, `WEEK2.md` việc chi tiết + checkpoint từng tuần; `guides/` hướng dẫn từng bước cho từng thành viên; `meetings/` chương trình + bộ câu hỏi họp "hiểu bài" | Cả nhóm |
