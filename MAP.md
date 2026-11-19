@@ -15,7 +15,8 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `MAP.md` | File này |
 | `.env.example` | Mẫu biến môi trường; secrets thật nằm trong `.env` (không commit) |
 | `.worktreeinclude` | File bị gitignore được sao chép vào mỗi worktree song song (`.env`) |
-| `requirements.txt` | Thư viện trực tiếp; `requirements.lock` sau tuần 1 |
+| `requirements.txt` | Thư viện trực tiếp (sửa file này khi thêm thư viện) |
+| `requirements.lock` | Phiên bản ghim chính xác cho mọi lần chạy (`pip install -r requirements.lock`) |
 
 ## Thư mục
 
