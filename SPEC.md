@@ -13,7 +13,7 @@ McNemar bổ sung; báo cáo mức chênh nhỏ nhất phát hiện được v�
 
 | RQ | Giả thuyết | Bác bỏ khi |
 | --- | --- | --- |
-| RQ1 rò rỉ | Macro-F1 tăng đơn điệu theo tỷ lệ bản gần trùng của test nằm trong train | Đường phẳng hoặc CI của chênh 0% → 50% chứa 0 |
+| RQ1 rò rỉ | Macro-F1 tăng đơn điệu theo tỷ lệ bản gần trùng của test nằm trong train | Đường phẳng hoặc CI của chênh 0% → 20% chứa 0 |
 | RQ2 kiến trúc | Bỏ attention hoặc GloVe làm giảm Macro-F1; focal loss tăng F1 lớp thiểu số | CI của chênh so với E2 chứa 0 |
 | RQ3 ngoài phân phối | Mô hình học trên tweet suy giảm trên tiêu đề báo 2026; nhãn mềm (chưng cất) giúp hơn nhãn cứng | CI suy giảm chứa 0, hoặc E6 không hơn E12 |
 
@@ -28,7 +28,7 @@ RQ3 đo lệch **kết hợp** nguồn/văn phong và thời gian; không kết 
 | Tiêu đề 2026 không nhãn (~3k) | nhãn mềm/cứng từ LLM, chỉ để train |
 | Financial PhraseBank AllAgree (~2,3k) | test ngoài miền (không đánh giá FinBERT) |
 
-Cụm gần trùng: Jaccard shingle từ ≥ 0.75 (MinHash LSH) hoặc cosine `all-MiniLM-L6-v2` ≥ 0.85.
+Cụm gần trùng: Jaccard shingle từ ≥ 0.75 (MinHash LSH) hoặc cosine `all-MiniLM-L6-v2` ≥ 0.92 (đổi từ 0.85 ngày 14/11 sau kiểm tay 100 cặp, xem `context/decisions.md`).
 `<ticker>` chỉ cho mã có `$` hoặc thuộc danh sách mã lớn (đã loại AI, IT, US, CEO, GDP, ON, ALL).
 
 ## Ma trận thí nghiệm
@@ -46,7 +46,7 @@ Cụm gần trùng: Jaccard shingle từ ≥ 0.75 (MinHash LSH) hoặc cosine `a
 | E7 | Encoder đóng băng | E5 | RQ3 | 3 |
 | E8 | FinBERT | E5 | RQ3 | 3 |
 | E9 | Split ngẫu nhiên (E2, E5) | E2, E5 | RQ1 | 3 |
-| E10 | Rò rỉ 10/25/50% (E2, E5) | E2, E5 | RQ1 | 3 |
+| E10 | Rò rỉ 5/10/20% (E2, E5) | E2, E5 | RQ1 | 3 |
 | E11 | LLM zero-shot (Qwen2.5-7B 4-bit) | — | tham chiếu | 1 |
 | E12 | + nhãn cứng LLM | E5 | RQ3 | 3 |
 

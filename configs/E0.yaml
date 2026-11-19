@@ -3,7 +3,7 @@ experiment: E0
 rq: reference
 data:
   split_file: data/splits/cluster_split.jsonl
-  split_sha256: null
+  split_sha256: 8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa  # frozen split (PR #10, merged 20/11)
 model:
   name: tfidf_lr
   ngram_range: [1, 2]

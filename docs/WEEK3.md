@@ -19,13 +19,13 @@ khác, không dùng AI.
 
 ## Việc chung trước tiên (hạn CP5a)
 
-1. **Gộp PR** theo thứ tự đã chạy thử (mọi xung đột chỉ là dòng bảng, giữ cả hai bên):
+1. ✅ (20/11, thêm #14 cho nội dung #12) **Gộp PR** theo thứ tự đã chạy thử (mọi xung đột chỉ là dòng bảng, giữ cả hai bên):
    #7 → #6 → #2 → #5 → #9 → #10 → #12 → #8 → #13 → #11. Mỗi PR một người khác duyệt.
    PR #2 dùng **"Squash and merge"** (lịch sử cũ của nhánh có tiêu đề 2026 thật trong test).
-2. **Chốt mức rò rỉ E10.** Với ngưỡng 0,92, trần thô chỉ còn ≈ 27% (488/1.791 tweet test), nên 50% không
+2. ✅ (20/11) **Chốt mức rò rỉ E10: 5 / 10 / 20%.** Với ngưỡng 0,92, trần thô chỉ còn ≈ 27% (488/1.791 tweet test), nên 50% không
    làm được. Đề xuất **5 / 10 / 20%**; ghi vào `context/decisions.md` và `SPEC.md`.
-3. **`SPEC.md` dòng 31:** cosine `0.85` → `0.92` (đã thống nhất ở CP3).
-4. Sau khi #10 vào `main`: điền `split_sha256` cho `configs/E0.yaml`; bỏ chữ "proposed" ở `configs/E2.yaml`.
+3. ✅ (20/11) **`SPEC.md` dòng 31:** cosine `0.85` → `0.92` (đã thống nhất ở CP3).
+4. ✅ (20/11) Sau khi #10 vào `main`: điền `split_sha256` cho `configs/E0.yaml`; bỏ chữ "proposed" ở `configs/E2.yaml`.
 
 ## TV1 — dữ liệu & thống kê
 
@@ -66,9 +66,9 @@ khác, không dùng AI.
 ## Biên bản checkpoint
 
 ### CP5a — Thứ Tư 18/11
-- [ ] Các PR đã gộp theo thứ tự; `main` chạy được toàn bộ test
+- [x] Các PR đã gộp theo thứ tự; `main` chạy được toàn bộ test (79 test, 20/11)
 - [ ] 300 ID test + phân công đã gửi
-- [ ] Mức E10 mới chốt, `SPEC.md` đã sửa
+- [x] Mức E10 mới chốt (5/10/20%), `SPEC.md` đã sửa (20/11)
 
 ### CP5 ◆ — Thứ Sáu 20/11
 - [ ] 1.12, 1.14, 1.15
