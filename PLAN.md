@@ -96,3 +96,12 @@ Chi tiết theo lịch bù (S1, đến 20/11): [docs/WEEK3.md](docs/WEEK3.md).
 - [ ] TV2: chạy lại toàn bộ từ README trên máy sạch
 - [ ] TV3: rà soát slide và demo
 - [ ] TV1: nộp bài trên Google Classroom
+
+### Tiến độ TV1 S1/S2 (22/11)
+
+- E0 validation: Macro-F1 0,7096, seed 1; log ghi cây làm việc có thay đổi.
+- Bootstrap paired và McNemar exact đã có code và test; chưa đánh giá test.
+- Đã chọn 300 ID RSS seed 2026 và phân công hai đợt; chờ gửi nhóm và từng người tự gán nhãn.
+- E10: bạn chọn nghiên cứu trên validation, giữ test nguyên vẹn; chờ nhóm thống nhất thiết kế và mức. Trần k−1 validation 76/1.791 (4,24%) theo giả định trong `results/feasibility/E10_frozen_split.md`, chưa chứng minh 5/10/20% khả thi.
+
+- TV1 xác nhận đã tự gán 69 + 65 tiêu đề; 23 dòng có ghi chú `issue` cần nhóm xem xét.
