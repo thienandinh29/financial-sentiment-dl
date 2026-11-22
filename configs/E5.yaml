@@ -1,0 +1,34 @@
+# E5 — DistilBERT full fine-tuning (RQ3 reference).
+# Hyperparameters follow docs/KeHoachChiTiet.pdf (Section 7): AdamW, lr 2e-5, linear warmup 10%,
+# weight decay 0.01, batch size 32, max 4 epochs, weighted CE, early stopping on val_macro_f1.
+experiment: E5
+rq: RQ3
+
+data:
+  dataset: zeroshot/twitter-financial-news-sentiment
+  split_file: data/splits/cluster_split.jsonl   # frozen split (PR #10), checked by SHA-256
+  split_sha256: 8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa
+  max_len: 64
+
+model:
+  name: transformer
+  pretrained_name: distilbert/distilbert-base-uncased
+  num_labels: 3
+  dropout: 0.3
+  freeze_encoder: false            # E7: true
+
+train:
+  loss: weighted_ce
+  optimizer: adamw
+  lr: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  batch_size: 32
+  max_epochs: 4
+  grad_clip: 1.0
+  early_stopping:
+    metric: val_macro_f1
+    patience: 3
+  mixed_precision: true
+
+seeds: [1, 2, 3]
