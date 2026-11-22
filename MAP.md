@@ -41,18 +41,18 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | --- | --- | --- |
 | `plan/` | Checklist TV1: `plan_tv1_week2.md` và `plan_tv1_week3.md` | TV1 |
 | `context/` | Quyết định đã chốt và lý do (`decisions.md`) | Cả nhóm |
-| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN) | Theo RQ |
+| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN); `E5.yaml` (DistilBERT fine-tune); `E7.yaml` (DistilBERT đóng băng encoder) | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
-| `models/` | TextCNN, BiLSTM-Attention, Transformer, chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN; `registry.py` tên mô hình → hàm dựng; `textcnn.py` (E1); `bilstm_attention.py` (E2, E3) | TV2, TV3 |
+| `models/` | TextCNN, BiLSTM-Attention, Transformer (`transformer.py` cho E5, E7, E8), nhãn mềm LLM (`llm_soft_labels.py`), chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN; `registry.py` tên mô hình → hàm dựng; `textcnn.py` (E1); `bilstm_attention.py` (E2, E3) | TV2, TV3 |
 | `train/` | Vòng huấn luyện chung: `data.py` đọc split (kiểm SHA-256), `losses.py`, `loop.py`, `runlog.py`, `run.py` (`python -m train.run --config ...`) | TV2 |
 | `evaluate/` | Metric (`metrics.py`), bootstrap, McNemar, robustness | TV1, TV3 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
-| `notebooks/` | Notebook thiết lập Colab, chạy smoke test (`notebooks/colab_setup.ipynb`) và đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`); Notebook thiết lập Colab và chạy smoke test (`notebooks/colab_setup.ipynb`) | TV3 |
+| `notebooks/` | Notebook thiết lập Colab (`notebooks/colab_setup.ipynb`), đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`), và chạy E5/E7 + nhãn mềm P2 (`notebooks/week3_transformer_and_soft_labels.ipynb`) | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt); `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
-| `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`) | Cả nhóm |
+| `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`); `results/E5/seed{1,2,3}/` và `results/E7/seed{1,2,3}/` (`run.json`, `preds_validation.jsonl`); `results/llm_soft_labels/` (`p2_soft_labels.jsonl`, `run.json`) | Cả nhóm |
 | `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md`–`WEEK3.md` việc chi tiết + checkpoint từng tuần; `guides/` hướng dẫn từng bước cho từng thành viên; `meetings/` chương trình + bộ câu hỏi họp "hiểu bài"; `WEEK1.md`, `WEEK2.md` việc chi tiết + checkpoint từng tuần | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
 
@@ -82,6 +82,17 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `configs/llm_prompts.yaml` and `notebooks/llm_prompts.ipynb`: P1/P2/P3 prompt templates and Colab T4 validation evaluation + top-10 logits diagnostic notebook.
 - `results/E11/{P1,P2,P3}/preds_validation.jsonl`: validation predictions (1,791 rows each) for `Qwen/Qwen2.5-7B-Instruct` (`nf4-4bit`).
 - `results/llm_prompts/top10_check.json` and `results/llm_prompts/contribution_report_week2.md`: validation metrics, ABC token probability mass diagnostics (selecting `P2` with `macro_f1 = 0.7934`), and TV3 Week 2 contribution report.
+
+## Week 3 TV3 files
+
+- `configs/E5.yaml` and `configs/E7.yaml`: DistilBERT fine-tune (`freeze_encoder: false`) and frozen-encoder (`freeze_encoder: true`) experiment configs on `cluster_split.jsonl` (`8c2c35ea...`).
+- `models/transformer.py` and `tests/test_transformer.py`: Transformer training/evaluation runner (weighted CE, AdamW `lr=2e-5`, linear warmup 10%, weight decay 0.01, FP16 AMP, early stopping on `val_macro_f1`) and unit tests.
+- `results/E5/seed{1,2,3}/{run.json,preds_validation.jsonl}` and `results/E7/seed{1,2,3}/{run.json,preds_validation.jsonl}`: Three-seed Tesla T4 validation outputs (1,791 records per file) for full fine-tuning (`E5`: `0.8030 ± 0.0054` Macro-F1) and frozen-encoder training (`E7`: `0.5913 ± 0.0023` Macro-F1).
+- `models/llm_soft_labels.py` and `tests/test_llm_soft_labels.py`: resumable P2 soft-label generator for the 2026 `train_unlabeled` pool (`1,409` eligible GDELT headlines from `data/raw/headlines_2026/headlines.jsonl`, `SHA-256: 28bd2f3d...`) with strict SHA-256 verification, `trial30_ids.csv` (`30` IDs), `test300_ids.csv`, and `assignment.csv` (`300` IDs) exclusion guards (`330` excluded IDs total), and text-free output validation.
+- `results/llm_soft_labels/{p2_soft_labels.jsonl,run.json}`: Completed Colab T4 `Qwen/Qwen2.5-7B-Instruct` (`nf4-4bit`, prompt `P2`) soft-label predictions (`1,409` text-free records with `probs`, `letter_logp`, `abc_mass`, `top1_is_letter`; `min_abc_mass = 0.989`, `mean_abc_mass = 0.9998`, `share_top1_is_letter = 1.0`).
+- `labeling/round1/tv3.csv`: TV3's completed Round 1 independent human annotations (`68` rows matching `labeling/assignment.csv` for `annotator=tv3, round=1`; columns `id,label,reason` with no headline text).
+- `notebooks/week3_transformer_and_soft_labels.ipynb`: Colab T4 execution notebook for Tasks 3.9 (`E5`), 3.10 (`E7`), and 3.11 (`P2` soft labels with SHA-256 check, resumable execution, integrity verification, and zip export).
+- `results/rq3_week3_contribution_report.md`: TV3 Week 3 implementation, E5/E7 3-seed validation results, completed Task 3.11 P2 soft-label validation, completed Task 3.12 Round 1 human labeling audit, and AI transparency report.
 
 ## Week 3 TV1 files
 
