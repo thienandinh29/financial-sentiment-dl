@@ -1,0 +1,43 @@
+{
+  "commit": "16e44bada911d01688f3a6808293eb235e3cbf90",
+  "working_tree_dirty": true,
+  "config": {
+    "experiment": "E0",
+    "rq": "reference",
+    "data": {
+      "split_file": "data/splits/cluster_split.jsonl",
+      "split_sha256": "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa"
+    },
+    "model": {
+      "name": "tfidf_lr",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "C": 1.0
+    },
+    "seeds": [
+      1
+    ]
+  },
+  "seed": 1,
+  "python": "3.11.9",
+  "libraries": {
+    "torch": "2.15.0",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.4"
+  },
+  "gpu": null,
+  "started_at_utc": "2026-11-22T12:16:49.483552+00:00",
+  "finished_at_utc": "2026-11-22T12:16:50.315742+00:00",
+  "elapsed_seconds": 0.832,
+  "label_order": [
+    "bearish",
+    "neutral",
+    "bullish"
+  ],
+  "val_macro_f1": 0.7095521991573405,
+  "vocab_size": 16918
+}

@@ -39,7 +39,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 
 | Thư mục | Nội dung | Phụ trách |
 | --- | --- | --- |
-| `plan/` | Checklist theo thành viên: `plan_tv1_week2.md` cho tuần 2 của TV1 | TV1 |
+| `plan/` | Checklist TV1: `plan_tv1_week2.md` và `plan_tv1_week3.md` | TV1 |
 | `context/` | Quyết định đã chốt và lý do (`decisions.md`) | Cả nhóm |
 | `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN); `E5.yaml` (DistilBERT fine-tune); `E7.yaml` (DistilBERT đóng băng encoder) | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
@@ -91,3 +91,14 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `models/llm_soft_labels.py` and `tests/test_llm_soft_labels.py`: resumable P2 soft-label generator for the 2026 `train_unlabeled` pool with strict `trial30_ids.csv` and `test300_ids.csv` exclusion guards and text-free output validation.
 - `notebooks/week3_transformer_and_soft_labels.ipynb`: Colab T4 execution notebook for Tasks 3.9 (`E5`), 3.10 (`E7`), and 3.11 (`P2` soft labels).
 - `results/rq3_week3_contribution_report.md`: TV3 Week 3 implementation, E5/E7 3-seed validation results, independent verification, and AI transparency report.
+
+## Week 3 TV1 files
+
+- `evaluate/stats.py`, `tests/test_stats.py`: paired bootstrap and exact McNemar on aligned validation predictions.
+- `scripts/simulate_power.py`, `tests/test_simulate_power.py`, `results/power/`: synthetic detection simulation, assumptions, table and provenance.
+- `results/E0/seed1/`: E0 validation predictions and run provenance.
+- `scripts/pick300.py`, `tests/test_pick300.py`: seeded selection and balanced two-round human assignment of 300 RSS IDs (input remains local).
+- `scripts/audit_leakage_capacity.py`, `tests/test_audit_leakage_capacity.py`, `results/feasibility/E10_frozen_split.md`: ID-only feasibility audit of frozen-split clusters.
+- `labeling/test300_ids.csv`, `labeling/assignment.csv`, `labeling/test300_selection.json`: selected RSS IDs and URLs, two-round assignments, and selection provenance (no headline text).
+- `data/raw/headlines_2026/labeling_packets/`: local-only reading copies and blank label templates for each annotator and round; headline text remains local and must not be staged.
+- `scripts/make_leakage.py`, `tests/test_make_leakage.py`, `tests/test_make_leakage_cli.py`: validation-only ID overlay manifest preparation with explicit donors, hash checks, and synthetic tests; not yet integrated with training.
