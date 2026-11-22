@@ -1,6 +1,6 @@
-# Báo cáo Đóng góp Tuần 3 (Sprint S1), Kết quả Thực nghiệm E5/E7 & Kê khai Minh bạch Sử dụng AI (TV3)
+# Báo cáo Đóng góp Tuần 3 (Sprint S1), Kết quả Thực nghiệm E5/E7, Xác minh Dữ liệu 2026 & Kê khai Minh bạch Sử dụng AI (TV3)
 
-Tài liệu này ghi nhận kết quả triển khai mã nguồn, cấu hình thực nghiệm, kết quả chạy GPU Tesla T4 trên 3 seeds cho **`E5` (DistilBERT full fine-tune)** và **`E7` (DistilBERT frozen encoder)**, kết quả kiểm chứng độc lập trên tập `validation` (`1.791` mẫu), bộ kiểm thử tự động và trạng thái các nhiệm vụ **Tuần 3 (Sprint S1)** của **Thành viên 3 (TV3 — Phụ trách Transformer, LLM & Chưng cất tri thức)** trên nhánh `tv3/week3`, tuân thủ quy định tại `AGENTS.md`, `docs/WEEK3.md` và `docs/KeHoachChiTiet.pdf`.
+Tài liệu này ghi nhận kết quả triển khai mã nguồn, cấu hình thực nghiệm, kết quả chạy GPU Tesla T4 trên 3 seeds cho **`E5` (DistilBERT full fine-tune)** và **`E7` (DistilBERT frozen encoder)**, kết quả kiểm chứng độc lập trên tập `validation` (`1.791` mẫu), kết quả xác minh dữ liệu thô tiêu đề 2026 (`headlines.jsonl`) cho **Task 3.11 (Nhãn mềm LLM `P2`)** và **Task 3.12 (Gói đọc gán nhãn thủ công Đợt 1 của TV3)**, bộ kiểm thử tự động và trạng thái các nhiệm vụ **Tuần 3 (Sprint S1)** của **Thành viên 3 (TV3 — Phụ trách Transformer, LLM & Chưng cất tri thức)** trên nhánh `tv3/week3`, tuân thủ quy định tại `AGENTS.md`, `docs/WEEK3.md` và `docs/KeHoachChiTiet.pdf`.
 
 ---
 
@@ -10,8 +10,8 @@ Tài liệu này ghi nhận kết quả triển khai mã nguồn, cấu hình th
 | :---: | :--- | :--- | :--- |
 | **3.9** | **`E5` — DistilBERT fine-tune toàn bộ (3 seeds)** | `configs/E5.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E5/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **HOÀN THÀNH 100%** (Mã nguồn, unit tests & 3 seeds thực nghiệm trên Google Colab Tesla T4: **`Macro-F1 = 0.8030 ± 0.0054`**). |
 | **3.10** | **`E7` — DistilBERT đóng băng encoder (3 seeds)** | `configs/E7.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E7/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **HOÀN THÀNH 100%** (Copy từ `E5.yaml`, chỉ đổi `freeze_encoder: true`; 3 seeds trên Google Colab Tesla T4: **`Macro-F1 = 0.5913 ± 0.0023`**). |
-| **3.11** | **Sinh nhãn mềm LLM với prompt `P2` trên kho `train_unlabeled` 2026 (bắt đầu)** | `models/llm_soft_labels.py`, `tests/test_llm_soft_labels.py`, `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` | **Đã hoàn thành 100% pipeline có chốt chặn chống rò rỉ (`pool == "train_unlabeled"`, tự động loại trừ toàn bộ 330 ID gồm 30 ID `trial30_ids.csv` và 300 ID test từ `assignment.csv` / `test300_ids.csv`), hỗ trợ chạy tiếp (resume) và unit tests.**<br>*(Chờ file cục bộ `data/raw/headlines_2026/headlines.jsonl` từ TV1/TV2 để chạy sinh nhãn mềm thực tế trên Colab T4 — không tạo dữ liệu giả lập).* |
-| **3.12** | **Gán nhãn thủ công đợt 1 (~70 tiêu đề)** | `labeling/round1/tv3.csv` | **Đã tích hợp `labeling/assignment.csv` (từ PR #16 của TV1 đã gộp vào `main`): TV3 được phân công chính xác `68` tiêu đề ở Đợt 1 (`round=1`) và `64` tiêu đề ở Đợt 2 (`round=2`), tổng cộng `132` tiêu đề.**<br>Đã tạo sẵn mẫu CSV trắng `data/raw/headlines_2026/labeling_packets/round1_tv3_blank.csv` (`68` dòng ID với cột `label,reason` để trống).<br>*(Chờ TV1 gửi gói văn bản đọc `labeling_packets` để TV3 tự gán tay vào `labeling/round1/tv3.csv` — tuân thủ `AGENTS.md` Quy tắc 5: human-only, tuyệt đối không dùng AI/LLM).* |
+| **3.11** | **Sinh nhãn mềm LLM với prompt `P2` trên kho `train_unlabeled` 2026 (bắt đầu)** | `models/llm_soft_labels.py`, `tests/test_llm_soft_labels.py`, `notebooks/week3_transformer_and_soft_labels.ipynb`, `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` | **Đã tích hợp & xác minh dữ liệu đầu vào `data/raw/headlines_2026/headlines.jsonl` (`SHA-256: 28bd2f3d...`, `1,409` bản ghi `train_unlabeled` hợp lệ sau khi đối chiếu `330` ID loại trừ); hoàn tất 100% code, unit tests & Colab T4 notebook.**<br>*(Chờ TV3 mở `notebooks/week3_transformer_and_soft_labels.ipynb` trên Google Colab T4 để chạy GPU sinh `results/llm_soft_labels/p2_soft_labels.jsonl` và `run.json` thực tế).* |
+| **3.12** | **Gán nhãn thủ công đợt 1 (`68` tiêu đề của TV3)** | `labeling/round1/tv3.csv` | **Đã chuẩn bị xong gói đọc cục bộ `data/raw/headlines_2026/labeling_packets/round1_tv3_reading_packet.csv`** (trích xuất chính xác `68` ID và văn bản tiêu đề Đợt 1 của TV3 theo thứ tự `labeling/assignment.csv`, để trống hoàn toàn 2 cột `label` và `reason`; gitignored theo quy định bảo mật dữ liệu thô).<br>*(Chờ TV3 tự đọc và gán nhãn thủ công vào `labeling/round1/tv3.csv` — tuân thủ `AGENTS.md` Quy tắc 5: human-only, tuyệt đối không dùng AI/LLM).* |
 
 ---
 
@@ -78,27 +78,48 @@ Toàn bộ 6 cặp file đầu ra `results/E5/seed{1,2,3}/{run.json, preds_valid
 
 ---
 
-## 4. Kết quả Kiểm thử Tự động (Unit & Integration Tests)
+## 4. Xác minh Kho Tiêu đề 2026 (`headlines.jsonl`), Chuẩn bị Task 3.11 & Task 3.12
 
-Đã thực thi toàn bộ các bộ kiểm thử liên quan đến TV3 và tích hợp dữ liệu trên nhánh `tv3/week3`:
-- `python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data -v`: **20/20 tests PASS (`OK`)**
-  - `tests.test_transformer` (6/6 PASS):
-    - Kiểm tra `E5.yaml` và `E7.yaml` hợp lệ và chỉ khác nhau đúng 1 yếu tố `freeze_encoder`.
-    - Kiểm tra đóng băng encoder (`E5`: 100% tham số trainable; `E7`: chỉ `592,899` tham số của `pre_classifier` + `classifier` trainable, đóng băng toàn bộ encoder).
-    - Kiểm tra công thức `linear_warmup_lr_multiplier`.
-    - Kiểm tra từ chối config thiếu `split_sha256` hoặc dùng metric trên tập test.
-    - Kiểm tra tương thích đầu ra `write_preds` với `evaluate.metrics.read_preds` và `score`.
-    - Kiểm tra toàn bộ 6 thư mục kết quả thực tế `results/E5/seed{1,2,3}` và `results/E7/seed{1,2,3}` (`run.json`, `preds_validation.jsonl`, `1,791` mẫu, tổng xác suất, số tham số, và đối chiếu metric).
-  - `tests.test_llm_soft_labels` (4/4 PASS): Kiểm tra nạp prompt `P2`, loại trừ `trial30_ids.csv` & `test300_ids.csv`, lọc `pool == "train_unlabeled"`, và kiểm tra JSONL đầu ra không chứa văn bản tiêu đề.
-  - `tests.test_metrics` (4/4 PASS) & `tests.test_train_data` (6/6 PASS): Kiểm tra tính toán Macro-F1, per-class F1 và kiểm tra SHA-256 của split.
+### 4.1. Kiểm tra Toàn vẹn Dữ liệu Thô `data/raw/headlines_2026/headlines.jsonl`
+File `headlines.jsonl` (`1,193,922` bytes) đã được đặt tại `data/raw/headlines_2026/headlines.jsonl` (được loại trừ hoàn toàn bởi `.gitignore` qua quy tắc `data/raw/` và `*.jsonl`, tuyệt đối không commit lên Git) và vượt qua toàn bộ kiểm tra toàn vẹn:
+- **SHA-256 thực tế:** `28bd2f3d6c2622fb10a7b3d83399996aee1ca4e83e62efe2669e99fd4d9e988f` (khớp 100% với mã băm chuẩn trong `labeling/test300_selection.json`).
+- **Tổng số bản ghi & Tính duy nhất:** `2,168` bản ghi JSONL hợp lệ, `2,168` ID duy nhất (`0` dòng lỗi, `0` ID trùng, `0` tiêu đề rỗng).
+- **Schema từng bản ghi (10 trường chuẩn):** `id`, `article_id`, `source`, `pool`, `title`, `url`, `published_utc`, `source_time_kind`, `title_provenance`, `nlp_eligible`.
+- **Phân bố theo Pool & Nguồn:**
+  - `pool == "train_unlabeled"` (nguồn `GDELT`): **`1,409` bản ghi**.
+  - `pool == "test_candidate"` (nguồn `RSS`): **`759` bản ghi**.
+
+### 4.2. Kiểm tra Chốt chặn Loại trừ cho Task 3.11 (`models/llm_soft_labels.py`)
+- **Tổng số ID loại trừ nạp từ `labeling/trial30_ids.csv` (`30` ID) và `labeling/assignment.csv` (`300` ID test):** **`330` ID duy nhất** (hai tập `trial30` và `test300` hoàn toàn rời nhau, `overlap = 0`).
+- **Đối chiếu vị trí của 330 ID loại trừ trong `headlines.jsonl`:** Cả `30/30` ID gán thử và `300/300` ID test đều thuộc `pool == "test_candidate"` (`330` bản ghi).
+- **Giao giữa tập loại trừ (`330` ID) và `train_unlabeled` (`1,409` bản ghi):** **`0` ID**.
+- **Số bản ghi thực sự đủ điều kiện chạy Soft Labels (`P2` với `Qwen/Qwen2.5-7B-Instruct` 4-bit NF4):** Chính xác **`1,409` bản ghi** (`0` ID thuộc tập test hay tập gán thử).
+- **Trạng thái Task 3.11:** Mã nguồn `models/llm_soft_labels.py` (kèm kiểm tra `EXPECTED_HEADLINES_SHA256`), bộ unit tests `tests/test_llm_soft_labels.py` và notebook Colab `notebooks/week3_transformer_and_soft_labels.ipynb` (đầy đủ 12 bước: kiểm tra GPU, cài đặt thư viện, mount Drive/upload file, kiểm tra SHA-256 & pool audit, nạp prompt `P2` & Qwen 4-bit, chạy inference có resume, kiểm tra toàn vẹn đầu ra, đóng gói `llm_soft_labels_results.zip`) đã hoàn tất 100% và sẵn sàng để TV3 bấm chạy trên Google Colab T4. *(Chưa tuyên bố hoàn tất dữ liệu đầu ra `results/llm_soft_labels/` cho tới khi phiên chạy GPU trên Colab T4 kết thúc và được tải về tích hợp).*
+
+### 4.3. Chuẩn bị Gói Đọc Gán nhãn Thủ công Đợt 1 cho Task 3.12 (`68` tiêu đề của TV3)
+- Từ `labeling/assignment.csv`, TV3 được phân công chính xác **`68` ID duy nhất ở Đợt 1 (`round == 1`)** (và `64` ID ở Đợt 2, tổng cộng `132` ID).
+- Đã đối chiếu `68/68` ID Đợt 1 của TV3 với `data/raw/headlines_2026/headlines.jsonl` (tất cả 68 ID đều tìm thấy trong `test_candidate` và có văn bản tiêu đề đầy đủ) và xuất file gói đọc cục bộ:
+  - Đường dẫn: `data/raw/headlines_2026/labeling_packets/round1_tv3_reading_packet.csv` (nằm trong thư mục `data/raw/` đã được `.gitignore` bảo vệ).
+  - Cấu trúc cột: `id,headline,label,reason` (`68` dòng theo đúng thứ tự trong `labeling/assignment.csv`, hai cột `label` và `reason` để trống hoàn toàn `""`).
+  - Mẫu trắng chỉ gồm ID `data/raw/headlines_2026/labeling_packets/round1_tv3_blank.csv` (`id,label,reason`) vẫn được giữ nguyên.
 
 ---
 
-## 5. Kê khai Minh bạch Sử dụng AI (AI Transparency Disclosure)
+## 5. Kết quả Kiểm thử Tự động (Unit & Integration Tests)
 
-- **Trợ lý lập trình AI:** Hỗ trợ viết mã nguồn `models/transformer.py`, `models/llm_soft_labels.py`, cấu hình `configs/E5.yaml`, `configs/E7.yaml`, bộ unit tests `tests/test_transformer.py`, `tests/test_llm_soft_labels.py`, notebook `notebooks/week3_transformer_and_soft_labels.ipynb`, kiểm chứng độc lập kết quả thực nghiệm `E5`/`E7` từ Colab Tesla T4 và cập nhật tài liệu dự án.
+Đã thực thi toàn bộ các bộ kiểm thử liên quan đến TV3 và toàn bộ test không phụ thuộc PyTorch trên nhánh `tv3/week3`:
+- `python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data tests.test_stats tests.test_pick300 tests.test_simulate_power tests.test_audit_leakage_capacity tests.test_make_leakage tests.test_make_leakage_cli -v`: **31/31 tests PASS (`OK`)**
+  - `tests.test_transformer` (6/6 PASS): Kiểm tra `E5.yaml` & `E7.yaml`, đóng băng encoder, lịch warmup, hợp đồng `write_preds`, và toàn vẹn 6 thư mục kết quả thực tế `results/E5/seed{1,2,3}` & `results/E7/seed{1,2,3}`.
+  - `tests.test_llm_soft_labels` (4/4 PASS): Kiểm tra nạp prompt `P2`, nạp đủ `330` ID loại trừ thực tế (`trial30_ids.csv` + `assignment.csv`), kiểm tra `SHA-256` và lọc đúng `1,409` bản ghi `train_unlabeled` trên file `data/raw/headlines_2026/headlines.jsonl` thật, từ chối mã băm sai, và kiểm tra JSONL đầu ra không chứa văn bản tiêu đề.
+  - `tests.test_metrics` (4/4 PASS), `tests.test_train_data` (6/6 PASS), và các bộ test tích hợp từ `main` (`test_stats`, `test_pick300`, `test_simulate_power`, `test_audit_leakage_capacity`, `test_make_leakage`, `test_make_leakage_cli`: 11/11 PASS).
+
+---
+
+## 6. Kê khai Minh bạch Sử dụng AI (AI Transparency Disclosure)
+
+- **Trợ lý lập trình AI:** Hỗ trợ viết mã nguồn `models/transformer.py`, `models/llm_soft_labels.py`, cấu hình `configs/E5.yaml`, `configs/E7.yaml`, bộ unit tests `tests/test_transformer.py`, `tests/test_llm_soft_labels.py`, notebook `notebooks/week3_transformer_and_soft_labels.ipynb`, kiểm chứng độc lập kết quả thực nghiệm `E5`/`E7` từ Colab Tesla T4, xác minh `SHA-256` & trích xuất gói đọc `round1_tv3_reading_packet.csv` (để trống nhãn), và cập nhật tài liệu dự án.
 - **Giới hạn tuyệt đối đã tuân thủ:**
   - Giữ nguyên vẹn 100% dữ liệu dự đoán và metadata thực tế từ Google Colab Tesla T4 (`Results.zip`), không chỉnh sửa hay giả lập bất kỳ con số nào.
-  - Không tự tạo dữ liệu giả lập cho Task 3.11 (`data/raw/headlines_2026/headlines.jsonl`).
-  - Không tạo, gán hoặc gợi ý bất kỳ nhãn nào cho việc gán nhãn thủ công đợt 1 (`labeling/round1/tv3.csv`) hay tập test 2026 (`AGENTS.md` Quy tắc 5).
-  - Không truy cập hoặc đánh giá trên bất kỳ tập `test` nào (`AGENTS.md` Quy tắc 1).
+  - Không giả lập kết quả GPU cho Task 3.11 khi chưa chạy thực tế trên Colab T4.
+  - Không tạo, gán, suy luận hoặc gợi ý bất kỳ nhãn (`label`) hay lý do (`reason`) nào cho việc gán nhãn thủ công đợt 1 (`round1_tv3_reading_packet.csv` / `labeling/round1/tv3.csv`) hay tập test 2026 (`AGENTS.md` Quy tắc 5).
+  - Không commit dữ liệu thô (`data/raw/headlines_2026/headlines.jsonl`) hoặc gói đọc chứa văn bản tiêu đề (`round1_tv3_reading_packet.csv`) lên Git.

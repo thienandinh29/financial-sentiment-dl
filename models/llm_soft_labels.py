@@ -21,9 +21,10 @@ from pathlib import Path
 import yaml
 
 from evaluate.metrics import read_preds
-from train.data import LABELS
+from train.data import LABELS, sha256_file
 
 DEFAULT_HEADLINES = Path("data/raw/headlines_2026/headlines.jsonl")
+EXPECTED_HEADLINES_SHA256 = "28bd2f3d6c2622fb10a7b3d83399996aee1ca4e83e62efe2669e99fd4d9e988f"
 DEFAULT_PROMPTS_CFG = Path("configs/llm_prompts.yaml")
 DEFAULT_OUT_DIR = Path("results/llm_soft_labels")
 DEFAULT_EXCLUSION_FILES = (
@@ -52,10 +53,14 @@ def load_excluded_ids(paths=DEFAULT_EXCLUSION_FILES) -> set:
     return excluded
 
 
-def load_unlabeled_2026_pool(headlines_path=DEFAULT_HEADLINES, excluded_ids=None) -> tuple:
+def load_unlabeled_2026_pool(
+    headlines_path=DEFAULT_HEADLINES,
+    excluded_ids=None,
+    expected_sha256: str = None,
+) -> tuple:
     """Filter exported 2026 headlines strictly to train_unlabeled and exclude any trial/test IDs.
 
-    Input: path to headlines.jsonl, set of excluded IDs.
+    Input: path to headlines.jsonl, set of excluded IDs, optional expected SHA-256 hex digest.
     Output: (eligible_items, stats) where eligible_items is a list of (id, title) tuples.
     """
     excluded = set(excluded_ids or ())
@@ -63,10 +68,19 @@ def load_unlabeled_2026_pool(headlines_path=DEFAULT_HEADLINES, excluded_ids=None
     if not path.is_file():
         raise FileNotFoundError(f"Unlabeled headlines file not found: {path}")
 
+    actual_sha256 = sha256_file(path)
+    if expected_sha256 and actual_sha256 != expected_sha256:
+        raise ValueError(
+            f"Headlines SHA-256 mismatch for {path}: expected {expected_sha256}, got {actual_sha256}"
+        )
+
     eligible, seen = [], set()
     total_rows = 0
+    pool_counts = {}
     skipped_test_candidate = 0
     skipped_excluded = 0
+    excluded_in_train_unlabeled = 0
+    excluded_in_test_candidate = 0
 
     with open(path, encoding="utf-8") as f:
         for line_no, line in enumerate(f, start=1):
@@ -82,9 +96,14 @@ def load_unlabeled_2026_pool(headlines_path=DEFAULT_HEADLINES, excluded_ids=None
             if hid in seen:
                 raise ValueError(f"Duplicate headline id '{hid}' in {path}")
             seen.add(hid)
+            pool_counts[pool] = pool_counts.get(pool, 0) + 1
 
             if hid in excluded:
                 skipped_excluded += 1
+                if pool == "train_unlabeled":
+                    excluded_in_train_unlabeled += 1
+                elif pool == "test_candidate":
+                    excluded_in_test_candidate += 1
                 continue
             if pool != "train_unlabeled":
                 skipped_test_candidate += 1
@@ -92,7 +111,12 @@ def load_unlabeled_2026_pool(headlines_path=DEFAULT_HEADLINES, excluded_ids=None
             eligible.append((hid, title))
 
     stats = {
+        "headlines_sha256": actual_sha256,
         "total_rows": total_rows,
+        "pool_counts": pool_counts,
+        "total_excluded_ids": len(excluded),
+        "excluded_overlap_train_unlabeled": excluded_in_train_unlabeled,
+        "excluded_overlap_test_candidate": excluded_in_test_candidate,
         "eligible_train_unlabeled": len(eligible),
         "skipped_non_train_pool": skipped_test_candidate,
         "skipped_excluded_trial_or_test_ids": skipped_excluded,
@@ -186,6 +210,7 @@ def generate_soft_labels(
     exclusion_files=DEFAULT_EXCLUSION_FILES,
     scorer_fn=None,
     limit: int = None,
+    expected_sha256: str = None,
 ) -> dict:
     """Run P2 soft-label generation on train_unlabeled 2026 headlines with resume support.
 
@@ -197,7 +222,11 @@ def generate_soft_labels(
     t0 = time.perf_counter()
     prompt_template, cfg = load_p2_prompt_template(config_path)
     excluded_ids = load_excluded_ids(exclusion_files)
-    eligible, pool_stats = load_unlabeled_2026_pool(headlines_path, excluded_ids=excluded_ids)
+    eligible, pool_stats = load_unlabeled_2026_pool(
+        headlines_path,
+        excluded_ids=excluded_ids,
+        expected_sha256=expected_sha256,
+    )
     if limit is not None and limit > 0:
         eligible = eligible[:limit]
 
@@ -223,8 +252,9 @@ def generate_soft_labels(
 
     newly_scored = 0
     top1_letter_hits = 0
+    total_pending = len(pending)
     with open(out_jsonl, "a", encoding="utf-8", newline="\n") as f:
-        for hid, title in pending:
+        for idx, (hid, title) in enumerate(pending, start=1):
             prompt = prompt_template.format(text=title)
             result = scorer_fn(prompt)
             if len(result) == 4:
@@ -252,13 +282,30 @@ def generate_soft_labels(
             f.flush()
             existing_records[hid] = record
             newly_scored += 1
+            if idx % 100 == 0 or idx == total_pending:
+                print(
+                    f"[P2 soft labels] scored {idx}/{total_pending} pending "
+                    f"(total={len(existing_records)}/{len(eligible)}, elapsed={time.perf_counter() - t0:.1f}s)"
+                )
 
-    # Verify the written JSONL is 100% compatible with evaluate.metrics.read_preds
+    # Verify the written JSONL is 100% compatible with evaluate.metrics.read_preds and has zero leakage
     verified_preds = read_preds(out_jsonl)
+    if not excluded_ids.isdisjoint(verified_preds.keys()):
+        leaked = sorted(excluded_ids.intersection(verified_preds.keys()))
+        raise ValueError(f"Excluded trial/test IDs leaked into soft labels: {leaked}")
+
     all_masses = [float(r["abc_mass"]) for r in existing_records.values()]
     all_top1 = [bool(r.get("top1_is_letter", True)) for r in existing_records.values()]
 
+    provenance = {}
+    try:
+        from train.runlog import run_metadata
+        provenance = run_metadata(cfg, seed=1)
+    except Exception:
+        pass
+
     summary = {
+        **provenance,
         "prompt": SELECTED_PROMPT_NAME,
         "model": cfg["model"]["name"],
         "quantization": cfg["model"].get("quantization", "nf4-4bit"),
@@ -280,6 +327,7 @@ def generate_soft_labels(
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--headlines", default=str(DEFAULT_HEADLINES))
+    parser.add_argument("--expected-sha256", default=EXPECTED_HEADLINES_SHA256)
     parser.add_argument("--config", default=str(DEFAULT_PROMPTS_CFG))
     parser.add_argument("--out-dir", default=str(DEFAULT_OUT_DIR))
     parser.add_argument("--limit", type=int, default=None, help="Optional cap on number of headlines to score")
@@ -289,6 +337,7 @@ def main():
         config_path=args.config,
         out_dir=args.out_dir,
         limit=args.limit,
+        expected_sha256=args.expected_sha256,
     )
     print(json.dumps(summary, indent=2))
 

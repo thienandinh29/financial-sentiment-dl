@@ -88,9 +88,9 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `configs/E5.yaml` and `configs/E7.yaml`: DistilBERT fine-tune (`freeze_encoder: false`) and frozen-encoder (`freeze_encoder: true`) experiment configs on `cluster_split.jsonl` (`8c2c35ea...`).
 - `models/transformer.py` and `tests/test_transformer.py`: Transformer training/evaluation runner (weighted CE, AdamW `lr=2e-5`, linear warmup 10%, weight decay 0.01, FP16 AMP, early stopping on `val_macro_f1`) and unit tests.
 - `results/E5/seed{1,2,3}/{run.json,preds_validation.jsonl}` and `results/E7/seed{1,2,3}/{run.json,preds_validation.jsonl}`: Three-seed Tesla T4 validation outputs (1,791 records per file) for full fine-tuning (`E5`: `0.8030 ± 0.0054` Macro-F1) and frozen-encoder training (`E7`: `0.5913 ± 0.0023` Macro-F1).
-- `models/llm_soft_labels.py` and `tests/test_llm_soft_labels.py`: resumable P2 soft-label generator for the 2026 `train_unlabeled` pool with strict `trial30_ids.csv`, `test300_ids.csv`, and `assignment.csv` exclusion guards and text-free output validation.
-- `notebooks/week3_transformer_and_soft_labels.ipynb`: Colab T4 execution notebook for Tasks 3.9 (`E5`), 3.10 (`E7`), and 3.11 (`P2` soft labels).
-- `results/rq3_week3_contribution_report.md`: TV3 Week 3 implementation, E5/E7 3-seed validation results, independent verification, and AI transparency report.
+- `models/llm_soft_labels.py` and `tests/test_llm_soft_labels.py`: resumable P2 soft-label generator for the 2026 `train_unlabeled` pool (`1,409` eligible GDELT headlines from `data/raw/headlines_2026/headlines.jsonl`, `SHA-256: 28bd2f3d...`) with strict SHA-256 verification, `trial30_ids.csv` (`30` IDs), `test300_ids.csv`, and `assignment.csv` (`300` IDs) exclusion guards (`330` excluded IDs total), and text-free output validation.
+- `notebooks/week3_transformer_and_soft_labels.ipynb`: Colab T4 execution notebook for Tasks 3.9 (`E5`), 3.10 (`E7`), and 3.11 (`P2` soft labels with SHA-256 check, resumable execution, integrity verification, and zip export).
+- `results/rq3_week3_contribution_report.md`: TV3 Week 3 implementation, E5/E7 3-seed validation results, 2026 headlines integration & exclusion audit, Task 3.12 reading packet preparation, and AI transparency report.
 
 ## Week 3 TV1 files
 

@@ -6,6 +6,8 @@ from pathlib import Path
 
 from evaluate.metrics import read_preds
 from models.llm_soft_labels import (
+    DEFAULT_HEADLINES,
+    EXPECTED_HEADLINES_SHA256,
     generate_soft_labels,
     load_excluded_ids,
     load_p2_prompt_template,
@@ -25,6 +27,19 @@ class LlmSoftLabelsTests(unittest.TestCase):
         excluded = load_excluded_ids()
         # 30 trial IDs from labeling/trial30_ids.csv + 300 disjoint test IDs from labeling/assignment.csv
         self.assertEqual(len(excluded), 330)
+
+        if DEFAULT_HEADLINES.is_file():
+            eligible, stats = load_unlabeled_2026_pool(
+                DEFAULT_HEADLINES,
+                excluded_ids=excluded,
+                expected_sha256=EXPECTED_HEADLINES_SHA256,
+            )
+            self.assertEqual(stats["total_rows"], 2168)
+            self.assertEqual(stats["pool_counts"], {"test_candidate": 759, "train_unlabeled": 1409})
+            self.assertEqual(stats["excluded_overlap_train_unlabeled"], 0)
+            self.assertEqual(stats["excluded_overlap_test_candidate"], 330)
+            self.assertEqual(len(eligible), 1409)
+            self.assertTrue(excluded.isdisjoint({hid for hid, _ in eligible}))
 
     def test_pool_filter_excludes_test_candidate_and_trial_or_test_ids(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -53,6 +68,13 @@ class LlmSoftLabelsTests(unittest.TestCase):
             self.assertEqual(stats["eligible_train_unlabeled"], 2)
             self.assertEqual(stats["skipped_non_train_pool"], 1)
             self.assertEqual(stats["skipped_excluded_trial_or_test_ids"], 2)
+
+            with self.assertRaises(ValueError):
+                load_unlabeled_2026_pool(
+                    headlines_path,
+                    excluded_ids=excluded,
+                    expected_sha256="0" * 64,
+                )
 
     def test_generate_soft_labels_writes_text_free_jsonl_and_resumes(self):
         with tempfile.TemporaryDirectory() as tmp:
