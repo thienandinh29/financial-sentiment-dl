@@ -185,6 +185,40 @@ class LlmSoftLabelsTests(unittest.TestCase):
             )
             self.assertEqual([r["id"] for r in rows], [hid for hid, _ in eligible])
 
+    def test_tv3_round1_human_labeling_csv_contract(self):
+        import csv
+
+        round1_path = Path("labeling/round1/tv3.csv")
+        assign_path = Path("labeling/assignment.csv")
+        self.assertTrue(round1_path.is_file(), f"Missing {round1_path}")
+        self.assertTrue(assign_path.is_file(), f"Missing {assign_path}")
+
+        with open(round1_path, "r", encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            self.assertEqual(reader.fieldnames, ["id", "label", "reason"])
+            rows = list(reader)
+
+        self.assertEqual(len(rows), 68)
+        ids = []
+        for r in rows:
+            hid = (r.get("id") or "").strip()
+            lbl = (r.get("label") or "").strip()
+            reason = (r.get("reason") or "").strip()
+            self.assertTrue(hid, "Empty ID in labeling/round1/tv3.csv")
+            self.assertIn(lbl, {"bearish", "neutral", "bullish"})
+            self.assertTrue(reason, f"Empty reason for ID {hid}")
+            ids.append(hid)
+
+        self.assertEqual(len(set(ids)), 68)
+
+        with open(assign_path, "r", encoding="utf-8-sig", newline="") as f:
+            expected_ids = [
+                r["id"].strip()
+                for r in csv.DictReader(f)
+                if r["annotator"].strip() == "tv3" and str(r["round"]).strip() == "1"
+            ]
+        self.assertEqual(ids, expected_ids)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -11,7 +11,7 @@ Tài liệu này ghi nhận kết quả triển khai mã nguồn, cấu hình th
 | **3.9** | **`E5` — DistilBERT fine-tune toàn bộ (3 seeds)** | `configs/E5.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E5/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **HOÀN THÀNH 100%** (Mã nguồn, unit tests & 3 seeds thực nghiệm trên Google Colab Tesla T4: **`Macro-F1 = 0.8030 ± 0.0054`**). |
 | **3.10** | **`E7` — DistilBERT đóng băng encoder (3 seeds)** | `configs/E7.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E7/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **HOÀN THÀNH 100%** (Copy từ `E5.yaml`, chỉ đổi `freeze_encoder: true`; 3 seeds trên Google Colab Tesla T4: **`Macro-F1 = 0.5913 ± 0.0023`**). |
 | **3.11** | **Sinh nhãn mềm LLM với prompt `P2` trên kho `train_unlabeled` 2026 (bắt đầu)** | `models/llm_soft_labels.py`, `tests/test_llm_soft_labels.py`, `notebooks/week3_transformer_and_soft_labels.ipynb`, `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` | **HOÀN THÀNH 100%** (Đã chạy `Qwen/Qwen2.5-7B-Instruct` 4-bit NF4 với prompt `P2` trên Google Colab Tesla T4 cho toàn bộ **`1,409 / 1,409` tiêu đề `train_unlabeled`** trong `626.843s`, `min_abc_mass = 0.989`, `mean_abc_mass = 0.9998`, `share_top1_is_letter = 1.0`, `0` rò rỉ sang `330` ID loại trừ, `0` trường văn bản thô). |
-| **3.12** | **Gán nhãn thủ công đợt 1 (`68` tiêu đề của TV3)** | `labeling/round1/tv3.csv` | **Đã chuẩn bị xong gói đọc cục bộ `data/raw/headlines_2026/labeling_packets/round1_tv3_reading_packet.csv`** (trích xuất chính xác `68` ID và văn bản tiêu đề Đợt 1 của TV3 theo thứ tự `labeling/assignment.csv`, để trống hoàn toàn 2 cột `label` và `reason`; gitignored theo quy định bảo mật dữ liệu thô).<br>*(Chờ TV3 tự đọc và gán nhãn thủ công vào `labeling/round1/tv3.csv` — tuân thủ `AGENTS.md` Quy tắc 5: human-only, tuyệt đối không dùng AI/LLM).* |
+| **3.12** | **Gán nhãn thủ công đợt 1 (`68` tiêu đề của TV3)** | `labeling/round1/tv3.csv` | **HOÀN THÀNH 100%** (TV3 đã tự gán nhãn thủ công toàn bộ **`68 / 68` tiêu đề Đợt 1** theo đúng thứ tự `labeling/assignment.csv` với schema `id,label,reason`, không chứa văn bản tiêu đề; phân bố nhãn: `bearish = 14`, `neutral = 42`, `bullish = 12`; tuân thủ tuyệt đối `AGENTS.md` Quy tắc 5: human-only). |
 
 ---
 
@@ -121,21 +121,27 @@ File `headlines.jsonl` (`1,193,922` bytes) đã được đặt tại `data/raw/
   - Các kiểm tra trên chứng minh quá trình suy luận LLM `P2` trên 1,409 tiêu đề `train_unlabeled` đạt độ toàn vẹn kỹ thuật, không rò rỉ tập test/trial, và có xác suất tập trung gần như tuyệt đối vào 3 phương án A/B/C (`mean_abc_mass = 0.9998`).
   - Vì kho `train_unlabeled` (nguồn GDELT) không có nhãn chuẩn của con người, việc kiểm tra toàn vẹn đầu ra **không** đồng nghĩa với việc đã chứng minh chất lượng phân loại của nhãn mềm. Hiệu quả thực sự của bộ nhãn mềm này sẽ được đánh giá ở **Tuần 4 (Sprint S2)** thông qua độ cải thiện `val_macro_f1` của mô hình chưng cất **`E6`** (KL-divergence với $T \in \{1, 2, 4\}$) và pseudo-label cứng **`E12`** so với mốc **`E5`** (`0.8030 ± 0.0054`).
 
-### 4.3. Chuẩn bị Gói Đọc Gán nhãn Thủ công Đợt 1 cho Task 3.12 (`68` tiêu đề của TV3)
-- Từ `labeling/assignment.csv`, TV3 được phân công chính xác **`68` ID duy nhất ở Đợt 1 (`round == 1`)** (và `64` ID ở Đợt 2, tổng cộng `132` ID).
-- Đã đối chiếu `68/68` ID Đợt 1 của TV3 với `data/raw/headlines_2026/headlines.jsonl` (tất cả 68 ID đều tìm thấy trong `test_candidate` và có văn bản tiêu đề đầy đủ) và xuất file gói đọc cục bộ:
-  - Đường dẫn: `data/raw/headlines_2026/labeling_packets/round1_tv3_reading_packet.csv` (nằm trong thư mục `data/raw/` đã được `.gitignore` bảo vệ).
-  - Cấu trúc cột: `id,headline,label,reason` (`68` dòng theo đúng thứ tự trong `labeling/assignment.csv`, hai cột `label` và `reason` để trống hoàn toàn `""`).
-  - Mẫu trắng chỉ gồm ID `data/raw/headlines_2026/labeling_packets/round1_tv3_blank.csv` (`id,label,reason`) vẫn được giữ nguyên.
+### 4.3. Hoàn tất Gán nhãn Thủ công Đợt 1 của TV3 (Task 3.12 — `labeling/round1/tv3.csv`)
+- **File kết quả đã tích hợp:** `labeling/round1/tv3.csv` (`13,388` bytes, `SHA-256: fd0bd2d416299b10d87f07395a8695bde053d9f4502992251a7838b273c75fda`).
+- **Kết quả kiểm tra toàn vẹn trên `labeling/round1/tv3.csv`:**
+  1. **Schema chuẩn:** `['id', 'label', 'reason']` (3 cột, tuyệt đối không chứa cột `headline` hay văn bản tiêu đề gốc).
+  2. **Số dòng dữ liệu:** Chính xác **`68` dòng** (`68` ID duy nhất, không có ID rỗng hoặc trùng lặp).
+  3. **Đối chiếu với `labeling/assignment.csv`:** Khớp **100%** cả về tập hợp ID lẫn thứ tự dòng với `68` ID được phân công cho `annotator == "tv3"` và `round == "1"` (`0` ID thiếu, `0` ID thừa).
+  4. **Tính hợp lệ của nhãn (`label`):** Mọi nhãn đều thuộc đúng 3 giá trị chuẩn chữ thường `{"bearish", "neutral", "bullish"}`, với phân bố:
+     - `neutral`: **`42` câu (`61.76%`)**
+     - `bearish`: **`14` câu (`20.59%`)**
+     - `bullish`: **`12` câu (`17.65%`)**
+  5. **Tính hợp lệ của lý do (`reason`):** Cả `68 / 68` dòng đều có lý do giải thích rõ ràng do con người tự viết (độ dài từ `54` đến `125` ký tự, `0` dòng rỗng). Toàn bộ nội dung do TV3 gán tay được giữ nguyên 100% byte-for-byte, không có bất kỳ sự can thiệp, viết lại hay chuẩn hóa nào từ AI/LLM.
+  6. **Bảo mật dữ liệu thô:** Các file gói đọc cục bộ trong `data/raw/headlines_2026/` (`headlines.jsonl`, `round1_tv3_reading_packet.csv`, `round1_tv3_blank.csv`) vẫn nằm hoàn toàn trong vùng `.gitignore` và không được stage hay commit.
 
 ---
 
 ## 5. Kết quả Kiểm thử Tự động (Unit & Integration Tests)
 
 Đã thực thi toàn bộ các bộ kiểm thử liên quan đến TV3 và toàn bộ test không phụ thuộc PyTorch trên nhánh `tv3/week3`:
-- `python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data tests.test_stats tests.test_pick300 tests.test_simulate_power tests.test_audit_leakage_capacity tests.test_make_leakage tests.test_make_leakage_cli -v`: **32/32 tests PASS (`OK`)**
+- `python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data tests.test_stats tests.test_pick300 tests.test_simulate_power tests.test_audit_leakage_capacity tests.test_make_leakage tests.test_make_leakage_cli -v`: **33/33 tests PASS (`OK`)**
   - `tests.test_transformer` (6/6 PASS): Kiểm tra `E5.yaml` & `E7.yaml`, đóng băng encoder, lịch warmup, hợp đồng `write_preds`, và toàn vẹn 6 thư mục kết quả thực tế `results/E5/seed{1,2,3}` & `results/E7/seed{1,2,3}`.
-  - `tests.test_llm_soft_labels` (5/5 PASS): Kiểm tra nạp prompt `P2`, nạp đủ `330` ID loại trừ thực tế (`trial30_ids.csv` + `assignment.csv`), kiểm tra `SHA-256` và lọc đúng `1,409` bản ghi `train_unlabeled` trên file `data/raw/headlines_2026/headlines.jsonl` thật, từ chối mã băm sai, kiểm tra JSONL đầu ra không chứa văn bản tiêu đề, và kiểm tra toàn vẹn bộ artifact thực tế `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` (`1,409` bản ghi).
+  - `tests.test_llm_soft_labels` (6/6 PASS): Kiểm tra nạp prompt `P2`, nạp đủ `330` ID loại trừ thực tế (`trial30_ids.csv` + `assignment.csv`), kiểm tra `SHA-256` và lọc đúng `1,409` bản ghi `train_unlabeled` trên file `data/raw/headlines_2026/headlines.jsonl` thật, từ chối mã băm sai, kiểm tra JSONL đầu ra không chứa văn bản tiêu đề, kiểm tra toàn vẹn bộ artifact thực tế `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` (`1,409` bản ghi), và kiểm tra hợp đồng gán nhãn thủ công `labeling/round1/tv3.csv` (`68` dòng).
   - `tests.test_metrics` (4/4 PASS), `tests.test_train_data` (6/6 PASS), và các bộ test tích hợp từ `main` (`test_stats`, `test_pick300`, `test_simulate_power`, `test_audit_leakage_capacity`, `test_make_leakage`, `test_make_leakage_cli`: 11/11 PASS).
 
 ---
