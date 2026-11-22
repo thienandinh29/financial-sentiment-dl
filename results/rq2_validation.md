@@ -12,7 +12,7 @@ Chi tiết từng lần chạy (config, seed, phiên bản thư viện, đườn
 
 | Thí nghiệm | Seed 1 | Seed 2 | Seed 3 | Trung bình ± độ lệch chuẩn | Epoch tốt nhất | Thời gian / seed |
 | --- | --- | --- | --- | --- | --- | --- |
-| E0 TF-IDF + LR (TV1) | — | | | *chờ TV1 (việc 1.12)* | | |
+| E0 TF-IDF + LR (TV1) | 0,7096 | — | — | 0,7096 (một seed) | — | ~1 giây |
 | E1 TextCNN | 0,7597 | 0,7535 | 0,7505 | **0,7546 ± 0,0047** | 11 / 9 / 8 | ~1 phút |
 | E2 BiLSTM-Attention | 0,7629 | 0,7658 | 0,7466 | **0,7584 ± 0,0103** | 18 / 9 / 8 | 5–10 phút |
 
@@ -26,3 +26,5 @@ Chi tiết từng lần chạy (config, seed, phiên bản thư viện, đườn
 - Độ phủ GloVe: 11.353 / 13.289 loại từ của train có vector (OOV theo loại 14,5%, theo token chỉ 2,7%);
   5,8% token validation là `<unk>`.
 - Cả 6 lần chạy dùng cùng từ điển và cùng split; khác nhau chỉ ở seed và kiến trúc.
+
+E0 chạy ngày 22/11 trên CPU, commit `16e44ba`, cây làm việc có thay đổi; chi tiết cấu hình và phiên bản trong `results/E0/seed1/run.json`. Kết quả dùng validation, không phải test.
