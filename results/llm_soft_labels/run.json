@@ -1,0 +1,32 @@
+{
+  "prompt": "P2",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "quantization": "nf4-4bit",
+  "label_order": [
+    "bearish",
+    "neutral",
+    "bullish"
+  ],
+  "pool_stats": {
+    "headlines_sha256": "28bd2f3d6c2622fb10a7b3d83399996aee1ca4e83e62efe2669e99fd4d9e988f",
+    "total_rows": 2168,
+    "pool_counts": {
+      "test_candidate": 759,
+      "train_unlabeled": 1409
+    },
+    "total_excluded_ids": 330,
+    "excluded_overlap_train_unlabeled": 0,
+    "excluded_overlap_test_candidate": 330,
+    "eligible_train_unlabeled": 1409,
+    "skipped_non_train_pool": 429,
+    "skipped_excluded_trial_or_test_ids": 330
+  },
+  "n_scored_total": 1409,
+  "n_newly_scored": 1409,
+  "min_abc_mass": 0.989,
+  "mean_abc_mass": 0.9998,
+  "share_top1_is_letter": 1.0,
+  "started_at_utc": "2026-11-22T16:27:55.847474+00:00",
+  "finished_at_utc": "2026-11-22T16:38:22.689991+00:00",
+  "elapsed_seconds": 626.843
+}

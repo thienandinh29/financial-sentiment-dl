@@ -10,7 +10,7 @@ Tài liệu này ghi nhận kết quả triển khai mã nguồn, cấu hình th
 | :---: | :--- | :--- | :--- |
 | **3.9** | **`E5` — DistilBERT fine-tune toàn bộ (3 seeds)** | `configs/E5.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E5/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **HOÀN THÀNH 100%** (Mã nguồn, unit tests & 3 seeds thực nghiệm trên Google Colab Tesla T4: **`Macro-F1 = 0.8030 ± 0.0054`**). |
 | **3.10** | **`E7` — DistilBERT đóng băng encoder (3 seeds)** | `configs/E7.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E7/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **HOÀN THÀNH 100%** (Copy từ `E5.yaml`, chỉ đổi `freeze_encoder: true`; 3 seeds trên Google Colab Tesla T4: **`Macro-F1 = 0.5913 ± 0.0023`**). |
-| **3.11** | **Sinh nhãn mềm LLM với prompt `P2` trên kho `train_unlabeled` 2026 (bắt đầu)** | `models/llm_soft_labels.py`, `tests/test_llm_soft_labels.py`, `notebooks/week3_transformer_and_soft_labels.ipynb`, `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` | **Đã tích hợp & xác minh dữ liệu đầu vào `data/raw/headlines_2026/headlines.jsonl` (`SHA-256: 28bd2f3d...`, `1,409` bản ghi `train_unlabeled` hợp lệ sau khi đối chiếu `330` ID loại trừ); hoàn tất 100% code, unit tests & Colab T4 notebook.**<br>*(Chờ TV3 mở `notebooks/week3_transformer_and_soft_labels.ipynb` trên Google Colab T4 để chạy GPU sinh `results/llm_soft_labels/p2_soft_labels.jsonl` và `run.json` thực tế).* |
+| **3.11** | **Sinh nhãn mềm LLM với prompt `P2` trên kho `train_unlabeled` 2026 (bắt đầu)** | `models/llm_soft_labels.py`, `tests/test_llm_soft_labels.py`, `notebooks/week3_transformer_and_soft_labels.ipynb`, `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` | **HOÀN THÀNH 100%** (Đã chạy `Qwen/Qwen2.5-7B-Instruct` 4-bit NF4 với prompt `P2` trên Google Colab Tesla T4 cho toàn bộ **`1,409 / 1,409` tiêu đề `train_unlabeled`** trong `626.843s`, `min_abc_mass = 0.989`, `mean_abc_mass = 0.9998`, `share_top1_is_letter = 1.0`, `0` rò rỉ sang `330` ID loại trừ, `0` trường văn bản thô). |
 | **3.12** | **Gán nhãn thủ công đợt 1 (`68` tiêu đề của TV3)** | `labeling/round1/tv3.csv` | **Đã chuẩn bị xong gói đọc cục bộ `data/raw/headlines_2026/labeling_packets/round1_tv3_reading_packet.csv`** (trích xuất chính xác `68` ID và văn bản tiêu đề Đợt 1 của TV3 theo thứ tự `labeling/assignment.csv`, để trống hoàn toàn 2 cột `label` và `reason`; gitignored theo quy định bảo mật dữ liệu thô).<br>*(Chờ TV3 tự đọc và gán nhãn thủ công vào `labeling/round1/tv3.csv` — tuân thủ `AGENTS.md` Quy tắc 5: human-only, tuyệt đối không dùng AI/LLM).* |
 
 ---
@@ -89,12 +89,37 @@ File `headlines.jsonl` (`1,193,922` bytes) đã được đặt tại `data/raw/
   - `pool == "train_unlabeled"` (nguồn `GDELT`): **`1,409` bản ghi**.
   - `pool == "test_candidate"` (nguồn `RSS`): **`759` bản ghi**.
 
-### 4.2. Kiểm tra Chốt chặn Loại trừ cho Task 3.11 (`models/llm_soft_labels.py`)
+### 4.2. Kết quả Chạy Thực tế & Kiểm chứng Độc lập Nhãn Mềm `P2` (Task 3.11 — `results/llm_soft_labels/`)
 - **Tổng số ID loại trừ nạp từ `labeling/trial30_ids.csv` (`30` ID) và `labeling/assignment.csv` (`300` ID test):** **`330` ID duy nhất** (hai tập `trial30` và `test300` hoàn toàn rời nhau, `overlap = 0`).
-- **Đối chiếu vị trí của 330 ID loại trừ trong `headlines.jsonl`:** Cả `30/30` ID gán thử và `300/300` ID test đều thuộc `pool == "test_candidate"` (`330` bản ghi).
-- **Giao giữa tập loại trừ (`330` ID) và `train_unlabeled` (`1,409` bản ghi):** **`0` ID**.
-- **Số bản ghi thực sự đủ điều kiện chạy Soft Labels (`P2` với `Qwen/Qwen2.5-7B-Instruct` 4-bit NF4):** Chính xác **`1,409` bản ghi** (`0` ID thuộc tập test hay tập gán thử).
-- **Trạng thái Task 3.11:** Mã nguồn `models/llm_soft_labels.py` (kèm kiểm tra `EXPECTED_HEADLINES_SHA256`), bộ unit tests `tests/test_llm_soft_labels.py` và notebook Colab `notebooks/week3_transformer_and_soft_labels.ipynb` (đầy đủ 12 bước: kiểm tra GPU, cài đặt thư viện, mount Drive/upload file, kiểm tra SHA-256 & pool audit, nạp prompt `P2` & Qwen 4-bit, chạy inference có resume, kiểm tra toàn vẹn đầu ra, đóng gói `llm_soft_labels_results.zip`) đã hoàn tất 100% và sẵn sàng để TV3 bấm chạy trên Google Colab T4. *(Chưa tuyên bố hoàn tất dữ liệu đầu ra `results/llm_soft_labels/` cho tới khi phiên chạy GPU trên Colab T4 kết thúc và được tải về tích hợp).*
+- **Đối chiếu vị trí của 330 ID loại trừ trong `headlines.jsonl`:** Cả `30/30` ID gán thử và `300/300` ID test đều thuộc `pool == "test_candidate"` (`330` bản ghi). Giao giữa tập loại trừ (`330` ID) và `train_unlabeled` (`1,409` bản ghi) bằng **`0` ID**.
+- **Kết quả thực thi trên Google Colab Tesla T4 (`results/llm_soft_labels/run.json` & `p2_soft_labels.jsonl`):**
+  - **Mô hình & Prompt:** `Qwen/Qwen2.5-7B-Instruct` (`nf4-4bit`), prompt **`P2`** (đã chốt ở Tuần 2).
+  - **Số bản ghi đã chấm (`n_scored_total` / `n_newly_scored`):** **`1,409 / 1,409` bản ghi** (`100%` kho `train_unlabeled` hợp lệ).
+  - **Thời gian chạy (`elapsed_seconds`):** **`626.843` giây (~10.45 phút)** (`started_at_utc = 2026-11-22T16:27:55.847474+00:00`, `finished_at_utc = 2026-11-22T16:38:22.689991+00:00`).
+  - **Chất lượng phân phối logits chữ cái A/B/C:**
+    - `min_abc_mass`: **`0.9890`**
+    - `mean_abc_mass`: **`0.9998`**
+    - `share_top1_is_letter`: **`1.0000` (1,409 / 1,409 mẫu có top-1 token là A, B hoặc C)**.
+  - **Phân bố dự đoán trên 1,409 tiêu đề `train_unlabeled`:**
+    - Theo nhãn cứng (`argmax(probs)`): `bearish = 81` (`5.75%`), `neutral = 1,186` (`84.17%`), `bullish = 142` (`10.08%`).
+    - Theo xác suất mềm trung bình (`mean(probs)` theo thứ tự `["bearish", "neutral", "bullish"]`): **`[0.0548, 0.8449, 0.1003]`**.
+- **13 Kiểm tra Độc lập trên `results/llm_soft_labels/p2_soft_labels.jsonl` (`SHA-256: df036722...`):**
+  1. `headlines.jsonl` khớp `SHA-256: 28bd2f3d6c2622fb10a7b3d83399996aee1ca4e83e62efe2669e99fd4d9e988f`.
+  2. Đúng `1,409` bản ghi đầu vào hợp lệ thuộc `pool == "train_unlabeled"`.
+  3. File đầu ra chứa đúng `1,409` dòng JSONL.
+  4. Toàn bộ `1,409` ID đầu ra là duy nhất (`0` trùng lặp).
+  5. Tập ID đầu ra và thứ tự ID khớp 100% với tập `1,409` ID `train_unlabeled` hợp lệ.
+  6. Giao với `30` ID `trial30_ids.csv` và `300` ID test trong `assignment.csv` bằng **`0`**.
+  7. Mọi bản ghi có đúng 5 trường chuẩn: `{"id", "probs", "abc_mass", "top1_is_letter", "letter_logp"}`.
+  8. Mọi vector `probs` gồm đúng 3 số thực hữu hạn trong `[0, 1]`.
+  9. Sai số tổng xác suất lớn nhất `max(|sum(probs) - 1.0|) = 1.00e-06 ≤ 1e-3`.
+  10. Thứ tự lớp nhất quán `["bearish", "neutral", "bullish"]`, và `softmax(letter_logp)` khớp với `probs` (`max_diff = 5.64e-07`).
+  11. Giá trị `abc_mass` hợp lệ trên mọi dòng và khớp với `sum(exp(letter_logp))`; tính lại độc lập cho đúng `min_abc_mass = 0.989` và `mean_abc_mass = 0.9998`.
+  12. Tuyệt đối không có trường văn bản tiêu đề hay URL (`text`, `title`, `headline`, `url`, `article_id`, `source`) trong file dự đoán.
+  13. Toàn bộ thông số trong `run.json` khớp chính xác với dữ liệu tính lại từ `p2_soft_labels.jsonl`.
+- **Phân biệt rõ giữa Toàn vẹn Suy luận (Inference Integrity) và Chất lượng Nhãn Mềm Hạ nguồn (Downstream Soft-Label Quality):**
+  - Các kiểm tra trên chứng minh quá trình suy luận LLM `P2` trên 1,409 tiêu đề `train_unlabeled` đạt độ toàn vẹn kỹ thuật, không rò rỉ tập test/trial, và có xác suất tập trung gần như tuyệt đối vào 3 phương án A/B/C (`mean_abc_mass = 0.9998`).
+  - Vì kho `train_unlabeled` (nguồn GDELT) không có nhãn chuẩn của con người, việc kiểm tra toàn vẹn đầu ra **không** đồng nghĩa với việc đã chứng minh chất lượng phân loại của nhãn mềm. Hiệu quả thực sự của bộ nhãn mềm này sẽ được đánh giá ở **Tuần 4 (Sprint S2)** thông qua độ cải thiện `val_macro_f1` của mô hình chưng cất **`E6`** (KL-divergence với $T \in \{1, 2, 4\}$) và pseudo-label cứng **`E12`** so với mốc **`E5`** (`0.8030 ± 0.0054`).
 
 ### 4.3. Chuẩn bị Gói Đọc Gán nhãn Thủ công Đợt 1 cho Task 3.12 (`68` tiêu đề của TV3)
 - Từ `labeling/assignment.csv`, TV3 được phân công chính xác **`68` ID duy nhất ở Đợt 1 (`round == 1`)** (và `64` ID ở Đợt 2, tổng cộng `132` ID).
@@ -108,9 +133,9 @@ File `headlines.jsonl` (`1,193,922` bytes) đã được đặt tại `data/raw/
 ## 5. Kết quả Kiểm thử Tự động (Unit & Integration Tests)
 
 Đã thực thi toàn bộ các bộ kiểm thử liên quan đến TV3 và toàn bộ test không phụ thuộc PyTorch trên nhánh `tv3/week3`:
-- `python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data tests.test_stats tests.test_pick300 tests.test_simulate_power tests.test_audit_leakage_capacity tests.test_make_leakage tests.test_make_leakage_cli -v`: **31/31 tests PASS (`OK`)**
+- `python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data tests.test_stats tests.test_pick300 tests.test_simulate_power tests.test_audit_leakage_capacity tests.test_make_leakage tests.test_make_leakage_cli -v`: **32/32 tests PASS (`OK`)**
   - `tests.test_transformer` (6/6 PASS): Kiểm tra `E5.yaml` & `E7.yaml`, đóng băng encoder, lịch warmup, hợp đồng `write_preds`, và toàn vẹn 6 thư mục kết quả thực tế `results/E5/seed{1,2,3}` & `results/E7/seed{1,2,3}`.
-  - `tests.test_llm_soft_labels` (4/4 PASS): Kiểm tra nạp prompt `P2`, nạp đủ `330` ID loại trừ thực tế (`trial30_ids.csv` + `assignment.csv`), kiểm tra `SHA-256` và lọc đúng `1,409` bản ghi `train_unlabeled` trên file `data/raw/headlines_2026/headlines.jsonl` thật, từ chối mã băm sai, và kiểm tra JSONL đầu ra không chứa văn bản tiêu đề.
+  - `tests.test_llm_soft_labels` (5/5 PASS): Kiểm tra nạp prompt `P2`, nạp đủ `330` ID loại trừ thực tế (`trial30_ids.csv` + `assignment.csv`), kiểm tra `SHA-256` và lọc đúng `1,409` bản ghi `train_unlabeled` trên file `data/raw/headlines_2026/headlines.jsonl` thật, từ chối mã băm sai, kiểm tra JSONL đầu ra không chứa văn bản tiêu đề, và kiểm tra toàn vẹn bộ artifact thực tế `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` (`1,409` bản ghi).
   - `tests.test_metrics` (4/4 PASS), `tests.test_train_data` (6/6 PASS), và các bộ test tích hợp từ `main` (`test_stats`, `test_pick300`, `test_simulate_power`, `test_audit_leakage_capacity`, `test_make_leakage`, `test_make_leakage_cli`: 11/11 PASS).
 
 ---

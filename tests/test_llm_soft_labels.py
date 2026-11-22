@@ -129,6 +129,62 @@ class LlmSoftLabelsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_soft_label_row({"id": "u-1", "probs": [0.5, 0.6, 0.1]})
 
+    def test_integrated_p2_soft_labels_artifacts(self):
+        out_dir = Path("results/llm_soft_labels")
+        out_jsonl = out_dir / "p2_soft_labels.jsonl"
+        out_run = out_dir / "run.json"
+        self.assertTrue(out_jsonl.is_file(), f"Missing {out_jsonl}")
+        self.assertTrue(out_run.is_file(), f"Missing {out_run}")
+
+        run_meta = json.loads(out_run.read_text(encoding="utf-8"))
+        self.assertEqual(run_meta["prompt"], "P2")
+        self.assertEqual(run_meta["model"], "Qwen/Qwen2.5-7B-Instruct")
+        self.assertEqual(run_meta["quantization"], "nf4-4bit")
+        self.assertEqual(run_meta["label_order"], ["bearish", "neutral", "bullish"])
+        self.assertEqual(run_meta["n_scored_total"], 1409)
+        self.assertEqual(run_meta["n_newly_scored"], 1409)
+        self.assertEqual(
+            run_meta["pool_stats"]["headlines_sha256"],
+            EXPECTED_HEADLINES_SHA256,
+        )
+
+        excluded = load_excluded_ids()
+        self.assertEqual(len(excluded), 330)
+
+        preds = read_preds(out_jsonl)
+        self.assertEqual(len(preds), 1409)
+        self.assertTrue(excluded.isdisjoint(preds.keys()))
+
+        rows = [
+            json.loads(line)
+            for line in out_jsonl.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        self.assertEqual(len(rows), 1409)
+        masses = []
+        top1_flags = []
+        for row in rows:
+            validate_soft_label_row(row)
+            self.assertEqual(
+                set(row.keys()),
+                {"id", "probs", "abc_mass", "top1_is_letter", "letter_logp"},
+            )
+            self.assertEqual(len(row["letter_logp"]), 3)
+            masses.append(float(row["abc_mass"]))
+            top1_flags.append(bool(row["top1_is_letter"]))
+
+        self.assertEqual(round(min(masses), 4), run_meta["min_abc_mass"])
+        self.assertEqual(round(sum(masses) / len(masses), 4), run_meta["mean_abc_mass"])
+        self.assertEqual(round(sum(top1_flags) / len(top1_flags), 4), run_meta["share_top1_is_letter"])
+
+        if DEFAULT_HEADLINES.is_file():
+            eligible, _ = load_unlabeled_2026_pool(
+                DEFAULT_HEADLINES,
+                excluded_ids=excluded,
+                expected_sha256=EXPECTED_HEADLINES_SHA256,
+            )
+            self.assertEqual([r["id"] for r in rows], [hid for hid, _ in eligible])
+
 
 if __name__ == "__main__":
     unittest.main()
