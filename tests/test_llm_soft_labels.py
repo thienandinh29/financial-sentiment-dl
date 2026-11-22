@@ -23,7 +23,8 @@ class LlmSoftLabelsTests(unittest.TestCase):
         self.assertEqual(cfg["model"]["name"], "Qwen/Qwen2.5-7B-Instruct")
 
         excluded = load_excluded_ids()
-        self.assertEqual(len(excluded), 30)
+        # 30 trial IDs from labeling/trial30_ids.csv + 300 disjoint test IDs from labeling/assignment.csv
+        self.assertEqual(len(excluded), 330)
 
     def test_pool_filter_excludes_test_candidate_and_trial_or_test_ids(self):
         with tempfile.TemporaryDirectory() as tmp:

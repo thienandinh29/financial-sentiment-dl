@@ -29,18 +29,19 @@ DEFAULT_OUT_DIR = Path("results/llm_soft_labels")
 DEFAULT_EXCLUSION_FILES = (
     Path("labeling/trial30_ids.csv"),
     Path("labeling/test300_ids.csv"),
+    Path("labeling/assignment.csv"),
 )
 SELECTED_PROMPT_NAME = "P2"
 
 
 def load_excluded_ids(paths=DEFAULT_EXCLUSION_FILES) -> set:
-    """Read all headline IDs from trial30_ids.csv and test300_ids.csv (if present) to block test/trial leakage."""
+    """Read all headline IDs from trial30_ids.csv, test300_ids.csv, and assignment.csv to block test/trial leakage."""
     excluded = set()
     for p in paths:
         path = Path(p)
         if not path.is_file():
             continue
-        with open(path, encoding="utf-8", newline="") as f:
+        with open(path, encoding="utf-8-sig", newline="") as f:
             reader = csv.DictReader(f)
             if not reader.fieldnames or "id" not in reader.fieldnames:
                 raise ValueError(f"Exclusion CSV '{path}' must have an 'id' column")
