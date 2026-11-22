@@ -1,0 +1,35 @@
+{
+  "completed_at_utc": "2026-11-22T12:19:07.368934+00:00",
+  "commit": "16e44bada911d01688f3a6808293eb235e3cbf90",
+  "working_tree_dirty": true,
+  "seed": 2026,
+  "python": "3.11.9",
+  "gpu": null,
+  "config": {
+    "input": "data/raw/headlines.jsonl",
+    "excluded_trial_ids": 30,
+    "selected_ids": 300,
+    "double_annotated": 100,
+    "assignment_counts": {
+      "tv1": [
+        69,
+        65
+      ],
+      "tv2": [
+        68,
+        66
+      ],
+      "tv3": [
+        68,
+        64
+      ]
+    }
+  },
+  "sha256": {
+    "data/raw/headlines.jsonl": "28bd2f3d6c2622fb10a7b3d83399996aee1ca4e83e62efe2669e99fd4d9e988f",
+    "labeling/trial30_ids.csv": "f14afbe0f7d76836799ad134807b4140ff58f0db4baa4dcde1d494232c7d4f79",
+    "labeling/test300_ids.csv": "c8280422226832e9445b3bc46c572ac96a3b9275059a44e0685c210b432f508f",
+    "labeling/assignment.csv": "0cade538d64eac3035af49d34ab703fe96bc66aeb24c8409df363fb54e80970d",
+    "scripts/pick300.py": "54b9df354ba5671a584ab386f3ecffd78cb7cedc1f43226b652d9e3a818275ea"
+  }
+}
