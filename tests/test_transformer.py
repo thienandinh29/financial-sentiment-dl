@@ -126,6 +126,46 @@ class TransformerConfigAndFreezingTests(unittest.TestCase):
             self.assertEqual(scored["macro_f1"], round((1.0 + 0.0 + 1.0) / 3, 4))
             self.assertAlmostEqual(macro_f1_np([0, 2], [0, 2]), 2.0 / 3.0, places=4)
 
+    def test_integrated_e5_and_e7_results_artifacts(self):
+        expected_macros = {
+            ("E5", 1): 0.7968,
+            ("E5", 2): 0.8053,
+            ("E5", 3): 0.8068,
+            ("E7", 1): 0.5939,
+            ("E7", 2): 0.5898,
+            ("E7", 3): 0.5901,
+        }
+        reference_ids = None
+        for (exp, seed), exp_f1 in expected_macros.items():
+            seed_dir = Path("results") / exp / f"seed{seed}"
+            run_path = seed_dir / "run.json"
+            pred_path = seed_dir / "preds_validation.jsonl"
+            self.assertTrue(run_path.is_file(), f"Missing {run_path}")
+            self.assertTrue(pred_path.is_file(), f"Missing {pred_path}")
+
+            run_data = json.loads(run_path.read_text(encoding="utf-8"))
+            self.assertEqual(run_data["config"]["experiment"], exp)
+            self.assertEqual(run_data["seed"], seed)
+            self.assertEqual(
+                run_data["config"]["data"]["split_sha256"],
+                "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa",
+            )
+            self.assertEqual(run_data["model_stats"]["total_params"], 66955779)
+            if exp == "E5":
+                self.assertEqual(run_data["model_stats"]["trainable_params"], 66955779)
+                self.assertEqual(run_data["model_stats"]["frozen_params"], 0)
+            else:
+                self.assertEqual(run_data["model_stats"]["trainable_params"], 592899)
+                self.assertEqual(run_data["model_stats"]["frozen_params"], 66362880)
+            self.assertEqual(round(float(run_data["val_macro_f1"]), 4), exp_f1)
+
+            preds = read_preds(pred_path)
+            self.assertEqual(len(preds), 1791)
+            if reference_ids is None:
+                reference_ids = set(preds.keys())
+            else:
+                self.assertEqual(set(preds.keys()), reference_ids)
+
 
 if __name__ == "__main__":
     unittest.main()

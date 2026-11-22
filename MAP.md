@@ -52,7 +52,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `notebooks/` | Notebook thiết lập Colab (`notebooks/colab_setup.ipynb`), đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`), và chạy E5/E7 + nhãn mềm P2 (`notebooks/week3_transformer_and_soft_labels.ipynb`) | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt); `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
-| `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`) | Cả nhóm |
+| `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`); `results/E5/seed{1,2,3}/` và `results/E7/seed{1,2,3}/` (`run.json`, `preds_validation.jsonl`) | Cả nhóm |
 | `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md`–`WEEK3.md` việc chi tiết + checkpoint từng tuần; `guides/` hướng dẫn từng bước cho từng thành viên; `meetings/` chương trình + bộ câu hỏi họp "hiểu bài"; `WEEK1.md`, `WEEK2.md` việc chi tiết + checkpoint từng tuần | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
 
@@ -87,6 +87,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 
 - `configs/E5.yaml` and `configs/E7.yaml`: DistilBERT fine-tune (`freeze_encoder: false`) and frozen-encoder (`freeze_encoder: true`) experiment configs on `cluster_split.jsonl` (`8c2c35ea...`).
 - `models/transformer.py` and `tests/test_transformer.py`: Transformer training/evaluation runner (weighted CE, AdamW `lr=2e-5`, linear warmup 10%, weight decay 0.01, FP16 AMP, early stopping on `val_macro_f1`) and unit tests.
+- `results/E5/seed{1,2,3}/{run.json,preds_validation.jsonl}` and `results/E7/seed{1,2,3}/{run.json,preds_validation.jsonl}`: Three-seed Tesla T4 validation outputs (1,791 records per file) for full fine-tuning (`E5`: `0.8030 ± 0.0054` Macro-F1) and frozen-encoder training (`E7`: `0.5913 ± 0.0023` Macro-F1).
 - `models/llm_soft_labels.py` and `tests/test_llm_soft_labels.py`: resumable P2 soft-label generator for the 2026 `train_unlabeled` pool with strict `trial30_ids.csv` and `test300_ids.csv` exclusion guards and text-free output validation.
 - `notebooks/week3_transformer_and_soft_labels.ipynb`: Colab T4 execution notebook for Tasks 3.9 (`E5`), 3.10 (`E7`), and 3.11 (`P2` soft labels).
-- `results/rq3_week3_contribution_report.md`: TV3 Week 3 implementation, test verification, and AI transparency report.
+- `results/rq3_week3_contribution_report.md`: TV3 Week 3 implementation, E5/E7 3-seed validation results, independent verification, and AI transparency report.

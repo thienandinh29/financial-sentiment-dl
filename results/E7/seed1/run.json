@@ -1,0 +1,98 @@
+{
+  "commit": "a53d3882912196badc984d0b70d6218a61c40bb6",
+  "working_tree_dirty": true,
+  "config": {
+    "experiment": "E7",
+    "rq": "RQ3",
+    "data": {
+      "dataset": "zeroshot/twitter-financial-news-sentiment",
+      "split_file": "data/splits/cluster_split.jsonl",
+      "split_sha256": "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa",
+      "max_len": 64
+    },
+    "model": {
+      "name": "transformer",
+      "pretrained_name": "distilbert/distilbert-base-uncased",
+      "num_labels": 3,
+      "dropout": 0.3,
+      "freeze_encoder": true
+    },
+    "train": {
+      "loss": "weighted_ce",
+      "optimizer": "adamw",
+      "lr": 2e-05,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "batch_size": 32,
+      "max_epochs": 4,
+      "grad_clip": 1.0,
+      "early_stopping": {
+        "metric": "val_macro_f1",
+        "patience": 3
+      },
+      "mixed_precision": true
+    },
+    "seeds": [
+      1,
+      2,
+      3
+    ]
+  },
+  "seed": 1,
+  "python": "3.13.16",
+  "libraries": {
+    "torch": "2.14.1+cu130",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.3",
+    "transformers": "5.20.2"
+  },
+  "gpu": "Tesla T4",
+  "started_at_utc": "2026-11-22T15:02:56.822233+00:00",
+  "finished_at_utc": "2026-11-22T15:03:28.554874+00:00",
+  "elapsed_seconds": 31.733,
+  "label_order": [
+    "bearish",
+    "neutral",
+    "bullish"
+  ],
+  "model_stats": {
+    "freeze_encoder": true,
+    "total_params": 66955779,
+    "trainable_params": 592899,
+    "frozen_params": 66362880
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.0785363056742798,
+      "val_loss": 1.0376667513120514,
+      "val_macro_f1": 0.5746448591501793,
+      "seconds": 6.919
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.0250030600292153,
+      "val_loss": 0.984234259555887,
+      "val_macro_f1": 0.5830895116462997,
+      "seconds": 6.941
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.9899311877179394,
+      "val_loss": 0.9481966034917443,
+      "val_macro_f1": 0.5936078411467974,
+      "seconds": 6.877
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.9747018740411033,
+      "val_loss": 0.9368799372400937,
+      "val_macro_f1": 0.5939391774829931,
+      "seconds": 6.922
+    }
+  ],
+  "best_epoch": 4,
+  "val_macro_f1": 0.5939391774829931,
+  "peak_gpu_mem_gb": 0.363
+}
