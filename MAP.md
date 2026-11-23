@@ -73,6 +73,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `data/raw/headlines_2026/trial30_to_read.txt`, `trial30_blank.csv`: local-only reading copy and blank annotation template for the 30 trial IDs.
 - `labeling/llm_annotations/`: LLM-made labels kept for the record, **not gold** (see its `README.md`): `trial/tv1.csv`, `tv2.csv`, `tv3.csv` (trial 30), `trial_agreement.json` and `trial_adjudication.csv` (computed from those files), `round1/tv3.csv` (68 test headlines). Not to be opened while hand-labeling or compared with gold before week 6.
 - `labeling/gold/`: human gold labels (`id,label,reason`), hand-labeled without AI.
+- `tests/test_gold_labels.py`: checks every `labeling/gold/<annotator>_round<k>.csv` against `assignment.csv`.
 
 ## Week 2 TV3 files
 
