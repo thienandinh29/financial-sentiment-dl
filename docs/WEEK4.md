@@ -26,7 +26,7 @@ Quy tắc nhắc lại: chỉ chấm **validation**; không ai chạy test trư�
 | CP6a | **Thứ Tư 25/11**, tối, 30 phút | Thiết kế E10 chốt và ghi `context/decisions.md`; buổi gán đôi trực tiếp đã hẹn; TV1, TV3 sửa báo cáo đóng góp ghi sai "gán tay"; config E3, E4, E6, E12 đã commit |
 | CP6 ◆ | **Thứ Sáu 27/11**, tối | E3, E4, E6, E12 trên validation (3 seed); dữ liệu E10 + test; E0 chạy lại từ commit sạch; gold ≥ 180/300; bản nháp phần phương pháp (chương 2–3) |
 
-## Quyết định cần chốt ở CP6a: thiết kế E10
+## Quyết định thiết kế E10 — ✅ đã chốt Phương án A (23/11, xem `context/decisions.md`)
 
 | Phương án | Cách làm | Ưu | Nhược |
 | --- | --- | --- | --- |
@@ -49,8 +49,8 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 
 | # | Việc | Đầu ra | Xong khi | CP |
 | --- | --- | --- | --- | --- |
-| 2.15 | E3, E4 config + chạy 3 seed | `configs/E3.yaml`, `configs/E4.yaml`, `results/E3`, `results/E4` | Mỗi config copy E2, đổi đúng một dòng; chạy từ commit sạch | CP6 |
-| 2.17 | Bảng RQ2 tạm cập nhật | `results/rq2_validation.md` | Thêm E3, E4; bootstrap ghép cặp E2–E3, E2–E4 trên validation (chỉ theo dõi) | CP6 |
+| 2.15 | E3, E4 config + chạy 3 seed | `configs/E3.yaml`, `configs/E4.yaml`, `results/E3`, `results/E4` | Mỗi config copy E2, đổi đúng một dòng; chạy từ commit sạch | ✅ 23/11 (commit `277fc66`, sạch) |
+| 2.17 | Bảng RQ2 tạm cập nhật | `results/rq2_validation.md` | Thêm E3, E4; bootstrap ghép cặp E2–E3, E2–E4 trên validation (chỉ theo dõi) | ✅ 23/11 |
 | 2.18 | Gold: gán tay tiêu đề 69–300 | `labeling/gold/` | ≥ 180/300 trước 27/11, đủ 300 trước 04/12 | CP6 |
 | 2.19 | Chuẩn bị E13 | `configs/E13.yaml` | Copy E2, chỉ đổi `loss: focal` (γ = 2); có test cho focal loss | CP6 |
 | 2.20 | Nháp chương 2 (RNN/CNN/attention) | `report/ch2_rnn_cnn.md` | TextCNN, BiLSTM, attention, cách huấn luyện chung | CP6 |
@@ -83,7 +83,7 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 ## Biên bản checkpoint
 
 ### CP6a — Thứ Tư 25/11
-- [ ] Thiết kế E10 chốt, ghi `context/decisions.md`
+- [x] Thiết kế E10 chốt (Phương án A, 23/11), ghi `context/decisions.md`
 - [ ] Buổi gán đôi trực tiếp đã hẹn
 - [ ] 1.18, 3.15 (sửa ghi chép gán nhãn)
 - [ ] Config E3, E4, E6, E12 đã commit
