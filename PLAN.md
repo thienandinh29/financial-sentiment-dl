@@ -45,7 +45,7 @@ Chi tiết, hợp đồng chung và checkpoint CP2 (bù)–CP4: [docs/WEEK2.md](
 - [ ] TV1: phân cụm, kiểm tra 100 cặp, split + SHA-256; baseline E0
 - [ ] TV2: vòng huấn luyện chung (seed, config, log, early stopping)
 - [x] TV3: prompt A/B/C, kiểm tra top-10 logits; khung đánh giá chung — `evaluate/metrics.py`, `tests/test_metrics.py`, `configs/llm_prompts.yaml`, `notebooks/llm_prompts.ipynb`, `results/E11/{P1,P2,P3}/preds_validation.jsonl`, `results/llm_prompts/top10_check.json` (chốt `P2` với validation `macro_f1 = 0.7934`)
-- [x] Cả nhóm: gán thử 30 tiêu đề, sửa hướng dẫn
+- [ ] Cả nhóm: gán thử 30 tiêu đề, sửa hướng dẫn — bỏ đánh dấu 23/11: nhãn gán thử do LLM tạo, chuyển sang `labeling/llm_annotations/`
 
 - [x] TV1: selected 30 trial IDs (seed 2026); see `labeling/trial30_ids.csv`.
 - [ ] TV1: share the IDs and exclude them when selecting the final 2026 test set.
@@ -57,7 +57,7 @@ Chi tiết theo lịch bù (S1, đến 20/11): [docs/WEEK3.md](docs/WEEK3.md).
 - [ ] TV1: bootstrap, McNemar, mô phỏng mức chênh phát hiện được
 - [x] TV2: TextCNN (E1), BiLSTM-Attention (E2) trên validation — Macro-F1 validation E1 0,755 ± 0,005, E2 0,758 ± 0,010 (3 seed; `results/rq2_validation.md`)
 - [ ] TV3: DistilBERT (E5), đóng băng (E7)
-- [ ] Cả nhóm: gán nhãn đợt 1 (~70 nhãn/người)
+- [ ] Cả nhóm: gán nhãn đợt 1 (~70 nhãn/người) — 23/11: nhãn của TV1, TV3 do LLM tạo, không dùng; TV2 gán tay toàn bộ 300 tiêu đề vào `labeling/gold/`
 
 ## Tuần 4 (12–18/11)
 
