@@ -53,7 +53,7 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 | 2.17 | Bảng RQ2 tạm cập nhật | `results/rq2_validation.md` | Thêm E3, E4; bootstrap ghép cặp E2–E3, E2–E4 trên validation (chỉ theo dõi) | ✅ 23/11 |
 | 2.18 | Gold: gán tay tiêu đề 69–300 | `labeling/gold/` | ≥ 180/300 trước 27/11, đủ 300 trước 04/12 | CP6 |
 | 2.19 | Chuẩn bị E13 | `configs/E13.yaml` | Copy E2, chỉ đổi `loss: focal` (γ = 2); có test cho focal loss | ✅ 23/11 (8 test trong `tests/test_losses.py`); đã chạy 3 seed: 0,7538 ± 0,0088 |
-| 2.20 | Nháp chương 2 (RNN/CNN/attention) | `report/ch2_rnn_cnn.md` | TextCNN, BiLSTM, attention, cách huấn luyện chung | CP6 |
+| 2.20 | Nháp chương 2 (RNN/CNN/attention) | `report/ch2_rnn_cnn.md` | TextCNN, BiLSTM, attention, cách huấn luyện chung | ✅ 23/11 (bản nháp) |
 
 ## TV3 — Transformer & LLM
 
