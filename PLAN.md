@@ -61,6 +61,8 @@ Chi tiết theo lịch bù (S1, đến 20/11): [docs/WEEK3.md](docs/WEEK3.md).
 
 ## Tuần 4 (12–18/11)
 
+Chi tiết theo lịch bù (S2, đến 27/11), kèm thiết kế lại E10 và kế hoạch gán nhãn gold: [docs/WEEK4.md](docs/WEEK4.md).
+
 - [ ] TV1: tạo dữ liệu rò rỉ 5/10/20%
 - [ ] TV2: ablation E3, E4 (3 seed)
 - [ ] TV3: LLM nhãn mềm ~3k tiêu đề; E6, E12
