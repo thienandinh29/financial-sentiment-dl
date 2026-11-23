@@ -71,9 +71,8 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 
 - `labeling/trial30_ids.csv`: 30 trial IDs and URLs sampled from the 2026 candidate pool; exclude these IDs when selecting the final test set.
 - `data/raw/headlines_2026/trial30_to_read.txt`, `trial30_blank.csv`: local-only reading copy and blank annotation template for the 30 trial IDs.
-- `labeling/trial/tv1.csv`, `tv2.csv`, `tv3.csv`: independent human trial annotations (30 IDs, labels and reasons per file).
-- `labeling/trial_agreement.json`: pairwise human trial agreement, Cohen kappa and disagreement IDs.
-- `labeling/trial_adjudication.csv`: group conclusions for the five disputed trial IDs; original independent labels remain unchanged.
+- `labeling/llm_annotations/`: LLM-made labels kept for the record, **not gold** (see its `README.md`): `trial/tv1.csv`, `tv2.csv`, `tv3.csv` (trial 30), `trial_agreement.json` and `trial_adjudication.csv` (computed from those files), `round1/tv3.csv` (68 test headlines). Not to be opened while hand-labeling or compared with gold before week 6.
+- `labeling/gold/`: human gold labels (`id,label,reason`), hand-labeled without AI.
 
 ## Week 2 TV3 files
 
@@ -90,7 +89,6 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `results/E5/seed{1,2,3}/{run.json,preds_validation.jsonl}` and `results/E7/seed{1,2,3}/{run.json,preds_validation.jsonl}`: Three-seed Tesla T4 validation outputs (1,791 records per file) for full fine-tuning (`E5`: `0.8030 ± 0.0054` Macro-F1) and frozen-encoder training (`E7`: `0.5913 ± 0.0023` Macro-F1).
 - `models/llm_soft_labels.py` and `tests/test_llm_soft_labels.py`: resumable P2 soft-label generator for the 2026 `train_unlabeled` pool (`1,409` eligible GDELT headlines from `data/raw/headlines_2026/headlines.jsonl`, `SHA-256: 28bd2f3d...`) with strict SHA-256 verification, `trial30_ids.csv` (`30` IDs), `test300_ids.csv`, and `assignment.csv` (`300` IDs) exclusion guards (`330` excluded IDs total), and text-free output validation.
 - `results/llm_soft_labels/{p2_soft_labels.jsonl,run.json}`: Completed Colab T4 `Qwen/Qwen2.5-7B-Instruct` (`nf4-4bit`, prompt `P2`) soft-label predictions (`1,409` text-free records with `probs`, `letter_logp`, `abc_mass`, `top1_is_letter`; `min_abc_mass = 0.989`, `mean_abc_mass = 0.9998`, `share_top1_is_letter = 1.0`).
-- `labeling/round1/tv3.csv`: TV3's completed Round 1 independent human annotations (`68` rows matching `labeling/assignment.csv` for `annotator=tv3, round=1`; columns `id,label,reason` with no headline text).
 - `notebooks/week3_transformer_and_soft_labels.ipynb`: Colab T4 execution notebook for Tasks 3.9 (`E5`), 3.10 (`E7`), and 3.11 (`P2` soft labels with SHA-256 check, resumable execution, integrity verification, and zip export).
 - `results/rq3_week3_contribution_report.md`: TV3 Week 3 implementation, E5/E7 3-seed validation results, completed Task 3.11 P2 soft-label validation, completed Task 3.12 Round 1 human labeling audit, and AI transparency report.
 

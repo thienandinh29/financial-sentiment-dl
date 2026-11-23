@@ -57,6 +57,15 @@ khác, không dùng AI.
 | 3.11 | Nhãn mềm LLM với prompt P2 (bắt đầu) | `results/llm_soft_labels/` (ID + xác suất, không văn bản) | Chạy qua đêm trên kho `train_unlabeled`; không bao giờ trên 300 tiêu đề test hay 30 tiêu đề gán thử | S2 |
 | 3.12 | Gán nhãn đợt 1 | `labeling/round1/tv3.csv` | ~70 nhãn, tự gán, không AI | CP5 |
 
+## Sự cố nhãn LLM (23/11)
+
+Nhãn gán thử 30 tiêu đề (cả ba người) và nhãn đợt 1 của TV1, TV3 được tạo bằng LLM. Chúng đã chuyển sang
+`labeling/llm_annotations/` và **không** phải nhãn gold (xem `context/decisions.md`). Thay đổi:
+
+- 2.16 và 3.12 chưa xong. TV2 tự gán tay toàn bộ 300 tiêu đề test vào `labeling/gold/`, hạn khóa nhãn vẫn là **04/12**.
+- 100 tiêu đề gán đôi cần một người thứ hai gán tay (thành viên gán trực tiếp khi có mặt nhóm, hoặc người ngoài đã đọc GUIDE).
+- Không mở file trong `labeling/llm_annotations/` khi gán tay; không so với gold trước tuần 6.
+
 ## Phụ thuộc
 
 - PR #10 (split) vào `main` → E0 chính thức và mọi kết quả khác được tính là kết quả thật.

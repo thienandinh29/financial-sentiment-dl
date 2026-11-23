@@ -48,7 +48,9 @@
 
 Nhóm thống nhất chỉ xét sentiment tài chính có thể suy ra từ tiêu đề, không dùng nội dung bài báo. Khi tiêu đề nhắc nhiều chủ thể hoặc nhiều hướng, cần xác định thông điệp chính trước khi gán. Không tự suy thêm kết quả tài chính từ một sản phẩm hoặc ý định mở rộng khi tiêu đề chưa thể hiện rõ.
 
-Trong năm trường hợp bất đồng, nhóm chốt: cơ hội bán hàng của Nvidia là `bullish`; tin về sản phẩm VW Bus là `neutral`; nhận định so sánh cuộc đua AI Trung Quốc–Mỹ là `neutral`; khuyến nghị mua cổ phiếu của Goldman Sachs là `bullish`; ý định mở rộng của ngành cá cược thể thao vào quỹ là `neutral`. Các kết luận này và ID tương ứng được lưu trong `labeling/trial_adjudication.csv`; không chép văn bản tiêu đề vào repo.
+Trong năm trường hợp bất đồng, nhóm chốt: cơ hội bán hàng của Nvidia là `bullish`; tin về sản phẩm VW Bus là `neutral`; nhận định so sánh cuộc đua AI Trung Quốc–Mỹ là `neutral`; khuyến nghị mua cổ phiếu của Goldman Sachs là `bullish`; ý định mở rộng của ngành cá cược thể thao vào quỹ là `neutral`. Các kết luận này và ID tương ứng được lưu trong `labeling/llm_annotations/trial_adjudication.csv`; không chép văn bản tiêu đề vào repo.
+
+> **Lưu ý (23/11/2026):** nhãn gán thử 30 tiêu đề của cả ba người được tạo bằng LLM, không phải gán tay (xem `context/decisions.md`). Vì vậy kappa gán thử và năm kết luận phân xử ở trên **không phải** bằng chứng về sự đồng ý của con người. Các quy tắc trong mục này vẫn giữ làm hướng dẫn, nhưng phải kiểm tra lại bằng nhãn gán tay.
 
 ## Ví dụ mẫu
 

@@ -185,10 +185,10 @@ class LlmSoftLabelsTests(unittest.TestCase):
             )
             self.assertEqual([r["id"] for r in rows], [hid for hid, _ in eligible])
 
-    def test_tv3_round1_human_labeling_csv_contract(self):
+    def test_tv3_round1_llm_annotation_csv_contract(self):
         import csv
 
-        round1_path = Path("labeling/round1/tv3.csv")
+        round1_path = Path("labeling/llm_annotations/round1/tv3.csv")
         assign_path = Path("labeling/assignment.csv")
         self.assertTrue(round1_path.is_file(), f"Missing {round1_path}")
         self.assertTrue(assign_path.is_file(), f"Missing {assign_path}")
@@ -204,7 +204,7 @@ class LlmSoftLabelsTests(unittest.TestCase):
             hid = (r.get("id") or "").strip()
             lbl = (r.get("label") or "").strip()
             reason = (r.get("reason") or "").strip()
-            self.assertTrue(hid, "Empty ID in labeling/round1/tv3.csv")
+            self.assertTrue(hid, "Empty ID in labeling/llm_annotations/round1/tv3.csv")
             self.assertIn(lbl, {"bearish", "neutral", "bullish"})
             self.assertTrue(reason, f"Empty reason for ID {hid}")
             ids.append(hid)
