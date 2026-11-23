@@ -46,7 +46,7 @@ khác, không dùng AI.
 | 2.13 | E2 BiLSTM-Attention, 3 seed | `results/E2/seed{1,2,3}/` | Như trên | ✅ 17/11 |
 | 2.14 | Bảng RQ2 tạm (validation) | `results/rq2_validation.md` | Trung bình ± độ lệch chuẩn qua 3 seed cho E1, E2 (và E0 khi TV1 có) | ✅ 17/11 (E0 chờ TV1) |
 | 2.15 | Chuẩn bị E3, E4 | `configs/E3.yaml`, `configs/E4.yaml` | Mỗi file copy E2, đổi đúng một dòng (pooling `max`; embedding `random`) | S2 |
-| 2.16 | Gán nhãn đợt 1 | `labeling/round1/tv2.csv` | ~70 nhãn, tự gán, không AI | CP5 |
+| 2.16 | Gán nhãn đợt 1 | `labeling/gold/tv2_round1.csv` | ~70 nhãn, tự gán, không AI | ✅ 23/11 (68 nhãn gán tay) |
 
 ## TV3 — Transformer & LLM
 
