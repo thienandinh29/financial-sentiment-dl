@@ -1,0 +1,32 @@
+# E4 — BiLSTM-Attention with random embeddings instead of GloVe (RQ2 ablation). Copy of E2.yaml with exactly one change (marked CHANGED).
+experiment: E4
+rq: RQ2
+
+data:
+  dataset: zeroshot/twitter-financial-news-sentiment
+  split_file: data/splits/cluster_split.jsonl   # frozen in week 2, checked by SHA-256
+  split_sha256: 8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa  # frozen split (PR #10, merged 20/11)
+  max_len: 64
+
+model:
+  name: bilstm_attention
+  embedding: random                 # CHANGED from E2: glove.6B.100d
+  embedding_trainable: true
+  hidden_size: 128
+  num_layers: 2
+  bidirectional: true
+  pooling: attention                # E3: max
+  dropout: 0.3
+
+train:
+  loss: weighted_ce                 # E13: focal (gamma 2)
+  optimizer: adam
+  lr: 1.0e-3
+  batch_size: 64
+  max_epochs: 20
+  early_stopping:
+    metric: val_macro_f1
+    patience: 3
+  mixed_precision: true
+
+seeds: [1, 2, 3]

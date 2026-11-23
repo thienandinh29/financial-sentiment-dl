@@ -46,7 +46,7 @@ Cụm gần trùng: Jaccard shingle từ ≥ 0.75 (MinHash LSH) hoặc cosine `a
 | E7 | Encoder đóng băng | E5 | RQ3 | 3 |
 | E8 | FinBERT | E5 | RQ3 | 3 |
 | E9 | Split ngẫu nhiên (E2, E5) | E2, E5 | RQ1 | 3 |
-| E10 | Rò rỉ 5/10/20% (E2, E5) | E2, E5 | RQ1 | 3 |
+| E10 | Rò rỉ 5/10/20% ID validation vào train (gần trùng trước, sau đó bản sao chính xác; đo trên validation, test không đổi — quyết định 23/11) (E2, E5) | E2, E5 | RQ1 | 3 |
 | E11 | LLM zero-shot (Qwen2.5-7B 4-bit) | — | tham chiếu | 1 |
 | E12 | + nhãn cứng LLM | E5 | RQ3 | 3 |
 

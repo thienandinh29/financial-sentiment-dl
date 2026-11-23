@@ -61,8 +61,10 @@ Chi tiết theo lịch bù (S1, đến 20/11): [docs/WEEK3.md](docs/WEEK3.md).
 
 ## Tuần 4 (12–18/11)
 
-- [ ] TV1: tạo dữ liệu rò rỉ 5/10/20%
-- [ ] TV2: ablation E3, E4 (3 seed)
+Chi tiết theo lịch bù (S2, đến 27/11), kèm thiết kế lại E10 và kế hoạch gán nhãn gold: [docs/WEEK4.md](docs/WEEK4.md).
+
+- [ ] TV1: tạo dữ liệu rò rỉ 5/10/20% — thiết kế lại 23/11: rò rỉ vào validation (Phương án A, `context/decisions.md`)
+- [x] TV2: ablation E3, E4 (3 seed) — validation E3 0,757 ± 0,007, E4 0,706 ± 0,011 (E2 0,758); `results/rq2_validation.md`, commit chạy `277fc66`
 - [ ] TV3: LLM nhãn mềm ~3k tiêu đề; E6, E12
 - [ ] Cả nhóm: gán nhãn đợt 2 (~65 nhãn/người)
 
