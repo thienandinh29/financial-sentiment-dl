@@ -17,6 +17,7 @@ Chi tiết từng lần chạy (config, seed, phiên bản thư viện, đườn
 | E2 BiLSTM-Attention | 0,7629 | 0,7658 | 0,7466 | **0,7584 ± 0,0103** | 18 / 9 / 8 | 5–10 phút |
 | E3 BiLSTM + max-pooling (bỏ attention) | 0,7512 | 0,7651 | 0,7547 | **0,7570 ± 0,0072** | 7 / 9 / 10 | ~6 phút |
 | E4 BiLSTM-Attention + embedding ngẫu nhiên (bỏ GloVe) | 0,7161 | 0,6948 | 0,7075 | **0,7061 ± 0,0107** | 7 / 5 / 6 | ~4–5 phút |
+| E13 BiLSTM-Attention + focal loss (γ = 2) | 0,7571 | 0,7604 | 0,7438 | **0,7538 ± 0,0088** | 11 / 9 / 7 | ~6–9 phút |
 
 ## Ghi chú
 
@@ -51,3 +52,20 @@ E3, E4 chạy ngày 23/11 trên CPU, commit `277fc66` (cây làm việc sạch),
   dấu chênh đổi theo seed. McNemar p < 0,05 ở seed 1 và 3 nhưng ngược chiều nhau, nghĩa là hai mô hình sai ở các tweet
   khác nhau chứ không phải một mô hình tốt hơn.
 - Đây là validation, chỉ để theo dõi; kết luận RQ2 dựa trên test ở tuần 6.
+
+## E13 (focal loss) so với E2 (validation, 23/11)
+
+E13 chạy ngày 23/11 trên CPU, commit `07d1606` (cây làm việc sạch); copy E2, chỉ đổi loss `weighted_ce` → `focal`
+(γ = 2, cùng trọng số lớp tính trên train). So ghép cặp theo seed như trên.
+
+| Seed | Chênh Macro-F1 (E13 − E2) | CI 95% bootstrap | McNemar p |
+| --- | --- | --- | --- |
+| 1 | −0,0058 | [−0,0209; 0,0092] | 1,000 |
+| 2 | −0,0054 | [−0,0184; 0,0085] | 0,914 |
+| 3 | −0,0028 | [−0,0162; 0,0114] | 0,250 |
+
+F1 từng lớp (trung bình 3 seed), bearish / neutral / bullish: E2 0,675 / 0,869 / 0,732; E13 0,657 / 0,875 / 0,730.
+
+- **Focal loss không giúp trên validation:** thấp hơn E2 khoảng 0,005, CI của cả ba seed chứa 0. Lớp thiểu số bearish
+  còn giảm nhẹ, nên kỳ vọng "focal giúp lớp hiếm" không thấy ở đây — có thể vì weighted CE đã cân bằng lớp.
+- Giữ E2 (weighted CE) làm cấu hình chính; E13 vẫn báo cáo đầy đủ (quy tắc 6).

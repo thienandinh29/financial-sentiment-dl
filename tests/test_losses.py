@@ -35,6 +35,21 @@ class LossTest(unittest.TestCase):
         ce = nn.CrossEntropyLoss()(easy, torch.tensor([0]))
         self.assertLess(FocalLoss(gamma=2)(easy, torch.tensor([0])).item(), ce.item() / 100)
 
+    def test_weighted_focal_hand_value(self):
+        # Two samples, logits [0, 0, 0] -> p_y = 1/3, per-sample loss L = (2/3)^2 * log 3.
+        # Weights w_0 = 2, w_2 = 0.5: (2 L + 0.5 L) / (2 + 0.5) = L.
+        # Sample 2 has logits [0, 0, log 2] for target 2 -> p_y = 1/2, loss (1/2)^2 * log 2.
+        weight = torch.tensor([2.0, 1.0, 0.5])
+        logits = torch.tensor([[0.0, 0.0, 0.0], [0.0, 0.0, math.log(2)]])
+        loss = FocalLoss(gamma=2, weight=weight)(logits, torch.tensor([0, 2]))
+        expected = (2 * (2 / 3) ** 2 * math.log(3) + 0.5 * 0.25 * math.log(2)) / 2.5
+        self.assertAlmostEqual(loss.item(), expected, places=6)
+
+    def test_build_loss_passes_gamma(self):
+        loss = build_loss("focal", [0, 1, 2, 2], gamma=3.0)
+        self.assertEqual(loss.gamma, 3.0)
+        torch.testing.assert_close(loss.weight, class_weights([0, 1, 2, 2]))
+
     def test_build_loss_names(self):
         labels = [0, 1, 2, 2]
         self.assertIsNone(build_loss("ce", labels).weight)

@@ -41,7 +41,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | --- | --- | --- |
 | `plan/` | Checklist TV1: `plan_tv1_week2.md` và `plan_tv1_week3.md` | TV1 |
 | `context/` | Quyết định đã chốt và lý do (`decisions.md`) | Cả nhóm |
-| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN); `E3.yaml` (BiLSTM max-pooling), `E4.yaml` (embedding ngẫu nhiên); `E5.yaml` (DistilBERT fine-tune); `E7.yaml` (DistilBERT đóng băng encoder) | Theo RQ |
+| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN); `E3.yaml` (BiLSTM max-pooling), `E4.yaml` (embedding ngẫu nhiên), `E13.yaml` (focal loss); `E5.yaml` (DistilBERT fine-tune); `E7.yaml` (DistilBERT đóng băng encoder) | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
 | `models/` | TextCNN, BiLSTM-Attention, Transformer (`transformer.py` cho E5, E7, E8), nhãn mềm LLM (`llm_soft_labels.py`), chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN; `registry.py` tên mô hình → hàm dựng; `textcnn.py` (E1); `bilstm_attention.py` (E2, E3) | TV2, TV3 |

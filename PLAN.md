@@ -71,7 +71,7 @@ Chi tiết theo lịch bù (S2, đến 27/11), kèm thiết kế lại E10 và k
 ## Tuần 5 (19–25/11) ◆ kappa xong, nhãn test 2026 chốt
 
 - [ ] TV1: kappa, phân xử, chốt nhãn; tổng hợp RQ1
-- [ ] TV2: E9, E10 cho BiLSTM; E13
+- [ ] TV2: E9, E10 cho BiLSTM; E13 — E13 xong 23/11: validation 0,754 ± 0,009 (E2 0,758), `results/rq2_validation.md`
 - [ ] TV3: E9, E10 cho DistilBERT; E8; E11
 
 ## Tuần 6 (26/11–2/12) ◆ chạy test một lần, kết quả cố định
