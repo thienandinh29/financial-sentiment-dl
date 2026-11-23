@@ -52,6 +52,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | `notebooks/` | Notebook thiết lập Colab (`notebooks/colab_setup.ipynb`), đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`), và chạy E5/E7 + nhãn mềm P2 (`notebooks/week3_transformer_and_soft_labels.ipynb`) | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt); `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
+| `report/` | Bản nháp các chương báo cáo (tiếng Việt): `ch2_rnn_cnn.md` (TV2) | Theo chương |
 | `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`); `results/E1`–`E4/seed{1,2,3}/` (`run.json`, `preds_validation.jsonl`, `vocab.json`), `results/rq2_validation.md` (bảng RQ2 tạm + so ghép cặp E3/E4 với E2); `results/E5/seed{1,2,3}/` và `results/E7/seed{1,2,3}/` (`run.json`, `preds_validation.jsonl`); `results/llm_soft_labels/` (`p2_soft_labels.jsonl`, `run.json`) | Cả nhóm |
 | `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md`–`WEEK4.md` việc chi tiết + checkpoint từng tuần; `guides/` hướng dẫn từng bước cho từng thành viên; `meetings/` chương trình + bộ câu hỏi họp "hiểu bài"; `WEEK1.md`, `WEEK2.md` việc chi tiết + checkpoint từng tuần | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
