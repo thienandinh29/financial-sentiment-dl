@@ -17,7 +17,7 @@ Quy tắc nhắc lại: chỉ chấm **validation**; không ai chạy test trư�
    (68 xong, PR #20). Không ai khác gán nhãn gold, trừ phần gán đôi bên dưới.
 2. **E10 phải thiết kế lại.** TV1 đo trên split đã khóa (`results/feasibility/E10_frozen_split.md`):
    trần rò rỉ bằng bản gần trùng chỉ **4,13% test / 4,24% validation**, không phải 27% như quyết định 20/11.
-   Mức 5/10/20% bằng bản gần trùng là không làm được. Phải chốt lại ở CP6a (xem "Quyết định cần chốt").
+   Mức 5/10/20% bằng bản gần trùng là không làm được. Phương án A đã chốt ngày 23/11 và bổ sung bản sao chính xác.
 
 ## Lịch checkpoint
 
@@ -39,7 +39,7 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 
 | # | Việc | Đầu ra | Xong khi | CP |
 | --- | --- | --- | --- | --- |
-| 1.16 | Dữ liệu rò rỉ E10 theo thiết kế đã chốt | `scripts/make_leakage.py` + test, `data/splits/leak_{05,10,20}.jsonl` (chỉ ID) + SHA-256 | Chỉ đổi train; validation, test giữ nguyên; seed cố định; test kiểm tra đúng tỷ lệ | CP6 |
+| 1.16 | Dữ liệu rò rỉ E10 theo thiết kế đã chốt | `scripts/make_leakage.py` + test, `results/E10/manifests/leakage_{5,10,20}.json` (ID) + SHA-256 | Chỉ đổi train; validation, test giữ nguyên; seed cố định; test kiểm tra đúng tỷ lệ | CP6 |
 | 1.17 | Chạy lại E0 từ commit sạch | `results/E0/seed1/` | `working_tree_dirty: false` | CP6 |
 | 1.18 | Sửa ghi chép gán nhãn | `plan/plan_tv1_week2.md` | Ghi đúng: nhãn gán thử do LLM tạo, tham chiếu `labeling/llm_annotations/` | CP6a |
 | 1.19 | Gán đôi trực tiếp | ~50 trong 100 tiêu đề gán đôi | Gán tay trong buổi gọi có bật camera, không AI (xem "Gán nhãn") | CP6 |
@@ -93,3 +93,10 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 - [ ] 2.15, 2.17, 2.18, 2.19, 2.20
 - [ ] 3.13, 3.14, 3.16, 3.17
 - [ ] PLAN.md tuần 4 đã đánh dấu `[x]`
+
+# Tiến độ TV1 ngày 26/11
+
+- E10: manifest ID và hướng dẫn tại `results/E10/`; đạt 90/180/359 ID lộ, giữ toàn bộ validation; loader huấn luyện chưa tích hợp overlay.
+- E0: chạy validation từ commit `865ac25cb555211410cafb99046a6c3bd2a41435` trên checkout sạch, Macro-F1 0,709552; dự đoán trùng hash với lần trước. Metadata cũ được giữ trong `results/E0/seed1/run_previous_20261122.json`.
+- Ghi chép nhãn thử đã đính chính; bản nháp dữ liệu tại `report/ch3_data.md`. Gold TV2 hiện có 68 dòng; gán đôi và đạt mục tiêu 180 cần nhóm thực hiện, không tính kappa khi chưa có người thứ hai.
+- Người dùng xác nhận sẽ tự gán tay 100 tiêu đề gán đôi; lịch, danh sách ID và khả năng đã xem nhãn LLM trước đó còn cần xác nhận. Hướng dẫn TV1 tuần 4 nêu khoảng 33 tiêu đề chưa từng đưa qua LLM, nên chưa thể mặc định cả 100 ID đều độc lập.

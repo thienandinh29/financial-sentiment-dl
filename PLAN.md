@@ -63,7 +63,7 @@ Chi tiết theo lịch bù (S1, đến 20/11): [docs/WEEK3.md](docs/WEEK3.md).
 
 Chi tiết theo lịch bù (S2, đến 27/11), kèm thiết kế lại E10 và kế hoạch gán nhãn gold: [docs/WEEK4.md](docs/WEEK4.md).
 
-- [ ] TV1: tạo dữ liệu rò rỉ 5/10/20% — thiết kế lại 23/11: rò rỉ vào validation (Phương án A, `context/decisions.md`)
+- [x] TV1: tạo dữ liệu rò rỉ 5/10/20% vào validation theo Phương án A — manifest, hash và hướng dẫn tại `results/E10/`; loader huấn luyện chưa tích hợp overlay.
 - [x] TV2: ablation E3, E4 (3 seed) — validation E3 0,757 ± 0,007, E4 0,706 ± 0,011 (E2 0,758); `results/rq2_validation.md`, commit chạy `277fc66`
 - [ ] TV3: LLM nhãn mềm ~3k tiêu đề; E6, E12
 - [ ] Cả nhóm: gán nhãn đợt 2 (~65 nhãn/người)
@@ -101,9 +101,9 @@ Chi tiết theo lịch bù (S2, đến 27/11), kèm thiết kế lại E10 và k
 
 ### Tiến độ TV1 S1/S2 (22/11)
 
-- E0 validation: Macro-F1 0,7096, seed 1; log ghi cây làm việc có thay đổi.
+- E0 validation: lần 22/11 Macro-F1 0,7096, cây làm việc có thay đổi; chạy lại 26/11 từ commit sạch `865ac25` cho cùng Macro-F1 và file dự đoán, metadata tại `results/E0/seed1/`.
 - Bootstrap paired và McNemar exact đã có code và test; chưa đánh giá test.
 - Đã chọn 300 ID RSS seed 2026 và phân công hai đợt; chờ gửi nhóm và từng người tự gán nhãn.
-- E10: bạn chọn nghiên cứu trên validation, giữ test nguyên vẹn; chờ nhóm thống nhất thiết kế và mức. Trần k−1 validation 76/1.791 (4,24%) theo giả định trong `results/feasibility/E10_frozen_split.md`, chưa chứng minh 5/10/20% khả thi.
+- E10: Phương án A đã chốt ngày 23/11, giữ test nguyên vẹn; 90/180/359 ID validation bị lộ trong các manifest lồng nhau tại `results/E10/manifests/`. Trần k−1 gần trùng của thiết kế cũ được lưu tại `results/feasibility/E10_frozen_split.md`.
 
-- TV1 xác nhận đã tự gán 69 + 65 tiêu đề; 23 dòng có ghi chú `issue` cần nhóm xem xét.
+- Đính chính theo quyết định 23/11: nhãn đợt 1 TV1 do LLM tạo, không phải gold; ghi chép cũ về 69 + 65 tiêu đề và 23 ghi chú không chứng minh gán tay. Trạng thái đợt 2 và các trường hợp cần xem xét chờ TV1/nhóm xác nhận.

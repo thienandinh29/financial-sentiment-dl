@@ -72,7 +72,7 @@ def main():
     manifests = build_manifests(split, clusters, pairs, targets, args.seed)
     out = Path(args.output_dir)
     paths = [out / f"leakage_{p}.json" for p in (5, 10, 20)]
-    if any(p.exists() for p in paths):
+    if any(p.exists() for p in [*paths, out / "SHA256SUMS"]):
         raise FileExistsError("Refusing to overwrite manifests")
     out.mkdir(parents=True, exist_ok=True)
     for path, manifest in zip(paths, manifests):

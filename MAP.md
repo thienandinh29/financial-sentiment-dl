@@ -109,3 +109,4 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 
 - `results/E10/README.md`, `results/E10/manifests/`: hướng dẫn E10, overlay ID và SHA-256.
 - `report/ch3_data.md`: bản nháp chương dữ liệu và giới hạn thực nghiệm.
+- `results/E0/seed1/run_previous_20261122.json`: metadata lần chạy E0 trước, giữ lại để đối chiếu.

@@ -4,9 +4,15 @@
 
 Dữ liệu trong miền là Financial News Sentiment (FNS), gồm ba lớp bearish, neutral và bullish. Split theo cụm đã khóa chứa 8.349 train, 1.791 validation và 1.791 test. PhraseBank là tập ngoài nguồn, không dùng để huấn luyện. Tập 2026 lấy ứng viên từ RSS; 300 ID được chọn riêng cho test. GDELT đã lọc được dùng làm kho không nhãn cho huấn luyện. Chi tiết nguồn và revision xem `data/sources.json` và `context/decisions.md`.
 
+Phân bố của split validation là khoảng 15,02% bearish, 64,88% neutral và 20,10% bullish; chênh lệch tỷ lệ nhãn lớn nhất giữa một tập và toàn bộ FNS là 0,027 điểm phần trăm (`data/splits/summary.json`). Mất cân bằng này là lý do dùng Macro-F1 bên cạnh các chỉ số theo lớp. FNS được tải theo revision cố định từ `zeroshot/twitter-financial-news-sentiment`; thông tin giấy phép cần được nhóm kiểm tra theo nguồn trước khi nộp, không suy đoán từ tên bộ dữ liệu.
+
+Theo quyết định ngày 26/10, nguồn RSS cung cấp tiêu đề báo chí cho tập test 2026; tiêu đề GDELT được tạo từ URL slug chỉ dùng trong kho không nhãn sau lọc. Ba mươi ID dùng thử bị loại trước khi lấy mẫu 300 ID với seed 2026 (`labeling/test300_selection.json`). Cần loại các bản gần trùng với tập test khỏi kho huấn luyện không nhãn trước khi chưng cất; giữ các bước kiểm tra này tách khỏi việc chấm test.
+
 ## Gần trùng và split cố định
 
 Ứng viên gần trùng được lấy bằng MinHash/LSH và embedding MiniLM; cạnh từ vựng dùng Jaccard ≥ 0,75 và cạnh ngữ nghĩa dùng cosine ≥ 0,92. Thành phần liên thông được đặt trọn trong một tập để giảm rò rỉ. Việc chọn ngưỡng có kiểm tra thủ công và vẫn có giới hạn về khả năng tìm đủ cặp. Split chỉ lưu ID; trước xử lý phải xác minh SHA-256 theo `data/splits/SHA256SUMS`. Hash đảm bảo đúng file, không tự chứng minh dữ liệu không rò rỉ.
+
+Mẫu kiểm tay gồm 50 cặp từ vựng và 50 cặp chỉ ngữ nghĩa: lần lượt 41/50 và 30/50 được đánh dấu đúng ở ngưỡng ban đầu. Với ngưỡng cosine 0,92, 10 cặp được đánh dấu trùng và 2 cặp không trùng được giữ, nhưng 20 cặp được đánh dấu trùng trong mẫu ngữ nghĩa bị bỏ. Nhóm chốt ngưỡng này ngày 14/11; mẫu không đo được chất lượng các cặp dưới 0,85 (`plan/plan_tv1_week2.md`, `context/decisions.md`). Split ngẫu nhiên dùng cùng tỷ lệ để nghiên cứu E9, không thay thế split theo cụm; số cạnh đã lưu qua train–test là 178 (`data/splits/summary.json`), không tự chứng minh mức tăng điểm dự đoán.
 
 ## Thí nghiệm E10
 

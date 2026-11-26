@@ -26,4 +26,10 @@ class LeakageCliTests(unittest.TestCase):
             for name in ("leakage_5.json", "leakage_10.json", "leakage_20.json", "SHA256SUMS"):
                 self.assertEqual((root / "one" / name).read_bytes(), (root / "two" / name).read_bytes())
             self.assertNotEqual(subprocess.run(args + [str(root / "one")], capture_output=True).returncode, 0)
+            protected = root / "protected"
+            protected.mkdir()
+            (protected / "SHA256SUMS").write_text("existing", encoding="utf-8")
+            self.assertNotEqual(subprocess.run(args + [str(protected)], capture_output=True).returncode, 0)
+            self.assertEqual((protected / "SHA256SUMS").read_text(encoding="utf-8"), "existing")
+            self.assertFalse((protected / "leakage_5.json").exists())
             self.assertEqual(sha256_file(split), digest)
