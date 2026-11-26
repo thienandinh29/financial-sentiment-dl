@@ -63,9 +63,9 @@ Khi đủ ba file nhãn độc lập, chạy `python scripts/trial_agreement.py 
 - [x] Tạo mã baseline E0 TF-IDF + Logistic Regression: `configs/E0.yaml` và `models/tfidf_lr.py` (hash còn trống đến khi split được chốt).
 - [x] Bổ sung kiểm tra SHA-256 trước khi chạy; mã chỉ fit TF-IDF và tính trọng số lớp trên train (đã kiểm thử bằng dữ liệu giả).
 - [ ] Đánh giá E0 trên validation, ghi Macro-F1 và `results/E0/seed1/preds_validation.jsonl`; ghi thông tin lần chạy theo quy tắc dự án.
-- [x] Tự gán nhãn độc lập 30 tiêu đề, không dùng AI; lưu `labeling/trial/<ten>.csv` với các cột `id, label, reason`.
-- [x] Sau khi cả ba người nộp nhãn, tính tỷ lệ đồng ý và kappa từng cặp; liệt kê các trường hợp bất đồng.
-- [x] Cùng nhóm thảo luận bất đồng, sửa `labeling/GUIDE.md` và cập nhật lịch sử sửa đổi.
+- [x] Nhãn thử do LLM tạo, không phải nhãn người hay gold; xem `labeling/llm_annotations/` và quyết định ngày 23/11 trong `context/decisions.md`.
+- [x] Đã tính đồng ý và kappa trên ba bộ nhãn LLM; đây không phải đồng ý giữa người gán nhãn.
+- [ ] Các kết luận bất đồng dựa trên nhãn LLM không chứng minh phân xử của người; trạng thái thảo luận và sửa GUIDE cần nhóm xác nhận.
 
 ## Kiểm tra hoàn thành
 
@@ -78,4 +78,4 @@ Khi đủ ba file nhãn độc lập, chạy `python scripts/trial_agreement.py 
 - Selected 30 candidate IDs with seed 2026 from the verified TV2 export; see `labeling/trial30_ids.csv`.
 - Excluding these IDs when selecting the final 300 test headlines remains pending.
 
-- 2026-11-16: Three human annotation files validated; pairwise agreement, kappa and disagreement IDs are in `labeling/trial_agreement.json`. Group conclusions for the five disagreements are recorded in `labeling/trial_adjudication.csv` and GUIDE was updated.
+- 2026-11-16: Ba bộ nhãn được kiểm tra và tính đồng ý; đính chính 23/11: các nhãn do LLM tạo, không phải nhãn người. Kết quả và phân xử lưu tại `labeling/llm_annotations/`; trạng thái thảo luận và cập nhật GUIDE cần nhóm xác nhận.

@@ -33,12 +33,12 @@ def run(cfg, root="."):
     assert list(clf.classes_) == [0, 1, 2], "classes must follow LABELS order"
     probs = clf.predict_proba(vectorizer.transform([t for _, t, _ in val]))
     f1 = f1_score([y for _, _, y in val], probs.argmax(1), average="macro")
+    run_info = run_metadata(cfg, cfg["seeds"][0], started, cwd=root)
     out = root / "results" / cfg["experiment"] / f"seed{cfg['seeds'][0]}"
     out.mkdir(parents=True, exist_ok=True)
     with open(out / "preds_validation.jsonl", "w", encoding="utf-8", newline="\n") as f:
         for (i, _, _), p in zip(val, probs):
             f.write(json.dumps({"id": i, "probs": [round(float(x), 6) for x in p]}) + "\n")
-    run_info = run_metadata(cfg, cfg["seeds"][0], started, cwd=root)
     run_info.update({"label_order": list(LABELS), "val_macro_f1": float(f1),
                      "vocab_size": len(vectorizer.vocabulary_)})
     write_json(out / "run.json", run_info)

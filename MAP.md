@@ -103,4 +103,9 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `scripts/audit_leakage_capacity.py`, `tests/test_audit_leakage_capacity.py`, `results/feasibility/E10_frozen_split.md`: ID-only feasibility audit of frozen-split clusters.
 - `labeling/test300_ids.csv`, `labeling/assignment.csv`, `labeling/test300_selection.json`: selected RSS IDs and URLs, two-round assignments, and selection provenance (no headline text).
 - `data/raw/headlines_2026/labeling_packets/`: local-only reading copies and blank label templates for each annotator and round; headline text remains local and must not be staged.
-- `scripts/make_leakage.py`, `tests/test_make_leakage.py`, `tests/test_make_leakage_cli.py`: validation-only ID overlay manifest preparation with explicit donors, hash checks, and synthetic tests; not yet integrated with training.
+- `scripts/make_leakage.py`, `tests/test_make_leakage.py`, `tests/test_make_leakage_cli.py`: seeded validation-only ID overlays, hash checks and synthetic tests; not yet integrated with training.
+
+## Week 4 TV1 files
+
+- `results/E10/README.md`, `results/E10/manifests/`: hướng dẫn E10, overlay ID và SHA-256.
+- `report/ch3_data.md`: bản nháp chương dữ liệu và giới hạn thực nghiệm.

@@ -1,87 +1,85 @@
-﻿"""Prepare an ID-only E10 validation leakage manifest; never access test labels or text.
-
-The group must first decide the design, donor IDs and requested number of exposed
-validation examples. The fixed split and its validation/test files are not changed.
-A downstream trainer must explicitly use the donor IDs and exclude them from the
-research evaluation; the standard training pipeline does not yet consume this file.
-"""
+"""Create nested, ID-only E10 overlays on the frozen validation split."""
 import argparse
 import csv
 import json
+import random
+from collections import Counter
 from pathlib import Path
 
 from train.data import load_split, sha256_file
 
 
-def make_manifest(splits, pairs, donors, requested_count):
-    """Build an ID-only train overlay and disjoint validation evaluation manifest.
-
-    Inputs: verified split ID lists, direct near-duplicate ID pairs, explicit validation
-    donor IDs, and the exact desired number of exposed evaluation IDs. Output: a dict
-    containing donor IDs, exposed IDs and all evaluation IDs. No raw text is read.
-    """
-    validation = list(splits['validation'])
-    valid_set = set(validation)
-    donors = list(donors)
-    donor_set = set(donors)
-    if not validation or len(valid_set) != len(validation):
-        raise ValueError('Validation IDs must be nonempty and unique')
-    if not donors or len(donor_set) != len(donors) or not donor_set <= valid_set:
-        raise ValueError('Donors must be unique validation IDs, with at least one donor')
-    if not isinstance(requested_count, int) or isinstance(requested_count, bool) or requested_count < 0:
-        raise ValueError('requested_count must be a nonnegative integer')
-    remaining = valid_set - donor_set
-    exposed = set()
+def build_manifests(split, clusters, pairs, targets, seed=1):
+    """Select seeded donors and return exact exposure partitions for each target."""
+    validation = list(split["validation"])
+    valid = set(validation)
+    if len(valid) != len(validation) or not valid or set(clusters) != set(sum((list(split[k]) for k in ("train", "validation", "test")), [])):
+        raise ValueError("Invalid split or cluster coverage")
+    counts = Counter(clusters[i] for i in validation)
+    neighbours = {i: set() for i in validation}
     for a, b in pairs:
-        if a in donor_set and b in remaining:
-            exposed.add(b)
-        if b in donor_set and a in remaining:
-            exposed.add(a)
-    if len(exposed) != requested_count:
-        raise ValueError(f'Donors expose {len(exposed)} validation IDs, not requested {requested_count}')
-    evaluation = [i for i in validation if i not in donor_set]
-    if not evaluation:
-        raise ValueError('At least one validation ID must remain for evaluation')
-    return {'train_add_validation_ids': sorted(donor_set),
-            'validation_evaluation_ids': evaluation,
-            'validation_exposed_ids': [i for i in evaluation if i in exposed],
-            'n_frozen_validation': len(validation), 'n_evaluation': len(evaluation),
-            'n_exposed': len(exposed), 'fraction_of_frozen_validation': len(exposed) / len(validation),
-            'fraction_of_evaluation': len(exposed) / len(evaluation)}
+        if a in valid and b in valid:
+            neighbours[a].add(b)
+            neighbours[b].add(a)
+        elif (a in valid and b in split["train"]) or (b in valid and a in split["train"]):
+            raise ValueError("Validation already exposed to original train")
+    order = sorted(validation)
+    random.Random(seed).shuffle(order)
+    order.sort(key=lambda i: counts[clusters[i]] < 2)
+    donors, exposed, output = set(), set(), []
+    for target in targets:
+        if not isinstance(target, int) or target <= len(exposed) or target > len(valid):
+            raise ValueError("Targets must increase and fit validation")
+        while len(exposed) < target:
+            remaining = target - len(exposed)
+            candidate = next((i for i in order if i not in donors and 0 < len(({i} | neighbours[i]) - exposed) <= remaining), None)
+            if candidate is None:
+                raise ValueError(f"Cannot reach target {target}; reached {len(exposed)}")
+            donors.add(candidate)
+            exposed |= {candidate} | neighbours[candidate]
+        exact = donors
+        near = exposed - exact
+        output.append({"seed": seed, "train_add_validation_ids": sorted(donors),
+                       "validation_evaluation_ids": validation,
+                       "validation_exact_ids": sorted(exact),
+                       "validation_near_only_ids": sorted(near),
+                       "validation_exposed_ids": sorted(exposed),
+                       "validation_clean_ids": sorted(valid - exposed),
+                       "n_exposed": len(exposed)})
+    return output
 
 
 def main():
-    """Validate hashes and explicit donors, then exclusively create a JSON manifest."""
+    """Verify frozen input hashes and write three new deterministic manifests."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--split', required=True)
-    parser.add_argument('--split-sha256', required=True)
-    parser.add_argument('--pairs', required=True)
-    parser.add_argument('--pairs-sha256', required=True)
-    parser.add_argument('--donors', required=True, help='JSON array of explicit validation donor IDs')
-    parser.add_argument('--requested-count', required=True, type=int)
-    parser.add_argument('--output', required=True, help='New manifest file; never a split or input file')
+    for name in ("split", "split-sha256", "pairs", "pairs-sha256", "clusters", "clusters-sha256", "output-dir"):
+        parser.add_argument("--" + name, required=True)
+    parser.add_argument("--seed", type=int, default=1)
     args = parser.parse_args()
-    output = Path(args.output).resolve()
-    protected = [Path(args.split).resolve(), Path(args.pairs).resolve(), Path(args.donors).resolve()]
-    if output in protected or output.exists() or output.suffix != '.json':
-        raise ValueError('Output must be a new JSON file, distinct from all inputs')
     split = load_split(args.split, args.split_sha256)
-    if sha256_file(args.pairs) != args.pairs_sha256:
-        raise ValueError('Near-duplicate pairs SHA-256 mismatch')
-    with open(args.donors, encoding='utf-8') as stream:
-        donors = json.load(stream)
-    if not isinstance(donors, list) or not all(isinstance(i, str) for i in donors):
-        raise ValueError('Donors must be a JSON array of strings')
-    with open(args.pairs, encoding='utf-8-sig', newline='') as stream:
-        pairs = [(r['id_a'], r['id_b']) for r in csv.DictReader(stream)]
-    result = make_manifest(split, pairs, donors, args.requested_count)
-    result['input_sha256'] = {'split': args.split_sha256, 'pairs': args.pairs_sha256,
-                              'donors': sha256_file(args.donors)}
-    output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open('x', encoding='utf-8', newline='\n') as stream:
-        json.dump(result, stream, indent=2)
-        stream.write('\n')
+    for path, digest in ((args.pairs, args.pairs_sha256), (args.clusters, args.clusters_sha256)):
+        if sha256_file(path) != digest:
+            raise ValueError(f"SHA-256 mismatch: {path}")
+    with open(args.clusters, encoding="utf-8-sig", newline="") as f:
+        rows = list(csv.DictReader(f))
+    clusters = {r["id"]: r["cluster_id"] for r in rows}
+    if len(clusters) != len(rows):
+        raise ValueError("Duplicate cluster ID")
+    with open(args.pairs, encoding="utf-8-sig", newline="") as f:
+        pairs = [(r["id_a"], r["id_b"]) for r in csv.DictReader(f)
+                 if r["cosine"] and float(r["cosine"]) >= .92]
+    targets = [(len(split["validation"]) * p + 99) // 100 for p in (5, 10, 20)]
+    manifests = build_manifests(split, clusters, pairs, targets, args.seed)
+    out = Path(args.output_dir)
+    paths = [out / f"leakage_{p}.json" for p in (5, 10, 20)]
+    if any(p.exists() for p in paths):
+        raise FileExistsError("Refusing to overwrite manifests")
+    out.mkdir(parents=True, exist_ok=True)
+    for path, manifest in zip(paths, manifests):
+        manifest["input_sha256"] = {"split": args.split_sha256, "pairs": args.pairs_sha256, "clusters": args.clusters_sha256}
+        path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+    (out / "SHA256SUMS").write_text("".join(f"{sha256_file(p)}  {p.name}\n" for p in paths), encoding="utf-8", newline="\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
