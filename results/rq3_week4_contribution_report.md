@@ -75,7 +75,7 @@ Tài liệu này ghi nhận kết quả kiểm toán đặc tả Tuần 4 (`docs
 ```powershell
 python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data tests.test_stats tests.test_pick300 tests.test_simulate_power tests.test_audit_leakage_capacity tests.test_make_leakage tests.test_make_leakage_cli tests.test_gold_labels -v
 ```
-- **Kết quả:** **`39/39 tests PASS (`OK`)`**
+- **Kết quả:** **`38/38 tests PASS (`OK`)`**
   - `tests.test_transformer` (**10/10 PASS**):
     - Kiểm tra `E5.yaml`, `E6.yaml`, `E7.yaml`, `E12.yaml` hợp lệ và tuân thủ quy tắc "một thay đổi mỗi thí nghiệm".
     - Kiểm tra tính toán tay `softmax_temperature(letter_logp, T=2.0)` và `distillation_kl_loss` ($\alpha = 0 \implies \text{loss} = 0$; $z_s = z_t \implies \text{KL} = 0$; kiểm tra hệ số $\alpha \cdot T^2$ ở $T = 2, \alpha = 0.5$).
@@ -83,4 +83,4 @@ python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft
     - Kiểm tra xuất bảng Markdown `format_e6_grid_markdown` cho lưới 9 tổ hợp của `E6`.
     - Kiểm tra toàn vẹn 6 bộ kết quả `results/E5/seed{1,2,3}` và `results/E7/seed{1,2,3}`.
   - `tests.test_llm_soft_labels` (**6/6 PASS**): Kiểm tra toàn vẹn `results/llm_soft_labels/p2_soft_labels.jsonl` (`1,409` bản ghi) và `labeling/llm_annotations/round1/tv3.csv`.
-  - Các bộ test dùng chung của nhóm (`test_metrics`, `test_train_data`, `test_stats`, `test_pick300`, `test_simulate_power`, `test_audit_leakage_capacity`, `test_make_leakage`, `test_make_leakage_cli`, `test_gold_labels`): **23/23 PASS**.
+  - Các bộ test dùng chung của nhóm (`test_metrics`, `test_train_data`, `test_stats`, `test_pick300`, `test_simulate_power`, `test_audit_leakage_capacity`, `test_make_leakage`, `test_make_leakage_cli`, `test_gold_labels`): **22/22 PASS**.
