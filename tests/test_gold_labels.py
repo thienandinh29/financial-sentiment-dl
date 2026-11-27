@@ -1,4 +1,4 @@
-"""Contract checks for human gold label files in labeling/gold/ (named <annotator>_round<k>.csv)."""
+"""Contract checks for human gold annotations and group-approved additions."""
 import csv
 import re
 import tempfile
@@ -7,6 +7,7 @@ from pathlib import Path
 
 GOLD_DIR = Path("labeling/gold")
 ASSIGNMENT = Path("labeling/assignment.csv")
+GROUP_ADDITIONS = GOLD_DIR / "group_approved_week4.csv"
 LABELS = {"bearish", "neutral", "bullish"}
 
 
@@ -40,7 +41,7 @@ def double_assigned_ids(path=ASSIGNMENT):
 
 class GoldLabelTest(unittest.TestCase):
     def test_gold_files_match_assignment(self):
-        files = sorted(GOLD_DIR.glob("*.csv"))
+        files = sorted(path for path in GOLD_DIR.glob("*.csv") if path != GROUP_ADDITIONS)
         self.assertTrue(files, "No gold files found")
         for path in files:
             with self.subTest(file=path.name):
@@ -53,6 +54,20 @@ class GoldLabelTest(unittest.TestCase):
                 for r in rows:
                     self.assertIn(r["label"], LABELS)
                     self.assertTrue(r["reason"].strip(), f"Empty reason for {r['id']}")
+
+    def test_week4_group_additions(self):
+        fields, rows = read_gold(GROUP_ADDITIONS)
+        self.assertEqual(fields, ["id", "label"])
+        ids = {r["id"] for r in rows}
+        self.assertEqual(len(ids), len(rows))
+        self.assertEqual(len(ids), 112)
+        assigned = {r["id"] for r in read_gold(ASSIGNMENT)[1]}
+        self.assertTrue(ids <= assigned)
+        _, original = read_gold(GOLD_DIR / "tv2_round1.csv")
+        original_ids = {r["id"] for r in original}
+        self.assertFalse(ids & original_ids)
+        self.assertEqual(len(ids | original_ids), 180)
+        self.assertTrue(all(r["label"] in LABELS for r in rows))
 
     def test_double_assigned_ids_contract(self):
         ids = double_assigned_ids()

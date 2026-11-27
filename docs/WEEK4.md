@@ -96,6 +96,12 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 
 # Tiến độ TV1 ngày 26/11
 
+Cập nhật theo yêu cầu mới: dùng file 100 ID như một bộ nhãn chung. Bản cục bộ `double100_group_labels.csv` có hai cột `id,label`; bản nguồn giữ lý do. Đối chiếu theo ID với gold trong repo cho thấy độ phủ 135/300 (100 + 68 − 33), còn 165 ID chưa có nhãn trong hai nguồn. Mốc 180/300 chưa đạt. Chưa xác minh được các lượt gán độc lập trên cùng ID để tính kappa; phân xử và khóa gold thuộc tuần 5.
+
+Danh sách 165 ID còn thiếu nằm tại `data/raw/headlines_2026/labeling_packets/group_pending_ids.txt`, theo thứ tự lấy mẫu ban đầu. Có thể lấy 45 dòng đầu cho lượt gán tay tiếp theo để đạt độ phủ 180 ID; mốc gold còn phụ thuộc vào việc xác nhận và nhập nhãn.
+
+Gói 45 ID đã được điền đủ nhãn và lý do. `group145_labels.csv` lưu 145 ID và nhãn từ hai gói cục bộ. Cộng 68 ID trong gold và trừ 33 ID trùng, độ phủ hiện đạt 180/300, còn 120 ID ngoài các nguồn đã kiểm tra. Repo vẫn có 68 ID gold. Gói 45 có 7 dòng đánh dấu `issue` và 10 dòng có cụm 5 từ liên tiếp khớp tiêu đề cần rà trước khi nhập gold.
+
 - E10: manifest ID và hướng dẫn tại `results/E10/`; đạt 90/180/359 ID lộ, giữ toàn bộ validation; loader huấn luyện chưa tích hợp overlay.
 - E0: chạy validation từ commit `865ac25cb555211410cafb99046a6c3bd2a41435` trên checkout sạch, Macro-F1 0,709552; dự đoán trùng hash với lần trước. Metadata cũ được giữ trong `results/E0/seed1/run_previous_20261122.json`.
 - Ghi chép nhãn thử đã đính chính; bản nháp dữ liệu tại `report/ch3_data.md`. Gold TV2 hiện có 68 dòng; gán đôi và đạt mục tiêu 180 cần nhóm thực hiện, không tính kappa khi chưa có người thứ hai.
@@ -108,6 +114,14 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 - Rà tự động lý do với tiêu đề tương ứng chỉ trong bộ nhớ, không in hay lưu văn bản tiêu đề: 10 dòng có chuỗi khớp toàn bộ tiêu đề sau chuẩn hóa, 12 dòng khác có ít nhất một chuỗi 5 từ liên tiếp trùng. Đây là dấu hiệu cần người gán rà, không tự sửa lý do; chưa đưa file nhãn vào repo. Sau khi người gán sửa workbook cần xuất lại CSV và kiểm tra lại, không dùng bản CSV cũ làm kết quả cuối.
 - Theo yêu cầu người dùng, đã tạo bản cục bộ `double100_tv1_redacted.xlsx` bằng cách lược cơ học đoạn trùng tiêu đề ở 22 dòng, giữ nguyên ID và nhãn; bản gốc vẫn giữ. Có 21 dòng thiếu lý do sau lược và dòng 89 cần người gán rà lại; bản này chưa đủ điều kiện bàn giao. Kiểm tra tự động không phát hiện chuỗi trùng theo tiêu chí trước, nhưng không chứng minh hoàn toàn không còn văn bản tiêu đề. CSV trước đó không phản ánh bản này và không phải kết quả cuối.
 - Đính chính theo người dùng: file mới `double100_tv1_completed.csv` ở Downloads gồm 50 dòng đầu do TV1 gán và 50 dòng sau do TV2 gán, dù cột annotator đều ghi TV1. Có 100 ID khác nhau nên file không tự chứng minh có 100 cặp gán đôi. Đã tách hai bản cục bộ `double100_user_first50.csv` và `double100_tv2_last50.csv`, chỉnh metadata người gán và viết thường nhãn; giữ nguyên lý do. Đối chiếu ID với gold TV2 hiện tại cho thấy 33 ID trong 50 dòng TV1 đã được TV2 gán, 0 ID trong 50 dòng TV2 có mặt trong file gold TV2 hiện tại; không so giá trị nhãn. Rà tự động lý do của file mới vẫn đánh dấu 10 dòng khớp toàn bộ tiêu đề và 12 dòng có chuỗi 5 từ trùng; chưa đưa nhãn vào repo. Chưa xác nhận tính độc lập với nhãn LLM, các cặp còn thiếu hoặc tình trạng nhãn TV2 chưa lưu trong repo.
+
+## Bàn giao kỹ thuật TV1
+
+- Nhóm đã duyệt bộ nhãn chung và quyết định giữ gold cũ cho 14 ID có nhãn khác nhau. Đã nhập [112 ID mới](../labeling/gold/group_approved_week4.csv), giữ 68 ID đã có và xác minh tổng **180/300 ID gold**. Lý do giữ tại nguồn cục bộ. Chưa xác minh được hai lượt gán độc lập trên cùng ID để tính kappa; còn 120 ID để tới mốc khóa gold.
+
+- E10 có đủ ba manifest 5%, 10%, 20% và đã xác minh SHA-256. Hướng dẫn đọc và ví dụ so ghép cặp trên validation nằm trong [hướng dẫn E10](../results/E10/README.md).
+- E0 đạt Macro-F1 validation 0,709552 trên 1.791 ID. Xem [metadata lần chạy từ commit sạch](../results/E0/seed1/run.json) và [dự đoán validation](../results/E0/seed1/preds_validation.jsonl).
+- [Bản nháp chương 3](../report/ch3_data.md) trình bày nguồn dữ liệu, split theo cụm, E10 và quy trình nhãn 2026.
 - Hướng dẫn `results/E10/README.md` có ví dụ tính điểm và so ghép cặp cho toàn validation, nhóm lộ và nhóm sạch. Ví dụ đã kiểm tra bằng cách dùng dự đoán E2 giống nhau ở hai phía; đây chỉ là kiểm tra luồng đánh giá, không phải kết quả thí nghiệm E10.
 - Kiểm tra cấu trúc các gói cục bộ: `tv1_round1_blank.csv` và `tv1_round2_blank.csv` tuy có tên `blank` nhưng lần lượt có đủ nhãn và lý do trên 69 và 65 dòng; nguồn nhãn và việc người dùng đã xem chúng chưa được xác minh. Không dùng hai file này làm mẫu trống cho lượt gán độc lập; không commit hoặc hiển thị nội dung của chúng. Các file vẫn được giữ nguyên tại `data/raw/headlines_2026/labeling_packets/`.
 - Kiểm thử toàn bộ: 104 test đạt khi bổ sung tạm `datasketch==2.0.0`, `duckdb==2.0.0` và `pytz==2026.5` từ lock vào thư mục phụ; môi trường Python gốc thiếu các gói đó.

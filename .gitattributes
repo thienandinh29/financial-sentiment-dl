@@ -1,5 +1,6 @@
 # Preserve byte-for-byte hashes of split and feasibility artifacts across platforms.
 data/splits/*.jsonl text eol=lf
+labeling/test300_ids.csv text eol=lf
 results/feasibility/fns/** text eol=lf
 results/feasibility/fns-cosine092/** text eol=lf
 results/feasibility/run.json text eol=lf

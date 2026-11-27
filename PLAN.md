@@ -105,6 +105,6 @@ Chi tiết theo lịch bù (S2, đến 27/11), kèm thiết kế lại E10 và k
 - Bootstrap paired và McNemar exact đã có code và test; chưa đánh giá test.
 - Đã chọn 300 ID RSS seed 2026 và phân công hai đợt; chờ gửi nhóm và từng người tự gán nhãn.
 - E10: Phương án A đã chốt ngày 23/11, giữ test nguyên vẹn; 90/180/359 ID validation bị lộ trong các manifest lồng nhau tại `results/E10/manifests/`. Trần k−1 gần trùng của thiết kế cũ được lưu tại `results/feasibility/E10_frozen_split.md`.
-- 27/11: theo thông tin người dùng cập nhật, file 100 ID gồm 50 dòng của TV1 và 50 dòng của TV2; không phải 100 cặp nhãn. Hai bản tách theo người gán ở `data/raw/headlines_2026/labeling_packets/`, cần rà lý do và hoàn tất gán đôi; xem `docs/WEEK4.md`. Chưa xác nhận tính độc lập đối với nhãn LLM và chưa so nhãn; gold TV2 hiện có 68 ID trong repo, dưới mốc 180.
+- Gold tuần 4 đạt 180/300 ID theo phương án bộ nhãn chung đã được nhóm duyệt: giữ 68 ID gold hiện có và nhập 112 ID mới tại `labeling/gold/group_approved_week4.csv`. Chưa khóa gold hoặc xác minh được các cặp gán độc lập để tính kappa; xem `docs/WEEK4.md`.
 
 - Đính chính theo quyết định 23/11: nhãn đợt 1 TV1 do LLM tạo, không phải gold; ghi chép cũ về 69 + 65 tiêu đề và 23 ghi chú không chứng minh gán tay. Trạng thái đợt 2 và các trường hợp cần xem xét chờ TV1/nhóm xác nhận.
