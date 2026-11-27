@@ -17,7 +17,7 @@ Quy tắc nhắc lại: chỉ chấm **validation**; không ai chạy test trư�
    (68 xong, PR #20). Không ai khác gán nhãn gold, trừ phần gán đôi bên dưới.
 2. **E10 phải thiết kế lại.** TV1 đo trên split đã khóa (`results/feasibility/E10_frozen_split.md`):
    trần rò rỉ bằng bản gần trùng chỉ **4,13% test / 4,24% validation**, không phải 27% như quyết định 20/11.
-   Mức 5/10/20% bằng bản gần trùng là không làm được. Phải chốt lại ở CP6a (xem "Quyết định cần chốt").
+   Mức 5/10/20% bằng bản gần trùng là không làm được. Phương án A đã chốt ngày 23/11 và bổ sung bản sao chính xác.
 
 ## Lịch checkpoint
 
@@ -39,7 +39,7 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 
 | # | Việc | Đầu ra | Xong khi | CP |
 | --- | --- | --- | --- | --- |
-| 1.16 | Dữ liệu rò rỉ E10 theo thiết kế đã chốt | `scripts/make_leakage.py` + test, `data/splits/leak_{05,10,20}.jsonl` (chỉ ID) + SHA-256 | Chỉ đổi train; validation, test giữ nguyên; seed cố định; test kiểm tra đúng tỷ lệ | CP6 |
+| 1.16 | Dữ liệu rò rỉ E10 theo thiết kế đã chốt | `scripts/make_leakage.py` + test, `results/E10/manifests/leakage_{5,10,20}.json` (ID) + SHA-256 | Chỉ đổi train; validation, test giữ nguyên; seed cố định; test kiểm tra đúng tỷ lệ | CP6 |
 | 1.17 | Chạy lại E0 từ commit sạch | `results/E0/seed1/` | `working_tree_dirty: false` | CP6 |
 | 1.18 | Sửa ghi chép gán nhãn | `plan/plan_tv1_week2.md` | Ghi đúng: nhãn gán thử do LLM tạo, tham chiếu `labeling/llm_annotations/` | CP6a |
 | 1.19 | Gán đôi trực tiếp | ~50 trong 100 tiêu đề gán đôi | Gán tay trong buổi gọi có bật camera, không AI (xem "Gán nhãn") | CP6 |
@@ -93,3 +93,35 @@ E9 (split ngẫu nhiên) vẫn đo rò rỉ tự nhiên qua bản gần trùng, 
 - [ ] 2.15, 2.17, 2.18, 2.19, 2.20
 - [ ] 3.13, 3.14, 3.16, 3.17
 - [ ] PLAN.md tuần 4 đã đánh dấu `[x]`
+
+# Tiến độ TV1 ngày 26/11
+
+Cập nhật theo yêu cầu mới: dùng file 100 ID như một bộ nhãn chung. Bản cục bộ `double100_group_labels.csv` có hai cột `id,label`; bản nguồn giữ lý do. Đối chiếu theo ID với gold trong repo cho thấy độ phủ 135/300 (100 + 68 − 33), còn 165 ID chưa có nhãn trong hai nguồn. Mốc 180/300 chưa đạt. Chưa xác minh được các lượt gán độc lập trên cùng ID để tính kappa; phân xử và khóa gold thuộc tuần 5.
+
+Danh sách 165 ID còn thiếu nằm tại `data/raw/headlines_2026/labeling_packets/group_pending_ids.txt`, theo thứ tự lấy mẫu ban đầu. Có thể lấy 45 dòng đầu cho lượt gán tay tiếp theo để đạt độ phủ 180 ID; mốc gold còn phụ thuộc vào việc xác nhận và nhập nhãn.
+
+Gói 45 ID đã được điền đủ nhãn và lý do. `group145_labels.csv` lưu 145 ID và nhãn từ hai gói cục bộ. Cộng 68 ID trong gold và trừ 33 ID trùng, độ phủ hiện đạt 180/300, còn 120 ID ngoài các nguồn đã kiểm tra. Repo vẫn có 68 ID gold. Gói 45 có 7 dòng đánh dấu `issue` và 10 dòng có cụm 5 từ liên tiếp khớp tiêu đề cần rà trước khi nhập gold.
+
+- E10: manifest ID và hướng dẫn tại `results/E10/`; đạt 90/180/359 ID lộ, giữ toàn bộ validation; loader huấn luyện chưa tích hợp overlay.
+- E0: chạy validation từ commit `865ac25cb555211410cafb99046a6c3bd2a41435` trên checkout sạch, Macro-F1 0,709552; dự đoán trùng hash với lần trước. Metadata cũ được giữ trong `results/E0/seed1/run_previous_20261122.json`.
+- Ghi chép nhãn thử đã đính chính; bản nháp dữ liệu tại `report/ch3_data.md`. Gold TV2 hiện có 68 dòng; gán đôi và đạt mục tiêu 180 cần nhóm thực hiện, không tính kappa khi chưa có người thứ hai.
+- Người dùng xác nhận sẽ tự gán tay 100 tiêu đề gán đôi; lịch, danh sách ID và khả năng đã xem nhãn LLM trước đó còn cần xác nhận. Hướng dẫn TV1 tuần 4 nêu khoảng 33 tiêu đề chưa từng đưa qua LLM, nên chưa thể mặc định cả 100 ID đều độc lập.
+- Kiểm tra chỉ theo ID trên `labeling/assignment.csv`: trong 100 ID gán đôi ban đầu có 67 ID thuộc phân công TV1 và 33 ID không thuộc phân công TV1. Đây chỉ là thông tin phân công, không chứng minh ai đã xem nhãn nào; file nhãn LLM TV1 chưa từng commit. Người dùng chưa chắc đã xem nhãn LLM, nên cần kiểm tra với TV2 và chốt ID trước khi gán; không mở nhãn LLM để kiểm tra khi gán.
+- Người dùng chọn đợi chốt đủ 100 ID với TV2 trước khi chuẩn bị gói gán đôi; không mặc định sử dụng riêng 33 ID trên. Lịch và tính độc lập của các ID vẫn cần xác nhận.
+- Người dùng sau đó xác nhận đã chốt danh sách với TV2 trong ngữ cảnh 100 ID xuất hiện hai lần ở `labeling/assignment.csv`. Đã tạo gói cục bộ `data/raw/headlines_2026/labeling_packets/double100_tv1_read.csv` và `double100_tv1_blank.csv`, chứa 100 ID, các ô nhãn và lý do trống. Chưa xác nhận người dùng chưa từng xem nhãn LLM của các ID này; cần ghi nhận điều đó khi báo cáo tính độc lập. Chưa có nhãn người thứ hai hay lịch buổi gán.
+- Khi rà soát tiến độ, gold TV2 có 68 ID khác nhau; gói gán đôi TV1 có 100 dòng, chưa có ô nhãn hoặc lý do nào được điền. Các chỉ số gán đôi, phân xử và khóa gold vẫn để tuần 5 sau khi người gán hoàn tất; không so nhãn LLM với gold ở bước này.
+- Cập nhật 27/11: người dùng xác nhận đã gán xong 100 ID gán đôi. Đã kiểm tra đủ ID, nhãn hợp lệ và lý do; sửa duy nhất chữ hoa `Neutral` thành `neutral` trong bản cục bộ `double100_tv1_checked.xlsx` và xuất CSV cục bộ `double100_tv1_labels.csv` gồm `id,label,reason`, không thay đổi nội dung gán. Ngày gán để trống theo yêu cầu người dùng; phiên bản GUIDE chưa được xác nhận. Không so với nhãn TV2 hoặc LLM; tính độc lập và việc nhóm nhận kết quả còn cần xác nhận. Gold TV2 trong repo hiện vẫn 68 ID. `tests/test_gold_labels.py` hỗ trợ tên `tv1_double100.csv` với đúng thứ tự 100 ID gán đôi ban đầu; CSV của người dùng vẫn được giữ cục bộ, cần nhóm xác nhận nguồn và rà lý do không chép tiêu đề trước khi đưa vào `labeling/gold/`.
+- Rà tự động lý do với tiêu đề tương ứng chỉ trong bộ nhớ, không in hay lưu văn bản tiêu đề: 10 dòng có chuỗi khớp toàn bộ tiêu đề sau chuẩn hóa, 12 dòng khác có ít nhất một chuỗi 5 từ liên tiếp trùng. Đây là dấu hiệu cần người gán rà, không tự sửa lý do; chưa đưa file nhãn vào repo. Sau khi người gán sửa workbook cần xuất lại CSV và kiểm tra lại, không dùng bản CSV cũ làm kết quả cuối.
+- Theo yêu cầu người dùng, đã tạo bản cục bộ `double100_tv1_redacted.xlsx` bằng cách lược cơ học đoạn trùng tiêu đề ở 22 dòng, giữ nguyên ID và nhãn; bản gốc vẫn giữ. Có 21 dòng thiếu lý do sau lược và dòng 89 cần người gán rà lại; bản này chưa đủ điều kiện bàn giao. Kiểm tra tự động không phát hiện chuỗi trùng theo tiêu chí trước, nhưng không chứng minh hoàn toàn không còn văn bản tiêu đề. CSV trước đó không phản ánh bản này và không phải kết quả cuối.
+- Đính chính theo người dùng: file mới `double100_tv1_completed.csv` ở Downloads gồm 50 dòng đầu do TV1 gán và 50 dòng sau do TV2 gán, dù cột annotator đều ghi TV1. Có 100 ID khác nhau nên file không tự chứng minh có 100 cặp gán đôi. Đã tách hai bản cục bộ `double100_user_first50.csv` và `double100_tv2_last50.csv`, chỉnh metadata người gán và viết thường nhãn; giữ nguyên lý do. Đối chiếu ID với gold TV2 hiện tại cho thấy 33 ID trong 50 dòng TV1 đã được TV2 gán, 0 ID trong 50 dòng TV2 có mặt trong file gold TV2 hiện tại; không so giá trị nhãn. Rà tự động lý do của file mới vẫn đánh dấu 10 dòng khớp toàn bộ tiêu đề và 12 dòng có chuỗi 5 từ trùng; chưa đưa nhãn vào repo. Chưa xác nhận tính độc lập với nhãn LLM, các cặp còn thiếu hoặc tình trạng nhãn TV2 chưa lưu trong repo.
+
+## Bàn giao kỹ thuật TV1
+
+- Nhóm đã duyệt bộ nhãn chung và quyết định giữ gold cũ cho 14 ID có nhãn khác nhau. Đã nhập [112 ID mới](../labeling/gold/group_approved_week4.csv), giữ 68 ID đã có và xác minh tổng **180/300 ID gold**. Lý do giữ tại nguồn cục bộ. Chưa xác minh được hai lượt gán độc lập trên cùng ID để tính kappa; còn 120 ID để tới mốc khóa gold.
+
+- E10 có đủ ba manifest 5%, 10%, 20% và đã xác minh SHA-256. Hướng dẫn đọc và ví dụ so ghép cặp trên validation nằm trong [hướng dẫn E10](../results/E10/README.md).
+- E0 đạt Macro-F1 validation 0,709552 trên 1.791 ID. Xem [metadata lần chạy từ commit sạch](../results/E0/seed1/run.json) và [dự đoán validation](../results/E0/seed1/preds_validation.jsonl).
+- [Bản nháp chương 3](../report/ch3_data.md) trình bày nguồn dữ liệu, split theo cụm, E10 và quy trình nhãn 2026.
+- Hướng dẫn `results/E10/README.md` có ví dụ tính điểm và so ghép cặp cho toàn validation, nhóm lộ và nhóm sạch. Ví dụ đã kiểm tra bằng cách dùng dự đoán E2 giống nhau ở hai phía; đây chỉ là kiểm tra luồng đánh giá, không phải kết quả thí nghiệm E10.
+- Kiểm tra cấu trúc các gói cục bộ: `tv1_round1_blank.csv` và `tv1_round2_blank.csv` tuy có tên `blank` nhưng lần lượt có đủ nhãn và lý do trên 69 và 65 dòng; nguồn nhãn và việc người dùng đã xem chúng chưa được xác minh. Không dùng hai file này làm mẫu trống cho lượt gán độc lập; không commit hoặc hiển thị nội dung của chúng. Các file vẫn được giữ nguyên tại `data/raw/headlines_2026/labeling_packets/`.
+- Kiểm thử toàn bộ: 104 test đạt khi bổ sung tạm `datasketch==2.0.0`, `duckdb==2.0.0` và `pytz==2026.5` từ lock vào thư mục phụ; môi trường Python gốc thiếu các gói đó.

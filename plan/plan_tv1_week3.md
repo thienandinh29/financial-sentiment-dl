@@ -34,7 +34,7 @@ Nguồn: [việc chi tiết tuần 3](../docs/WEEK3.md) và [lịch bù](../PLAN
 
 ## Gán nhãn và kiểm tra chung
 
-- [x] TV1 tự gán nhãn thủ công đợt 1 khoảng 70 tiêu đề; đợt 2 khoảng 65 theo phân công. Không dùng AI gán hoặc gợi ý nhãn; lý do viết bằng lời của mình, không chép tiêu đề hay lời người khác.
+- [ ] Đính chính theo quyết định 23/11: nhãn đợt 1 TV1 do LLM tạo, không phải nhãn thủ công và chưa từng commit. Trạng thái thực hiện thủ công đợt 2 cần TV1 xác nhận; không suy đoán từ ghi chép cũ.
 - [ ] Chỉ đánh giá validation trong giai đoạn này; ba tập test chỉ chạy một lần ở tuần 6 sau khi mọi lựa chọn đã chốt.
 - [ ] Không commit dữ liệu thô, văn bản tiêu đề 2026, checkpoint hoặc file ONNX; giữ secrets trong `.env`.
 - [ ] Cập nhật `MAP.md` khi tạo hoặc di chuyển file, bổ sung test cho thay đổi hành vi và cập nhật tiến độ trong `PLAN.md`.

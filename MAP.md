@@ -39,7 +39,7 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 
 | Thư mục | Nội dung | Phụ trách |
 | --- | --- | --- |
-| `plan/` | Checklist TV1: `plan_tv1_week2.md` và `plan_tv1_week3.md` | TV1 |
+| `plan/` | Checklist TV1: `plan_tv1_week2.md`, `plan_tv1_week3.md` và `plan_tv1_week4.md` | TV1 |
 | `context/` | Quyết định đã chốt và lý do (`decisions.md`) | Cả nhóm |
 | `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN); `E3.yaml` (BiLSTM max-pooling), `E4.yaml` (embedding ngẫu nhiên), `E13.yaml` (focal loss); `E5.yaml` (DistilBERT fine-tune); `E7.yaml` (DistilBERT đóng băng encoder) | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
@@ -73,8 +73,8 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `labeling/trial30_ids.csv`: 30 trial IDs and URLs sampled from the 2026 candidate pool; exclude these IDs when selecting the final test set.
 - `data/raw/headlines_2026/trial30_to_read.txt`, `trial30_blank.csv`: local-only reading copy and blank annotation template for the 30 trial IDs.
 - `labeling/llm_annotations/`: LLM-made labels kept for the record, **not gold** (see its `README.md`): `trial/tv1.csv`, `tv2.csv`, `tv3.csv` (trial 30), `trial_agreement.json` and `trial_adjudication.csv` (computed from those files), `round1/tv3.csv` (68 test headlines). Not to be opened while hand-labeling or compared with gold before week 6.
-- `labeling/gold/`: human gold labels (`id,label,reason`), hand-labeled without AI.
-- `tests/test_gold_labels.py`: checks every `labeling/gold/<annotator>_round<k>.csv` against `assignment.csv`.
+- `labeling/gold/`: human gold label files with reasons for annotation rounds. `group_approved_week4.csv` contains 112 group-approved additions as `id,label`; the source reasons are stored locally.
+- `tests/test_gold_labels.py`: validates annotation rounds and group-approved additions against `assignment.csv`.
 
 ## Week 2 TV3 files
 
@@ -103,4 +103,16 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `scripts/audit_leakage_capacity.py`, `tests/test_audit_leakage_capacity.py`, `results/feasibility/E10_frozen_split.md`: ID-only feasibility audit of frozen-split clusters.
 - `labeling/test300_ids.csv`, `labeling/assignment.csv`, `labeling/test300_selection.json`: selected RSS IDs and URLs, two-round assignments, and selection provenance (no headline text).
 - `data/raw/headlines_2026/labeling_packets/`: local-only reading copies and blank label templates for each annotator and round; headline text remains local and must not be staged.
-- `scripts/make_leakage.py`, `tests/test_make_leakage.py`, `tests/test_make_leakage_cli.py`: validation-only ID overlay manifest preparation with explicit donors, hash checks, and synthetic tests; not yet integrated with training.
+- `data/raw/headlines_2026/labeling_packets/double100_group_labels.csv`: local 100-ID group annotation file with normalized labels.
+- `data/raw/headlines_2026/labeling_packets/group_pending_ids.txt`: local list of selected IDs missing from both known annotation sources, in selection order.
+- `data/raw/headlines_2026/labeling_packets/group_next45_{read,blank}.csv`: local reading packet and blank annotation form for the first 45 missing IDs.
+- `data/raw/headlines_2026/labeling_packets/group145_labels.csv`: local combined 100 + 45 ID and label file. Original annotation files retain the reasons and issue notes.
+- `data/raw/headlines_2026/labeling_packets/group_review_rows.txt`: local review list with source file paths, row numbers and flags for the two group annotation packets.
+- `data/raw/headlines_2026/labeling_packets/group_conflicting_ids.txt`: local list of IDs whose recorded label differs between group annotations and repository gold.
+- `scripts/make_leakage.py`, `tests/test_make_leakage.py`, `tests/test_make_leakage_cli.py`: seeded validation-only ID overlays, hash checks and synthetic tests; not yet integrated with training.
+
+## Week 4 TV1 files
+
+- `results/E10/README.md`, `results/E10/manifests/`: hướng dẫn E10, overlay ID và SHA-256.
+- `report/ch3_data.md`: bản nháp chương dữ liệu và giới hạn thực nghiệm.
+- `results/E0/seed1/run_previous_20261122.json`: metadata lần chạy E0 trước, giữ lại để đối chiếu.

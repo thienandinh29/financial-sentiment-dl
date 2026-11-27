@@ -1,6 +1,6 @@
 {
-  "commit": "16e44bada911d01688f3a6808293eb235e3cbf90",
-  "working_tree_dirty": true,
+  "commit": "865ac25cb555211410cafb99046a6c3bd2a41435",
+  "working_tree_dirty": false,
   "config": {
     "experiment": "E0",
     "rq": "reference",
@@ -30,9 +30,9 @@
     "pyyaml": "6.0.4"
   },
   "gpu": null,
-  "started_at_utc": "2026-11-22T12:16:49.483552+00:00",
-  "finished_at_utc": "2026-11-22T12:16:50.315742+00:00",
-  "elapsed_seconds": 0.832,
+  "started_at_utc": "2026-11-26T14:22:39.597018+00:00",
+  "finished_at_utc": "2026-11-26T14:22:40.480585+00:00",
+  "elapsed_seconds": 0.884,
   "label_order": [
     "bearish",
     "neutral",
