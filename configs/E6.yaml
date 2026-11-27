@@ -14,8 +14,8 @@ data:
   max_len: 64
   pseudo_labels: results/llm_soft_labels/p2_soft_labels.jsonl
   pseudo_mode: soft                             # E6: soft targets softmax(letter_logp / T)
-  distill_alpha: 0.5                            # selected on validation from {0.3, 0.5, 0.7}
-  distill_temperature: 2.0                      # selected on validation from {1.0, 2.0, 4.0}
+  distill_alpha: 0.7                            # selected on validation grid (seed 1) from {0.3, 0.5, 0.7}
+  distill_temperature: 2.0                      # selected on validation grid (seed 1) from {1.0, 2.0, 4.0}
 
 model:
   name: transformer

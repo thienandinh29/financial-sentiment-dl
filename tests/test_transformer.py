@@ -388,6 +388,81 @@ class TransformerConfigAndFreezingTests(unittest.TestCase):
             else:
                 self.assertEqual(set(preds.keys()), reference_ids)
 
+    def test_integrated_e12_e6_and_task_3_16_artifacts(self):
+        import csv
+
+        expected_week4 = {
+            ("E12", 1): 0.8026,
+            ("E12", 2): 0.8178,
+            ("E12", 3): 0.8062,
+            ("E6", 1): 0.8072,
+            ("E6", 2): 0.8098,
+            ("E6", 3): 0.7983,
+        }
+        ref_ids = None
+        for (exp, seed), exp_f1 in expected_week4.items():
+            seed_dir = Path("results") / exp / f"seed{seed}"
+            run_path = seed_dir / "run.json"
+            pred_path = seed_dir / "preds_validation.jsonl"
+            self.assertTrue(run_path.is_file(), f"Missing {run_path}")
+            self.assertTrue(pred_path.is_file(), f"Missing {pred_path}")
+
+            run_data = json.loads(run_path.read_text(encoding="utf-8"))
+            self.assertEqual(run_data["config"]["experiment"], exp)
+            self.assertEqual(run_data["seed"], seed)
+            self.assertFalse(run_data["working_tree_dirty"], f"{run_path} must have working_tree_dirty=False")
+            self.assertEqual(
+                run_data["config"]["data"]["split_sha256"],
+                "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa",
+            )
+            ps = run_data["pseudo_stats"]
+            self.assertEqual(ps["n_retained"], 1409)
+            self.assertEqual(ps["fns_train_count"], 8349)
+            self.assertEqual(ps["combined_train_count"], 9758)
+            if exp == "E12":
+                self.assertEqual(ps["pseudo_mode"], "hard")
+            else:
+                self.assertEqual(ps["pseudo_mode"], "soft")
+                self.assertEqual(ps["distill_temperature"], 2.0)
+                self.assertEqual(ps["distill_alpha"], 0.7)
+            self.assertEqual(round(float(run_data["val_macro_f1"]), 4), exp_f1)
+
+            preds = read_preds(pred_path)
+            self.assertEqual(len(preds), 1791)
+            if ref_ids is None:
+                ref_ids = set(preds.keys())
+            else:
+                self.assertEqual(set(preds.keys()), ref_ids)
+
+        # Verify E6 9-point validation grid search artifacts
+        grid_json_path = Path("results/E6/grid.json")
+        grid_md_path = Path("results/E6/grid.md")
+        self.assertTrue(grid_json_path.is_file())
+        self.assertTrue(grid_md_path.is_file())
+        grid_data = json.loads(grid_json_path.read_text(encoding="utf-8"))
+        self.assertEqual(len(grid_data["grid"]), 9)
+        self.assertEqual(grid_data["selected"]["temperature"], 2.0)
+        self.assertEqual(grid_data["selected"]["alpha"], 0.7)
+        self.assertEqual(grid_data["selected"]["macro_f1"], 0.8072)
+
+        # Verify Task 3.16 human annotation deliverable (labeling/double100_tv2.csv, 51 rows)
+        double_path = Path("labeling/double100_tv2.csv")
+        self.assertTrue(double_path.is_file(), f"Missing {double_path}")
+        with open(double_path, "r", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            self.assertEqual(
+                reader.fieldnames,
+                ["id", "label", "reason", "annotator", "date", "guide_version", "issue"],
+            )
+            d_rows = list(reader)
+        self.assertEqual(len(d_rows), 51)
+        d_ids = [r["id"].strip() for r in d_rows]
+        self.assertEqual(len(set(d_ids)), 51)
+        for r in d_rows:
+            self.assertIn(r["label"].strip(), {"bearish", "neutral", "bullish"})
+            self.assertTrue(r["reason"].strip())
+            self.assertEqual(r["annotator"].strip(), "tv2")
+
 
 if __name__ == "__main__":
     unittest.main()

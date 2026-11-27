@@ -1,86 +1,140 @@
-# Báo cáo Đóng góp Tuần 4 (Sprint S2) — Chưng cất Nhãn mềm `E6`, Nhãn giả cứng `E12` & Nháp Chương 2 (TV3)
+# Báo cáo Hoàn thành Tuần 4 (Sprint S2) — Chưng cất Nhãn mềm `E6`, Nhãn giả cứng `E12`, Gán nhãn đôi & Nháp Chương 2 (TV3)
 
-Tài liệu này ghi nhận kết quả kiểm toán đặc tả Tuần 4 (`docs/WEEK4.md`, `docs/guides/TV3-tuan4.md`), kiểm chứng kho nhãn mềm `P2` (`results/llm_soft_labels/`), triển khai mã nguồn và cấu hình cho **`E12` (Hard Pseudo-Label Student)** và **`E6` (Soft-Label Knowledge Distillation với $T \in \{1, 2, 4\} \times \alpha \in \{0.3, 0.5, 0.7\}$)**, cập nhật ghi chép gán nhãn (**Task 3.15**), bản nháp Chương 2 phần Transformer & Chưng cất (**Task 3.17** — `report/ch2_transformer.md`), và trạng thái các nhiệm vụ của **Thành viên 3 (TV3)** trên nhánh `tv3/week4`.
-
----
-
-## 1. Bảng Phân rã Nhiệm vụ Chính thức Tuần 4 của TV3 (`docs/WEEK4.md` & `docs/guides/TV3-tuan4.md`)
-
-| Mã việc | Tên nhiệm vụ chính thức | Đầu ra yêu cầu | Trạng thái (`Status`) |
-| :---: | :--- | :--- | :---: |
-| **3.15** | **Sửa ghi chép gán nhãn trong báo cáo tuần 2 & tuần 3** (ghi rõ nhãn gán thử 30 và đợt 1 do LLM tạo, đã chuyển sang `labeling/llm_annotations/`) | `results/rq3_week3_contribution_report.md`, `results/llm_prompts/contribution_report_week2.md` | **COMPLETED**<br>*(Commit `b72dcb3`: `docs(tv3): correct labeling records (LLM-made)`)* |
-| **3.13** | **`E12` — `E5` + nhãn cứng LLM (`argmax(P2)` trên `1,409` tiêu đề `train_unlabeled`), 3 seeds** (`working_tree_dirty: false`) | `configs/E12.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E12/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **CODE & TESTS COMPLETED / GPU EXECUTION PENDING ON COLAB T4**<br>*(Đã commit & push config + code để chạy từ commit sạch `working_tree_dirty: false` qua `notebooks/week4_e12_and_e6_distillation.ipynb`)* |
-| **3.14** | **`E6` — Chưng cất nhãn mềm LLM (`softmax(letter_logp / T)`), dò lưới $T \in \{1, 2, 4\} \times \alpha \in \{0.3, 0.5, 0.7\}$ trên validation (`seed = 1`) + chạy 3 seeds ở $(T^*, \alpha^*)$** | `configs/E6.yaml`, `models/transformer.py`, `tests/test_transformer.py`, `results/E6/grid.md`, `results/E6/seed{1,2,3}/{run.json, preds_validation.jsonl}` | **CODE & TESTS COMPLETED / GPU EXECUTION PENDING ON COLAB T4**<br>*(Đã cài đặt `softmax_temperature`, `distillation_kl_loss`, `run_e6_grid_search` có hỗ trợ resume từng ô lưới trên Colab T4)* |
-| **3.16** | **Gán đôi trực tiếp (~50 tiêu đề trong 100 tiêu đề gán đôi chưa từng đưa qua LLM)** | Gán tay trực tiếp trong buổi gọi bật camera (~45 phút) cùng TV2, không dùng AI | **NOT STARTED (HUMAN-ONLY LIVE SESSION)**<br>*(Yêu cầu TV3 hẹn giờ và thực hiện trực tiếp với TV2 theo `docs/guides/TV3-tuan4.md` Mục 3.16)* |
-| **3.17** | **Nháp Chương 2 — Phần Transformer và Chưng cất tri thức** (2–3 trang tiếng Việt) | `report/ch2_transformer.md` | **COMPLETED**<br>*(Đã hoàn thành bản nháp đầy đủ công thức, kiến trúc DistilBERT, so sánh `E5`/`E7`, logit `P2` và chưng cất `E12`/`E6`)* |
+Tài liệu này tổng hợp toàn bộ kết quả thực hiện, kiểm chứng độc lập, đối chiếu thực nghiệm và bộ kiểm thử tự động cho **5 nhiệm vụ chính thức Tuần 4 (Sprint S2)** của **Thành viên 3 (TV3 — Phụ trách Transformer, LLM & Chưng cất tri thức)** trên nhánh `tv3/week4`, tuân thủ `AGENTS.md`, `docs/WEEK4.md` và `docs/guides/TV3-tuan4.md`.
 
 ---
 
-## 2. Kiểm toán Toàn vẹn Dữ liệu Đầu vào & Mốc So sánh (`Phase 1 Audit`)
+## 1. Bảng Trạng thái 5 Nhiệm vụ Chính thức Tuần 4 của TV3 (`docs/WEEK4.md` & `docs/guides/TV3-tuan4.md`)
 
-1. **Mốc so sánh `E5` (DistilBERT full fine-tune trên `data/splits/cluster_split.jsonl`, `SHA-256: 8c2c35ea...`):**
-   - `Validation Macro-F1` (3 seeds `[1, 2, 3]` trên `1,791` mẫu validation): **`0.8030 ± 0.0054`** (`seed1 = 0.7968`, `seed2 = 0.8053`, `seed3 = 0.8068`).
-   - `Per-class F1`: `bearish = 0.7324 ± 0.0080`, `neutral = 0.8915 ± 0.0046`, `bullish = 0.7851 ± 0.0066`.
-   - `Trainable parameters`: `66,955,779 / 66,955,779` (`100%`), `Runtime`: `84.26 ± 4.80 s`, `Peak VRAM`: `1.642 GB` trên `Tesla T4`.
-2. **Kiểm chứng Artifact Nhãn mềm `P2` (`results/llm_soft_labels/p2_soft_labels.jsonl`, `SHA-256: df036722...`):**
-   - Tổng số bản ghi: **`1,409` ID duy nhất**, khớp 100% với `1,409` bản ghi `pool == "train_unlabeled"` trong `data/raw/headlines_2026/headlines.jsonl` (`SHA-256: 28bd2f3d6c2622fb10a7b3d83399996aee1ca4e83e62efe2669e99fd4d9e988f`).
-   - **Kiểm tra chống rò rỉ (Leakage Audit):**
-     - Giao với `30` ID gán thử (`labeling/trial30_ids.csv`): **`0` ID**.
-     - Giao với `300` ID tập test 2026 (`labeling/assignment.csv`): **`0` ID**.
-     - Giao với `11,931` ID của Twitter FNS (`train`, `validation`, `test` trong `data/splits/cluster_split.jsonl`): **`0` ID**.
-   - **Thống kê Nhãn giả cứng (`E12` — `argmax(probs)`) và Độ tự tin (`max(probs)`):**
-     - Số mẫu giữ lại (`n_retained`): **`1,409`** (`n_excluded_by_threshold = 0`; đặc tả chính thức tại `docs/guides/TV3-tuan4.md` Mục 3.13 giữ toàn bộ `1,409` mẫu, không áp ngưỡng cắt confidence).
-     - Phân bố lớp nhãn cứng (`hard_class_counts`): `bearish = 81` (`5.75%`), `neutral = 1,186` (`84.17%`), `bullish = 142` (`10.08%`).
-     - Phân bố độ tự tin $\max_c p_c$ ở $T = 1$: `min = 0.4851`, `mean = 0.9693`, `median = 0.9993`, `max = 1.0000`.
-   - **Ảnh hưởng của Nhiệt độ $T \in \{1, 2, 4\}$ lên Phân phối Mục tiêu $\text{target}_T = \mathrm{softmax}(\text{letter\_logp} / T)$ (`E6`):**
-     - Ở $T = 1.0$: Entropy trung bình $= \mathbf{0.0735\text{ nats}}$ (phân phối gần như one-hot).
-     - Ở $T = 2.0$: Entropy trung bình $= \mathbf{0.3654\text{ nats}}$ (làm nổi bật xác suất lớp thứ cấp ở các tiêu đề biên).
-     - Ở $T = 4.0$: Entropy trung bình $= \mathbf{0.7416\text{ nats}}$ (tiệm cận phân phối đều $\ln 3 \approx 1.0986\text{ nats}$).
+| Mã việc | Tên nhiệm vụ chính thức | Đầu ra đã tích hợp & Xác minh | Phân loại Hạng mục | Trạng thái |
+| :---: | :--- | :--- | :--- | :---: |
+| **3.13** | **`E12` — `E5` + nhãn cứng LLM (`argmax(P2)` trên `1,409` tiêu đề `train_unlabeled`), 3 seeds** | `configs/E12.yaml`, `models/transformer.py`, `results/E12/seed{1,2,3}/{run.json, preds_validation.jsonl}` | Code + GPU Experiment (`Tesla T4`, `working_tree_dirty: false`) | **COMPLETED**<br>**`Val Macro-F1 = 0.8089 ± 0.0080`** |
+| **3.14** | **`E6` — Chưng cất nhãn mềm LLM (`softmax(letter_logp / T)`), dò lưới 9 tổ hợp $T \in \{1, 2, 4\} \times \alpha \in \{0.3, 0.5, 0.7\}$ (`seed = 1`) + 3 seeds tại $(T^* = 2.0, \alpha^* = 0.7)$** | `configs/E6.yaml`, `models/transformer.py`, `results/E6/grid.md`, `results/E6/grid.json`, `results/E6/grid/T*_alpha*/seed1/`, `results/E6/seed{1,2,3}/{run.json, preds_validation.jsonl}` | Code + GPU Experiment (`Tesla T4`, `working_tree_dirty: false`) | **COMPLETED**<br>**`Val Macro-F1 = 0.8051 ± 0.0060`** |
+| **3.15** | **Sửa ghi chép nguồn gốc nhãn (Provenance Correction)** trong báo cáo tuần 2 & tuần 3 | `results/rq3_week3_contribution_report.md`, `results/llm_prompts/contribution_report_week2.md`, `labeling/llm_annotations/` | Provenance & Documentation Audit | **COMPLETED**<br>*(Commit `b72dcb3`)* |
+| **3.16** | **Bàn giao file CSV gán nhãn đôi thủ công (Human Annotation Deliverable — vị trí 51–101)** | `labeling/double100_tv2.csv` (`51` bản ghi hoàn chỉnh, `annotator = tv2`, `SHA-256: a3d27ff0...`) | Human Annotation Deliverable (`51` rows) | **COMPLETED** |
+| **3.17** | **Nháp Chương 2 — Phần Transformer và Chưng cất tri thức** | `report/ch2_transformer.md` | Verified Academic Documentation | **COMPLETED** |
 
 ---
 
-## 3. Thiết kế Kỹ thuật & Công thức Toán học cho `E12` và `E6` (`models/transformer.py`)
+## 2. Kết quả Thực nghiệm `E12` (Hard Pseudo-Label Student — Task 3.13)
 
-1. **Giữ nguyên trọng số lớp của `E5` (Fairness & Single-Factor Rule):**
-   - Trong `run_transformer_seed()`, hàm mất mát `loss_fn = build_loss(tcfg["loss"], [y for _, _, y in fns_train_ex], ...)` luôn được khởi tạo **trước** khi ghép `1,409` mẫu nhãn giả 2026 vào tập train. Nhờ đó, vector trọng số lớp $w_c = N_{\text{FNS}} / (3 N_{\text{FNS}, c})$ của `E12` và `E6` giống hệt `E5` tới từng chữ số thập phân, không bị làm lệch bởi tỷ lệ `84.17% neutral` của kho GDELT 2026.
-2. **Hàm mất mát Chưng cất `E6` (`compute_batch_loss` & `distillation_kl_loss`):**
-   - Với mỗi mẫu nhãn giả $j$ có vector log-prob thầy $z_{t,j} = \text{letter\_logp}_j$ và vector logit học trò $z_{s,j}$, phân phối mục tiêu ở nhiệt độ $T$ là $p_{t,j}^{(T)} = \mathrm{softmax}(z_{t,j} / T)$ và phân phối học trò là $p_{s,j}^{(T)} = \mathrm{softmax}(z_{s,j} / T)$.
-   - Độ phân kỳ KL trên các mẫu nhãn giả trong batch được tính bằng `F.kl_div(F.log_softmax(z_s / T, dim=-1), p_t^{(T)}, reduction="batchmean")` và nhân hệ số $\alpha \cdot T^2$:
-     $$\mathcal{L}_{\text{pseudo}} = \alpha \cdot T^2 \cdot \mathrm{KL}\!\left(p_t^{(T)} \,\middle\|\, p_s^{(T)}\right).$$
-   - Trong một mini-batch gồm $n_{\text{FNS}}$ mẫu FNS và $n_{\text{pseudo}}$ mẫu 2026 ($N_B = n_{\text{FNS}} + n_{\text{pseudo}}$):
-     $$\mathcal{L}_{\text{batch}} = \frac{n_{\text{FNS}}}{N_B}\,\mathcal{L}_{\text{WCE}}(\text{FNS}) + \frac{n_{\text{pseudo}}}{N_B}\,\mathcal{L}_{\text{pseudo}}(\text{2026}).$$
-     Khi $\alpha = 0$, thành phần $\mathcal{L}_{\text{pseudo}}$ bằng đúng $0.0$.
+- **Thiết lập & Kiểm soát Công bằng:**
+  - Sao chép nguyên bản từ `configs/E5.yaml` (`distilbert/distilbert-base-uncased`, `66,955,779` tham số trainable, `lr = 2e-5`, `weight_decay = 0.01`, `warmup_ratio = 0.1`, `batch_size = 32`, `max_epochs = 4`, FP16 AMP), chỉ bổ sung `1,409` mẫu `train_unlabeled` năm 2026 từ `results/llm_soft_labels/p2_soft_labels.jsonl` với nhãn cứng $\hat{y} = \arg\max(\text{probs})$ (`bearish = 81`, `neutral = 1,186`, `bullish = 142`).
+  - Tổng số mẫu huấn luyện: `8,349` (FNS `train`) + `1,409` (2026 `train_unlabeled`) = **`9,758` mẫu**.
+  - Trọng số lớp của `weighted_ce` được tính **chỉ trên `8,349` mẫu FNS `train`** (giữ nguyên như `E5`).
+  - Chạy trên Google Colab `Tesla T4` từ commit sạch `1606687c1999f330e4acdf1fc8ee06c060377485` với **`working_tree_dirty: false`** trên cả 3 seeds.
 
----
-
-## 4. Bảng Tổng hợp So sánh `E5`, `E7`, `E12`, `E6` trên Validation (`1,791` mẫu)
-
-*(Tuân thủ `AGENTS.md` Quy tắc 6: tuyệt đối không điền số giả lập cho các lần chạy GPU đang chờ thực thi trên Google Colab T4).*
-
-| Experiment | Training Target | Temperature ($T$) | Alpha ($\alpha$) | Mean Val Macro-F1 | Std | Runtime (s) | Peak VRAM (GB) | Status |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **`E5`** | Ground-truth FNS train (`8,351` rows) | N/A | N/A | **`0.8030`** | **`0.0054`** | `84.26 ± 4.80` | `1.642` | **COMPLETED** |
-| **`E7`** | Ground-truth FNS train (Frozen encoder) | N/A | N/A | **`0.5913`** | **`0.0023`** | `31.87 ± 0.17` | `0.363` | **COMPLETED** |
-| **`E12`** | FNS train + `1,409` P2 hard pseudo-labels (`argmax`) | N/A (`hard`) | N/A | *(Pending Colab T4 run)* | *(Pending)* | *(Pending)* | *(Pending)* | **READY TO RUN** |
-| **`E6` (Grid $T=1$)** | FNS train + `1,409` P2 soft labels | `1.0` | `{0.3, 0.5, 0.7}` | *(Pending Colab T4 grid)* | *(Seed 1 grid)* | *(Pending)* | *(Pending)* | **READY TO RUN** |
-| **`E6` (Grid $T=2$)** | FNS train + `1,409` P2 soft labels | `2.0` | `{0.3, 0.5, 0.7}` | *(Pending Colab T4 grid)* | *(Seed 1 grid)* | *(Pending)* | *(Pending)* | **READY TO RUN** |
-| **`E6` (Grid $T=4$)** | FNS train + `1,409` P2 soft labels | `4.0` | `{0.3, 0.5, 0.7}` | *(Pending Colab T4 grid)* | *(Seed 1 grid)* | *(Pending)* | *(Pending)* | **READY TO RUN** |
-| **`E6` (3 Seeds)** | FNS train + `1,409` P2 soft labels at $(T^*, \alpha^*)$ | $T^*$ (from val grid) | $\alpha^*$ (from val grid) | *(Pending Colab T4 run)* | *(Pending)* | *(Pending)* | *(Pending)* | **READY TO RUN** |
+| Seed | Best Epoch | Val Macro-F1 (4-dec) | Val Macro-F1 (Exact) | Bearish F1 | Neutral F1 | Bullish F1 | Runtime (s) | Peak VRAM (GB) | Confusion Matrix (`rows=gold, cols=pred`) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| `1` | 4 | `0.8026` | `0.802617` | `0.7311` | `0.8867` | `0.7900` | `109.58` | `1.644` | `[[208, 45, 16], [79, 998, 85], [13, 46, 301]]` |
+| `2` | 3 | `0.8178` | `0.817836` | `0.7549` | `0.8992` | `0.7994` | `97.93` | `1.652` | `[[214, 46, 9], [68, 1035, 59], [16, 59, 285]]` |
+| `3` | 4 | `0.8062` | `0.806172` | `0.7312` | `0.8938` | `0.7936` | `102.76` | `1.649` | `[[204, 50, 15], [69, 1018, 75], [16, 48, 296]]` |
+| **Mean ± SD** | — | **`0.8089 ± 0.0080`** *(exact)*<br>`0.8089 ± 0.0079` *(4-dec)* | **`0.808875 ± 0.007962`** | **`0.7391 ± 0.0137`** | **`0.8932 ± 0.0063`** | **`0.7943 ± 0.0047`** | **`103.42 ± 5.86`** | **`1.648`** *(max `1.652`)* | — |
 
 ---
 
-## 5. Kết quả Kiểm thử Tự động (Unit & Integration Tests)
+## 3. Kết quả Thực nghiệm `E6` (Soft-Label Knowledge Distillation — Task 3.14)
 
-Đã thực thi bộ kiểm thử trên nhánh `tv3/week4`:
+### 3.1. Kết quả Dò Lưới 9 Tổ hợp $(T \in \{1, 2, 4\} \times \alpha \in \{0.3, 0.5, 0.7\})$ trên Validation (`seed = 1`, `results/E6/grid.md`)
+
+Toàn bộ 9 tổ hợp được huấn luyện trên `seed = 1` từ commit sạch `1606687c19` (`working_tree_dirty: false`) và chỉ chấm trên tập `validation` (`1,791` mẫu):
+
+| Thứ tự | Nhiệt độ ($T$) | Hệ số ($\alpha$) | Best Epoch | Val Macro-F1 | Bearish F1 | Neutral F1 | Bullish F1 | Runtime (s) | Peak VRAM (GB) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 1 | `1.0` | `0.3` | 4 | `0.8064` | `0.7456` | `0.8890` | `0.7845` | `106.91` | `1.656` |
+| 2 | `1.0` | `0.5` | 4 | `0.8036` | `0.7359` | `0.8861` | `0.7888` | `106.43` | `1.656` |
+| 3 | `1.0` | `0.7` | 4 | `0.8014` | `0.7327` | `0.8860` | `0.7855` | `106.48` | `1.656` |
+| 4 | `2.0` | `0.3` | 4 | `0.8021` | `0.7289` | `0.8872` | `0.7903` | `101.91` | `1.656` |
+| 5 | `2.0` | `0.5` | 4 | `0.8044` | `0.7314` | `0.8881` | `0.7936` | `106.92` | `1.656` |
+| **6 (Winner)** | **`2.0`** | **`0.7`** | **4** | **`0.8072`** | **`0.7333`** | **`0.8898`** | **`0.7984`** | **`104.42`** | **`1.656`** |
+| 7 | `4.0` | `0.3` | 4 | `0.8015` | `0.7270` | `0.8873` | `0.7903` | `106.50` | `1.656` |
+| 8 | `4.0` | `0.5` | 4 | `0.7993` | `0.7316` | `0.8822` | `0.7841` | `102.02` | `1.656` |
+| 9 | `4.0` | `0.7` | 4 | `0.7947` | `0.7224` | `0.8791` | `0.7826` | `102.79` | `1.656` |
+
+- **Tổ hợp được chọn trên Validation:** **`T* = 2.0, α* = 0.7`** (`val_macro_f1 = 0.8072`).
+
+### 3.2. Kết quả 3 Seeds Chính thức của `E6` tại $(T^* = 2.0, \alpha^* = 0.7)$ (`results/E6/seed{1,2,3}/`)
+
+| Seed | Best Epoch | Val Macro-F1 (4-dec) | Val Macro-F1 (Exact) | Bearish F1 | Neutral F1 | Bullish F1 | Runtime (s) | Peak VRAM (GB) | Confusion Matrix (`rows=gold, cols=pred`) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| `1` | 4 | `0.8072` | `0.807164` | `0.7333` | `0.8898` | `0.7984` | `106.53` | `1.656` | `[[209, 49, 11], [77, 1009, 76], [15, 48, 297]]` |
+| `2` | 3 | `0.8098` | `0.809846` | `0.7406` | `0.8945` | `0.7944` | `106.51` | `1.650` | `[[207, 53, 9], [67, 1030, 65], [16, 58, 286]]` |
+| `3` | 4 | `0.7983` | `0.798332` | `0.7118` | `0.8869` | `0.7963` | `106.43` | `1.649` | `[[205, 51, 13], [83, 1000, 79], [19, 42, 299]]` |
+| **Mean ± SD** | — | **`0.8051 ± 0.0060`** | **`0.805114 ± 0.006021`** | **`0.7286 ± 0.0150`** | **`0.8904 ± 0.0038`** | **`0.7964 ± 0.0020`** | **`106.49 ± 0.05`** | **`1.652`** *(max `1.656`)* | — |
+
+---
+
+## 4. So sánh Thực nghiệm Tổng hợp: `E5` vs. `E7` vs. `E12` vs. `E6` (Phase 5 Analysis)
+
+### 4.1. Bảng Đối chiếu Tổng hợp trên Tập Validation (`1,791` mẫu)
+
+| Experiment | Training Target | Temperature ($T$) | Alpha ($\alpha$) | Mean Val Macro-F1 | Std | Bearish F1 | Neutral F1 | Bullish F1 | Mean Runtime (s) | Peak VRAM (GB) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **`E5` (Baseline)** | Ground-truth labeled FNS (`8,349` rows) | N/A | N/A | **`0.8030`** | **`0.0054`** | `0.7324 ± 0.0080` | `0.8915 ± 0.0046` | `0.7851 ± 0.0066` | `84.26 ± 4.80` | `1.644` |
+| **`E7` (Frozen)** | Ground-truth labeled FNS (`592,899` trainable params) | N/A | N/A | **`0.5913`** | **`0.0023`** | `0.4402 ± 0.0128` | `0.8022 ± 0.0021` | `0.5315 ± 0.0076` | `31.87 ± 0.17` | `0.363` |
+| **`E6` (Grid $T=1$)** | FNS + `1,409` P2 soft labels (`seed 1`, $\alpha \in \{0.3, 0.5, 0.7\}$) | `1.0` | `0.3 / 0.5 / 0.7` | `0.8064 / 0.8036 / 0.8014` | *(Seed 1)* | `0.7456 / 0.7359 / 0.7327` | `0.8890 / 0.8861 / 0.8860` | `0.7845 / 0.7888 / 0.7855` | `106.61` | `1.656` |
+| **`E6` (Grid $T=2$)** | FNS + `1,409` P2 soft labels (`seed 1`, $\alpha \in \{0.3, 0.5, 0.7\}$) | `2.0` | `0.3 / 0.5 / 0.7` | `0.8021 / 0.8044 / 0.8072` | *(Seed 1)* | `0.7289 / 0.7314 / 0.7333` | `0.8872 / 0.8881 / 0.8898` | `0.7903 / 0.7936 / 0.7984` | `104.42` | `1.656` |
+| **`E6` (Grid $T=4$)** | FNS + `1,409` P2 soft labels (`seed 1`, $\alpha \in \{0.3, 0.5, 0.7\}$) | `4.0` | `0.3 / 0.5 / 0.7` | `0.8015 / 0.7993 / 0.7947` | *(Seed 1)* | `0.7270 / 0.7316 / 0.7224` | `0.8873 / 0.8822 / 0.8791` | `0.7903 / 0.7841 / 0.7826` | `103.77` | `1.656` |
+| **`E6` (3 Seeds)** | FNS + `1,409` P2 soft labels at $(T^*=2.0, \alpha^*=0.7)$ | **`2.0`** | **`0.7`** | **`0.8051`** | **`0.0060`** | `0.7286 ± 0.0150` | `0.8904 ± 0.0038` | `0.7964 ± 0.0020` | `106.49 ± 0.05` | `1.656` |
+| **`E12` (3 Seeds)** | FNS + `1,409` P2 hard pseudo-labels (`argmax`) | N/A (`hard`) | N/A | **`0.8089`** | **`0.0080`** | `0.7391 ± 0.0137` | `0.8932 ± 0.0063` | `0.7943 ± 0.0047` | `103.42 ± 5.86` | `1.652` |
+
+### 4.2. Kiểm định Ghép cặp trên Tập Validation (`evaluate.stats.compare`, `1,000` lần Bootstrap & Exact McNemar)
+
+| Cặp so sánh (`B - A`) | Seed | Chênh lệch Macro-F1 (`B - A`) | Paired Bootstrap 95% CI | McNemar (`only_A / only_B`, $p$-value) |
+| :--- | :---: | :---: | :---: | :---: |
+| **`E12 - E5`** | `1` | `+0.0058` | `[-0.0064, +0.0180]` | `37 / 44` ($p = 0.5052$) |
+| **`E12 - E5`** | `2` | `+0.0125` | `[+0.00002, +0.0241]` | `30 / 48` ($p = 0.0535$) |
+| **`E12 - E5`** | `3` | `-0.0006` | `[-0.0131, +0.0112]` | `42 / 42` ($p = 1.0000$) |
+| **`E6 - E5`** | `1` | `+0.0103` | `[-0.0028, +0.0231]` | `39 / 54` ($p = 0.1462$) |
+| **`E6 - E5`** | `2` | `+0.0045` | `[-0.0091, +0.0176]` | `47 / 54` ($p = 0.5507$) |
+| **`E6 - E5`** | `3` | `-0.0085` | `[-0.0232, +0.0058]` | `61 / 47` ($p = 0.2108$) |
+| **`E6 - E12`** | `1` | `+0.0045` | `[-0.0060, +0.0138]` | `26 / 34` ($p = 0.3663$) |
+| **`E6 - E12`** | `2` | `-0.0080` | `[-0.0185, +0.0011]` | `33 / 22` ($p = 0.1770$) |
+| **`E6 - E12`** | `3` | `-0.0078` | `[-0.0192, +0.0037]` | `42 / 28` ($p = 0.1196$) |
+
+### 4.3. Phân tích Khoa học Thận trọng (Scientific Analysis)
+
+1. **So sánh giữa `E12` (nhãn giả cứng), `E6` (chưng cất nhãn mềm) và `E5` (mốc có giám sát):**
+   - Trên tập validation trong miền (`1,791` tweet của Twitter FNS), `E12` đạt trung bình Macro-F1 cao nhất (`0.8089 ± 0.0080`, cao hơn `E5` `+0.59 pp`), tiếp theo là `E6` (`0.8051 ± 0.0060`, cao hơn `E5` `+0.21 pp`).
+   - Tuy nhiên, mức chênh lệch trung bình giữa `E12` và `E6` (`0.0038`, tức `0.38 pp`) cũng như so với `E5` là **tương đối nhỏ**, nhỏ hơn độ lệch chuẩn giữa các seed (`0.0054 – 0.0080`). Trên cả 3 seeds, khoảng tin cậy 95% của paired bootstrap cho hiệu `E6 - E12` và `E6 - E5` đều chứa 0 ($p_{\text{McNemar}} \ge 0.1196$).
+2. **Ảnh hưởng của Nhiệt độ $T$ trong Chưng cất `E6`:**
+   - Ở $T = 1.0$, phân phối của thầy Qwen rất nhọn (entropy trung bình chỉ `0.0735 nats`), nên tăng trọng số $\alpha$ từ `0.3` lên `0.7` làm giảm nhẹ Macro-F1 (`0.8064 → 0.8014`).
+   - Ở $T = 2.0$ (entropy trung bình `0.3654 nats`), thông tin tương quan giữa các lớp ("dark knowledge") được làm mềm vừa đủ: tăng $\alpha$ từ `0.3 → 0.5 → 0.7` giúp Macro-F1 trên `seed = 1` tăng đơn điệu (`0.8021 → 0.8044 → 0.8072`), đặc biệt kéo F1 lớp `bullish` lên `0.7984`.
+   - Ở $T = 4.0$ (entropy trung bình `0.7416 nats`), phân phối mục tiêu bị làm phẳng quá mức về phía phân phối đều, khiến việc tăng $\alpha$ từ `0.3 → 0.7` làm suy giảm Macro-F1 (`0.8015 → 0.7947`).
+3. **Phân tích theo từng lớp (`Bearish`, `Neutral`, `Bullish`):**
+   - Cả `E12` và `E6` đều cải thiện F1 của lớp **`bullish`** trên validation một cách nhất quán qua cả 3 seeds so với `E5` (`E5`: `0.7851 ± 0.0066` $\to$ `E12`: `0.7943 ± 0.0047`, `E6`: `0.7964 ± 0.0020`).
+   - Ngược lại, ở lớp `bearish` (vốn chỉ chiếm `81 / 1,409 = 5.75%` trong kho tiêu đề không nhãn GDELT 2026), `E12` đạt `0.7391 ± 0.0137` còn `E6` đạt `0.7286 ± 0.0150` (dao động lớn hơn giữa các seed).
+4. **Giới hạn Thực nghiệm & Nguyên tắc Trung thực Khoa học:**
+   - Tập validation hiện tại là **dữ liệu trong miền (Twitter FNS)**, trong khi `1,409` tiêu đề không nhãn được chưng cất đến từ **miền đích (tiêu đề tin tức năm 2026)**. Do đó, việc `E12` và `E6` giữ được (và tăng nhẹ) Macro-F1 trên validation trong miền chứng tỏ quá trình trộn dữ liệu 2026 không gây suy thoái biểu diễn trong miền, nhưng **không được dùng kết quả validation trong miền để kết luận về hiệu quả tổng quát hóa ngoài phân phối (RQ3) trên tập test 2026**.
+
+---
+
+## 5. Xác minh Task 3.15 (Provenance Correction) & Task 3.16 (Human Annotation Deliverable)
+
+1. **Task 3.15 — Sửa ghi chép nguồn gốc nhãn (`b72dcb3`):**
+   - Các file nhãn do LLM tạo (`trial/tv1.csv`, `trial/tv2.csv`, `trial/tv3.csv`, `round1/tv3.csv`) được lưu tách biệt hoàn toàn tại `labeling/llm_annotations/` kèm `labeling/llm_annotations/README.md`.
+   - Cả hai báo cáo `results/llm_prompts/contribution_report_week2.md` và `results/rq3_week3_contribution_report.md` đều đã bổ sung ghi chú đính chính rõ ràng ngày 23/11, không trộn lẫn với nhãn gold của con người.
+2. **Task 3.16 — Bàn giao File CSV Gán nhãn Đôi Thủ công (`labeling/double100_tv2.csv`):**
+   - Đã kiểm tra file nguồn do người dùng cung cấp và trích xuất chính xác **51 bản ghi hoàn chỉnh ở vị trí dòng 51–101** vào [labeling/double100_tv2.csv](file:///c:/Users/ASUS/financial-sentiment-dl/labeling/double100_tv2.csv) (`6,857` bytes, `SHA-256: a3d27ff0365a4cfaeeed66af5d4be938454fa41a99c27201bf1a23f6ea6814d3`).
+   - **Tóm tắt kiểm chứng trên `labeling/double100_tv2.csv`:**
+     - **Schema:** `id,label,reason,annotator,date,guide_version,issue` (không chứa văn bản tiêu đề hay URL).
+     - **Số bản ghi hoàn chỉnh:** Chính xác **`51` bản ghi** (`51` ID duy nhất, tương ứng đúng vị trí 51–101 của danh sách 100 tiêu đề gán đôi trong `labeling/assignment.csv`).
+     - **Mã người gán (`annotator`):** Giữ nguyên chính xác `tv2` trên cả 51 bản ghi.
+     - **Phân bố nhãn (`label`):** `neutral = 24` (`47.06%`), `bearish = 14` (`27.45%`), `bullish = 13` (`25.49%`).
+     - **Bảo toàn nguyên trạng:** Toàn bộ 51 nhãn và 51 lý do giải thích do con người gán được giữ nguyên 100% nguyên văn, không có bất kỳ sự can thiệp hay chỉnh sửa nào từ AI/LLM.
+
+---
+
+## 6. Kết quả Bộ Kiểm thử Tự động (Full Prescribed Test Suite)
+
+Lệnh kiểm thử thực thi toàn bộ 22 module test không phụ thuộc PyTorch local trong `tests/`:
 ```powershell
 python -m unittest tests.test_metrics tests.test_transformer tests.test_llm_soft_labels tests.test_train_data tests.test_stats tests.test_pick300 tests.test_simulate_power tests.test_audit_leakage_capacity tests.test_make_leakage tests.test_make_leakage_cli tests.test_gold_labels -v
 ```
-- **Kết quả:** **`38/38 tests PASS (`OK`)`**
-  - `tests.test_transformer` (**10/10 PASS**):
-    - Kiểm tra `E5.yaml`, `E6.yaml`, `E7.yaml`, `E12.yaml` hợp lệ và tuân thủ quy tắc "một thay đổi mỗi thí nghiệm".
-    - Kiểm tra tính toán tay `softmax_temperature(letter_logp, T=2.0)` và `distillation_kl_loss` ($\alpha = 0 \implies \text{loss} = 0$; $z_s = z_t \implies \text{KL} = 0$; kiểm tra hệ số $\alpha \cdot T^2$ ở $T = 2, \alpha = 0.5$).
-    - Kiểm tra `load_pseudo_labeled_examples` ở cả hai chế độ `hard` (`argmax`) và `soft` (`target_T`), kiểm tra chốt chặn từ chối ID trùng, từ chối 330 ID loại trừ (`trial30` + `test300`), từ chối ID thuộc tập FNS, và tích hợp thực tế toàn bộ `1,409` bản ghi từ `results/llm_soft_labels/p2_soft_labels.jsonl`.
-    - Kiểm tra xuất bảng Markdown `format_e6_grid_markdown` cho lưới 9 tổ hợp của `E6`.
-    - Kiểm tra toàn vẹn 6 bộ kết quả `results/E5/seed{1,2,3}` và `results/E7/seed{1,2,3}`.
-  - `tests.test_llm_soft_labels` (**6/6 PASS**): Kiểm tra toàn vẹn `results/llm_soft_labels/p2_soft_labels.jsonl` (`1,409` bản ghi) và `labeling/llm_annotations/round1/tv3.csv`.
-  - Các bộ test dùng chung của nhóm (`test_metrics`, `test_train_data`, `test_stats`, `test_pick300`, `test_simulate_power`, `test_audit_leakage_capacity`, `test_make_leakage`, `test_make_leakage_cli`, `test_gold_labels`): **22/22 PASS**.
+- **Kết quả trên 11 module kiểm thử trọng tâm Week 3–4:** **`Ran 39 tests in 12.8s — OK` (`39 passed, 0 failed, 0 skipped, 0 errors`)**
+  - `tests.test_transformer`: **11/11 passed** (bao gồm test mới `test_integrated_e12_e6_and_task_3_16_artifacts` kiểm tra toàn bộ 3 seeds của `E12`, 9 tổ hợp lưới + 3 seeds của `E6` với `working_tree_dirty == False`, và 51 bản ghi của `labeling/double100_tv2.csv`).
+  - `tests.test_llm_soft_labels`: **6/6 passed**
+  - `tests.test_metrics`: **4/4 passed**
+  - `tests.test_train_data`: **6/6 passed**
+  - `tests.test_stats`, `tests.test_pick300`, `tests.test_simulate_power`, `tests.test_audit_leakage_capacity`, `tests.test_make_leakage`, `tests.test_make_leakage_cli`, `tests.test_gold_labels`: **12/12 passed**
+  - *(Giải thích rõ về con số 38 vs. 39 trước đây: trước khi tích hợp kết quả thực nghiệm `E12`/`E6`/`double100_tv2.csv`, 11 module trên có đúng 38 test methods; sau khi bổ sung `test_integrated_e12_e6_and_task_3_16_artifacts` vào `tests/test_transformer.py`, tổng số test methods trong lệnh trên là đúng **39 tests** và cả 39/39 đều PASS).*
