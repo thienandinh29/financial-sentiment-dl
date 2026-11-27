@@ -41,18 +41,18 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 | --- | --- | --- |
 | `plan/` | Checklist TV1: `plan_tv1_week2.md` và `plan_tv1_week3.md` | TV1 |
 | `context/` | Quyết định đã chốt và lý do (`decisions.md`) | Cả nhóm |
-| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN); `E3.yaml` (BiLSTM max-pooling), `E4.yaml` (embedding ngẫu nhiên), `E13.yaml` (focal loss); `E5.yaml` (DistilBERT fine-tune); `E7.yaml` (DistilBERT đóng băng encoder) | Theo RQ |
+| `configs/` | Mỗi thí nghiệm một YAML; `E2.yaml` là mẫu; `E1.yaml` (TextCNN); `E3.yaml` (BiLSTM max-pooling), `E4.yaml` (embedding ngẫu nhiên), `E13.yaml` (focal loss); `E5.yaml` (DistilBERT fine-tune); `E6.yaml` (DistilBERT + chưng cất nhãn mềm LLM); `E7.yaml` (DistilBERT đóng băng encoder); `E12.yaml` (DistilBERT + nhãn cứng LLM) | Theo RQ |
 | `data/` | Script tải dữ liệu, `splits/` (split + SHA-256); quy tắc trong `data/README.md` | TV1 |
 | `labeling/` | Hướng dẫn gán nhãn, nhãn test 2026 (không kèm văn bản), kappa | TV1 |
-| `models/` | TextCNN, BiLSTM-Attention, Transformer (`transformer.py` cho E5, E7, E8), nhãn mềm LLM (`llm_soft_labels.py`), chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN; `registry.py` tên mô hình → hàm dựng; `textcnn.py` (E1); `bilstm_attention.py` (E2, E3) | TV2, TV3 |
+| `models/` | TextCNN, BiLSTM-Attention, Transformer (`transformer.py` cho E5, E6, E7, E8, E12), nhãn mềm LLM (`llm_soft_labels.py`), chưng cất; `tokenizer.py` tách từ, `embeddings.py` từ điển + GloVe cho RNN/CNN; `registry.py` tên mô hình → hàm dựng; `textcnn.py` (E1); `bilstm_attention.py` (E2, E3) | TV2, TV3 |
 | `train/` | Vòng huấn luyện chung: `data.py` đọc split (kiểm SHA-256), `losses.py`, `loop.py`, `runlog.py`, `run.py` (`python -m train.run --config ...`) | TV2 |
 | `evaluate/` | Metric (`metrics.py`), bootstrap, McNemar, robustness | TV1, TV3 |
 | `inference/` | ONNX, latency, FastAPI, Dockerfile | TV3, TV2 |
 | `app/` | Demo Gradio | TV3 |
-| `notebooks/` | Notebook thiết lập Colab (`notebooks/colab_setup.ipynb`), đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`), và chạy E5/E7 + nhãn mềm P2 (`notebooks/week3_transformer_and_soft_labels.ipynb`) | TV3 |
+| `notebooks/` | Notebook thiết lập Colab (`notebooks/colab_setup.ipynb`), đánh giá prompt P1/P2/P3 (`notebooks/llm_prompts.ipynb`), chạy E5/E7 + nhãn mềm P2 (`notebooks/week3_transformer_and_soft_labels.ipynb`), và chạy E12/E6 (`notebooks/week4_e12_and_e6_distillation.ipynb`) | TV3 |
 | `scripts/` | EDA, tiện ích dữ liệu; `review_pairs.py` chia kiểm tay 100 cặp gần trùng cho nhiều người rồi gộp kết quả (TV2 thêm, TV1 duyệt); `dedup.py` cặp/cụm gần trùng, `export_headlines.py` xuất tiêu đề 2026 từ pipeline (TV2) | TV1 |
 | `tests/` | Test nhỏ cho từng thay đổi hành vi (`python -m unittest`) | Cả nhóm |
-| `report/` | Bản nháp các chương báo cáo (tiếng Việt): `ch2_rnn_cnn.md` (TV2) | Theo chương |
+| `report/` | Bản nháp các chương báo cáo (tiếng Việt): `ch2_rnn_cnn.md` (TV2), `ch2_transformer.md` (TV3) | Theo chương |
 | `results/` | Bảng kết quả, log, hình (không checkpoint); `results/smoke/` (`env.json`, `distilbert.json`, `qwen.json`, `gpu_budget.md`, `contribution_report.md`); `results/E1`–`E4/seed{1,2,3}/` (`run.json`, `preds_validation.jsonl`, `vocab.json`), `results/rq2_validation.md` (bảng RQ2 tạm + so ghép cặp E3/E4 với E2); `results/E5/seed{1,2,3}/` và `results/E7/seed{1,2,3}/` (`run.json`, `preds_validation.jsonl`); `results/llm_soft_labels/` (`p2_soft_labels.jsonl`, `run.json`) | Cả nhóm |
 | `docs/` | Proposal, kế hoạch chi tiết (PDF); `WEEK1.md`–`WEEK4.md` việc chi tiết + checkpoint từng tuần; `guides/` hướng dẫn từng bước cho từng thành viên; `meetings/` chương trình + bộ câu hỏi họp "hiểu bài"; `WEEK1.md`, `WEEK2.md` việc chi tiết + checkpoint từng tuần | Cả nhóm |
 | `.claude/` | Cấu hình Claude Code dùng chung (`settings.json`) | Cả nhóm |
@@ -104,3 +104,11 @@ Cập nhật file này trong cùng commit mỗi khi tạo hoặc di chuyển fil
 - `labeling/test300_ids.csv`, `labeling/assignment.csv`, `labeling/test300_selection.json`: selected RSS IDs and URLs, two-round assignments, and selection provenance (no headline text).
 - `data/raw/headlines_2026/labeling_packets/`: local-only reading copies and blank label templates for each annotator and round; headline text remains local and must not be staged.
 - `scripts/make_leakage.py`, `tests/test_make_leakage.py`, `tests/test_make_leakage_cli.py`: validation-only ID overlay manifest preparation with explicit donors, hash checks, and synthetic tests; not yet integrated with training.
+
+## Week 4 TV3 files
+
+- `configs/E12.yaml` and `configs/E6.yaml`: DistilBERT + P2 hard pseudo-labels (`pseudo_mode: hard`) and DistilBERT + P2 soft-label knowledge distillation (`pseudo_mode: soft`, `distill_alpha`, `distill_temperature`) configs.
+- `models/transformer.py` and `tests/test_transformer.py`: extended with `load_pseudo_labeled_examples` (hard argmax and temperature-scaled soft targets `softmax(letter_logp / T)`, strict SHA-256 check and 330 trial/test + FNS split exclusion guards), `distillation_kl_loss` ($\alpha \cdot T^2 \cdot \mathrm{KL}$), FNS-train-only class weights preservation, and 9-point validation grid search runner `run_e6_grid_search`.
+- `notebooks/week4_e12_and_e6_distillation.ipynb`: Colab T4 runner notebook for Tasks 3.13 (`E12` 3 seeds) and 3.14 (`E6` 9-point validation grid + 3 seeds) enforcing `working_tree_dirty: false`.
+- `report/ch2_transformer.md`: Chapter 2 draft (Vietnamese) covering Transformer & self-attention, DistilBERT (`E5` vs. `E7`), LLM `P2` logit extraction, and hard/soft distillation (`E12` vs. `E6`).
+- `results/rq3_week4_contribution_report.md`: TV3 Week 4 (Sprint S2) implementation, P2 artifact audit, test verification, and execution status report.
