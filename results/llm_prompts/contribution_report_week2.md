@@ -12,6 +12,8 @@ Tài liệu này tổng hợp kết quả hoàn thành các nhiệm vụ **Tuầ
 | **Nhánh làm việc** | `tv3/week2` |
 | **Các nhiệm vụ đã hoàn thành** | Task 3.5 (Đánh giá 3 biến thể prompt `P1`, `P2`, `P3`), Task 3.6 (Kiểm tra top-10 logits & chốt prompt `P2`), Task 3.7 (Khung đánh giá chung `evaluate/metrics.py` + `tests/test_metrics.py`), Task 3.8 (Cập nhật bộ đọc split dạng ID trong `notebooks/colab_setup.ipynb`), và gán nhãn thử 30 tiêu đề năm 2026 (`labeling/trial/tv3.csv`) |
 
+> Sửa 23/11: nhãn này do LLM tạo, không phải gán tay; file đã chuyển sang labeling/llm_annotations/ (xem context/decisions.md).
+
 ---
 
 ## 2. Kết quả Thực nghiệm Đánh giá Prompt `P1`, `P2`, `P3` trên Tập Validation (Tasks 3.5 & 3.6)
@@ -50,6 +52,8 @@ Tài liệu này tổng hợp kết quả hoàn thành các nhiệm vụ **Tuầ
 | **Gán nhãn thử 30 tiêu đề năm 2026** | **TV3 tự đọc và gán nhãn thủ công độc lập 100% cho 30 tiêu đề vòng thử (`labeling/trial/tv3.csv`) kèm lý do ngắn, không sử dụng AI/LLM.** | Tuyệt đối không tham gia gán nhãn, gợi ý hay suy đoán nhãn cho dữ liệu gán thử. | Cohen's kappa giữa TV3 và TV1 đạt `0.849`, giữa TV3 và TV2 đạt `0.747` (`labeling/trial_agreement.json`). |
 | **Chạy thực nghiệm GPU trên Google Colab (`P1`, `P2`, `P3`)** | **TV3 trực tiếp chạy `notebooks/llm_prompts.ipynb` với `Qwen/Qwen2.5-7B-Instruct` 4-bit NF4 trên 1.791 mẫu validation trên Google Colab T4 và xuất 4 file kết quả.** | Không giả lập hay chỉnh sửa bất kỳ xác suất dự đoán nào; chỉ đối chiếu mã băm và chấm điểm độc lập qua `evaluate/metrics.py`. | Chạy `python -m evaluate.metrics` trên cả 3 file `results/E11/{P1,P2,P3}/preds_validation.jsonl` cho kết quả khớp 100% từng con số `macro_f1`, `f1` và ma trận nhầm lẫn với `top10_check.json`. |
 | **Phát triển `evaluate/metrics.py`, `tests/test_metrics.py` & Notebooks** | Chỉ đạo quy trình tích hợp Git, kiểm duyệt từng commit và xác nhận quy tắc chọn prompt. | Viết mã nguồn `evaluate/metrics.py`, `tests/test_metrics.py`, `configs/llm_prompts.yaml`, `notebooks/llm_prompts.ipynb`, cập nhật `notebooks/colab_setup.ipynb`, `MAP.md`, `PLAN.md`, `context/decisions.md`. | `python -m unittest tests.test_metrics -v` đạt 4/4 tests (`OK`). |
+
+> Sửa 23/11: nhãn này do LLM tạo, không phải gán tay; file đã chuyển sang labeling/llm_annotations/ (xem context/decisions.md).
 
 ---
 

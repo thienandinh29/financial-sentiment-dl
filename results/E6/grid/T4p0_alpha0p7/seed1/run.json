@@ -1,0 +1,126 @@
+{
+  "commit": "1606687c1999f330e4acdf1fc8ee06c060377485",
+  "working_tree_dirty": false,
+  "config": {
+    "experiment": "E6/grid/T4p0_alpha0p7",
+    "rq": "RQ3",
+    "data": {
+      "dataset": "zeroshot/twitter-financial-news-sentiment",
+      "split_file": "data/splits/cluster_split.jsonl",
+      "split_sha256": "8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa",
+      "max_len": 64,
+      "pseudo_labels": "results/llm_soft_labels/p2_soft_labels.jsonl",
+      "pseudo_mode": "soft",
+      "distill_alpha": 0.7,
+      "distill_temperature": 4.0
+    },
+    "model": {
+      "name": "transformer",
+      "pretrained_name": "distilbert/distilbert-base-uncased",
+      "num_labels": 3,
+      "dropout": 0.3,
+      "freeze_encoder": false
+    },
+    "train": {
+      "loss": "weighted_ce",
+      "optimizer": "adamw",
+      "lr": 2e-05,
+      "weight_decay": 0.01,
+      "warmup_ratio": 0.1,
+      "batch_size": 32,
+      "max_epochs": 4,
+      "grad_clip": 1.0,
+      "early_stopping": {
+        "metric": "val_macro_f1",
+        "patience": 3
+      },
+      "mixed_precision": true
+    },
+    "seeds": [
+      1,
+      2,
+      3
+    ]
+  },
+  "seed": 1,
+  "python": "3.13.16",
+  "libraries": {
+    "torch": "2.14.1+cu130",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.3",
+    "transformers": "5.20.2"
+  },
+  "gpu": "Tesla T4",
+  "started_at_utc": "2026-11-27T06:59:07.515451+00:00",
+  "finished_at_utc": "2026-11-27T07:00:50.308311+00:00",
+  "elapsed_seconds": 102.793,
+  "label_order": [
+    "bearish",
+    "neutral",
+    "bullish"
+  ],
+  "model_stats": {
+    "freeze_encoder": false,
+    "total_params": 66955779,
+    "trainable_params": 66955779,
+    "frozen_params": 0
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1.4561625610709459,
+      "val_loss": 0.6918198473456184,
+      "val_macro_f1": 0.6496138938934983,
+      "seconds": 23.858
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.669998235061389,
+      "val_loss": 0.6111056338721395,
+      "val_macro_f1": 0.7847871232112843,
+      "seconds": 23.821
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.411530660841401,
+      "val_loss": 0.5741060860694237,
+      "val_macro_f1": 0.7845463982980267,
+      "seconds": 23.797
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.2857578333927657,
+      "val_loss": 0.6299443496017426,
+      "val_macro_f1": 0.7947059486678442,
+      "seconds": 23.98
+    }
+  ],
+  "best_epoch": 4,
+  "val_macro_f1": 0.7947059486678442,
+  "peak_gpu_mem_gb": 1.656,
+  "pseudo_stats": {
+    "pseudo_labels_path": "results/llm_soft_labels/p2_soft_labels.jsonl",
+    "pseudo_labels_sha256": "df036722c4b0489c56a6cec10ae20ba2136460118fe0f6119fc9a89de49f9805",
+    "headlines_sha256": "28bd2f3d6c2622fb10a7b3d83399996aee1ca4e83e62efe2669e99fd4d9e988f",
+    "pseudo_mode": "soft",
+    "n_retained": 1409,
+    "n_excluded_by_threshold": 0,
+    "hard_class_counts": {
+      "bearish": 81,
+      "neutral": 1186,
+      "bullish": 142
+    },
+    "confidence_summary": {
+      "min": 0.5,
+      "mean": 0.9695,
+      "median": 1.0,
+      "max": 1.0
+    },
+    "distill_temperature": 4.0,
+    "mean_target_entropy_nats": 0.3265,
+    "fns_train_count": 8349,
+    "combined_train_count": 9758,
+    "distill_alpha": 0.7
+  }
+}

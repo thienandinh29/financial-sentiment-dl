@@ -1,0 +1,37 @@
+# E12 — DistilBERT fine-tuning + LLM P2 hard pseudo-labels on 2026 train_unlabeled pool (RQ3).
+# Single change from configs/E5.yaml (AGENTS.md rule 4 & docs/guides/TV3-tuan4.md task 3.13):
+# appends the 1,409 train_unlabeled 2026 headlines with hard labels = argmax(probs) from P2.
+# Class weights for weighted_ce are computed ONLY on FNS train (identical to E5); validation is unchanged.
+experiment: E12
+rq: RQ3
+
+data:
+  dataset: zeroshot/twitter-financial-news-sentiment
+  split_file: data/splits/cluster_split.jsonl   # frozen split (PR #10), checked by SHA-256
+  split_sha256: 8c2c35ea789acf5b2bd9c74c5e59fa0df325034422be42ae7b47f2e8c9c46aaa
+  max_len: 64
+  pseudo_labels: results/llm_soft_labels/p2_soft_labels.jsonl
+  pseudo_mode: hard                             # E12: argmax(probs); class weights stay FNS-train-only
+
+model:
+  name: transformer
+  pretrained_name: distilbert/distilbert-base-uncased
+  num_labels: 3
+  dropout: 0.3
+  freeze_encoder: false
+
+train:
+  loss: weighted_ce
+  optimizer: adamw
+  lr: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  batch_size: 32
+  max_epochs: 4
+  grad_clip: 1.0
+  early_stopping:
+    metric: val_macro_f1
+    patience: 3
+  mixed_precision: true
+
+seeds: [1, 2, 3]

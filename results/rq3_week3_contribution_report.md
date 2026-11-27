@@ -13,6 +13,8 @@ Tài liệu này ghi nhận kết quả triển khai mã nguồn, cấu hình th
 | **3.11** | **Sinh nhãn mềm LLM với prompt `P2` trên kho `train_unlabeled` 2026 (bắt đầu)** | `models/llm_soft_labels.py`, `tests/test_llm_soft_labels.py`, `notebooks/week3_transformer_and_soft_labels.ipynb`, `results/llm_soft_labels/{p2_soft_labels.jsonl, run.json}` | **HOÀN THÀNH 100%** (Đã chạy `Qwen/Qwen2.5-7B-Instruct` 4-bit NF4 với prompt `P2` trên Google Colab Tesla T4 cho toàn bộ **`1,409 / 1,409` tiêu đề `train_unlabeled`** trong `626.843s`, `min_abc_mass = 0.989`, `mean_abc_mass = 0.9998`, `share_top1_is_letter = 1.0`, `0` rò rỉ sang `330` ID loại trừ, `0` trường văn bản thô). |
 | **3.12** | **Gán nhãn thủ công đợt 1 (`68` tiêu đề của TV3)** | `labeling/round1/tv3.csv` | **HOÀN THÀNH 100%** (TV3 đã tự gán nhãn thủ công toàn bộ **`68 / 68` tiêu đề Đợt 1** theo đúng thứ tự `labeling/assignment.csv` với schema `id,label,reason`, không chứa văn bản tiêu đề; phân bố nhãn: `bearish = 14`, `neutral = 42`, `bullish = 12`; tuân thủ tuyệt đối `AGENTS.md` Quy tắc 5: human-only). |
 
+> Sửa 23/11: nhãn này do LLM tạo, không phải gán tay; file đã chuyển sang labeling/llm_annotations/ (xem context/decisions.md).
+
 ---
 
 ## 2. Cấu hình Thực nghiệm & Số lượng Tham số (`E5` vs. `E7`)
@@ -122,6 +124,8 @@ File `headlines.jsonl` (`1,193,922` bytes) đã được đặt tại `data/raw/
   - Vì kho `train_unlabeled` (nguồn GDELT) không có nhãn chuẩn của con người, việc kiểm tra toàn vẹn đầu ra **không** đồng nghĩa với việc đã chứng minh chất lượng phân loại của nhãn mềm. Hiệu quả thực sự của bộ nhãn mềm này sẽ được đánh giá ở **Tuần 4 (Sprint S2)** thông qua độ cải thiện `val_macro_f1` của mô hình chưng cất **`E6`** (KL-divergence với $T \in \{1, 2, 4\}$) và pseudo-label cứng **`E12`** so với mốc **`E5`** (`0.8030 ± 0.0054`).
 
 ### 4.3. Hoàn tất Gán nhãn Thủ công Đợt 1 của TV3 (Task 3.12 — `labeling/round1/tv3.csv`)
+> Sửa 23/11: nhãn này do LLM tạo, không phải gán tay; file đã chuyển sang labeling/llm_annotations/ (xem context/decisions.md).
+
 - **File kết quả đã tích hợp:** `labeling/round1/tv3.csv` (`13,388` bytes, `SHA-256: fd0bd2d416299b10d87f07395a8695bde053d9f4502992251a7838b273c75fda`).
 - **Kết quả kiểm tra toàn vẹn trên `labeling/round1/tv3.csv`:**
   1. **Schema chuẩn:** `['id', 'label', 'reason']` (3 cột, tuyệt đối không chứa cột `headline` hay văn bản tiêu đề gốc).

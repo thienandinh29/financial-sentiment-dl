@@ -1,0 +1,164 @@
+{
+  "selected": {
+    "tag": "T2p0_alpha0p7",
+    "temperature": 2.0,
+    "alpha": 0.7,
+    "seed": 1,
+    "best_epoch": 4,
+    "macro_f1": 0.8072,
+    "val_macro_f1_exact": 0.8071637177371945,
+    "f1": {
+      "bearish": 0.7333,
+      "neutral": 0.8898,
+      "bullish": 0.7984
+    },
+    "elapsed_seconds": 104.415,
+    "peak_gpu_mem_gb": 1.656
+  },
+  "grid": [
+    {
+      "tag": "T1p0_alpha0p3",
+      "temperature": 1.0,
+      "alpha": 0.3,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.8064,
+      "val_macro_f1_exact": 0.8063676637753963,
+      "f1": {
+        "bearish": 0.7456,
+        "neutral": 0.889,
+        "bullish": 0.7845
+      },
+      "elapsed_seconds": 106.91,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T1p0_alpha0p5",
+      "temperature": 1.0,
+      "alpha": 0.5,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.8036,
+      "val_macro_f1_exact": 0.8036095098880148,
+      "f1": {
+        "bearish": 0.7359,
+        "neutral": 0.8861,
+        "bullish": 0.7888
+      },
+      "elapsed_seconds": 106.43,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T1p0_alpha0p7",
+      "temperature": 1.0,
+      "alpha": 0.7,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.8014,
+      "val_macro_f1_exact": 0.8014064918540839,
+      "f1": {
+        "bearish": 0.7327,
+        "neutral": 0.886,
+        "bullish": 0.7855
+      },
+      "elapsed_seconds": 106.478,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T2p0_alpha0p3",
+      "temperature": 2.0,
+      "alpha": 0.3,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.8021,
+      "val_macro_f1_exact": 0.8021401632284352,
+      "f1": {
+        "bearish": 0.7289,
+        "neutral": 0.8872,
+        "bullish": 0.7903
+      },
+      "elapsed_seconds": 101.909,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T2p0_alpha0p5",
+      "temperature": 2.0,
+      "alpha": 0.5,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.8044,
+      "val_macro_f1_exact": 0.8043733912564143,
+      "f1": {
+        "bearish": 0.7314,
+        "neutral": 0.8881,
+        "bullish": 0.7936
+      },
+      "elapsed_seconds": 106.924,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T2p0_alpha0p7",
+      "temperature": 2.0,
+      "alpha": 0.7,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.8072,
+      "val_macro_f1_exact": 0.8071637177371945,
+      "f1": {
+        "bearish": 0.7333,
+        "neutral": 0.8898,
+        "bullish": 0.7984
+      },
+      "elapsed_seconds": 104.415,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T4p0_alpha0p3",
+      "temperature": 4.0,
+      "alpha": 0.3,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.8015,
+      "val_macro_f1_exact": 0.8015322740750702,
+      "f1": {
+        "bearish": 0.727,
+        "neutral": 0.8873,
+        "bullish": 0.7903
+      },
+      "elapsed_seconds": 106.5,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T4p0_alpha0p5",
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.7993,
+      "val_macro_f1_exact": 0.7993259615841156,
+      "f1": {
+        "bearish": 0.7316,
+        "neutral": 0.8822,
+        "bullish": 0.7841
+      },
+      "elapsed_seconds": 102.016,
+      "peak_gpu_mem_gb": 1.656
+    },
+    {
+      "tag": "T4p0_alpha0p7",
+      "temperature": 4.0,
+      "alpha": 0.7,
+      "seed": 1,
+      "best_epoch": 4,
+      "macro_f1": 0.7947,
+      "val_macro_f1_exact": 0.7947059486678442,
+      "f1": {
+        "bearish": 0.7224,
+        "neutral": 0.8791,
+        "bullish": 0.7826
+      },
+      "elapsed_seconds": 102.793,
+      "peak_gpu_mem_gb": 1.656
+    }
+  ]
+}
